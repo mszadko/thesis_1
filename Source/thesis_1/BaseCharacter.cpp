@@ -17,7 +17,7 @@ ABaseCharacter::ABaseCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	//Setting capsule size for collision
-	GetCapsuleComponent()->InitCapsuleSize(40.f, 90.f);
+	GetCapsuleComponent()->InitCapsuleSize(40.f, 95.f);
 
 	//============================CAMERA HOOK(BOOM)====================================
 	//Create object.
@@ -26,6 +26,7 @@ ABaseCharacter::ABaseCharacter()
 	CameraBoom->SetupAttachment(RootComponent);
 	//Set how far the camera will be
 	CameraBoom->TargetArmLength = 300.f;
+	CameraBoom->SetRelativeRotation(FRotator(-55.0f,0.0f,0.0f));
 	CameraBoom->bDoCollisionTest = false;
 	CameraBoom->bInheritPitch = false;
 	CameraBoom->bInheritRoll = false;
@@ -51,22 +52,24 @@ void ABaseCharacter::BeginPlay()
 void ABaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	//==========rotating with pad==================
-	{
-		//first we create vector with out input data and normalize it
+
+	if (bIsUsingPad)
+	{//==========rotating with pad==================
+		//first we create unit vector with input data
 		const FVector Direction = FVector(GetInputAxisValue(LookUpBinding), GetInputAxisValue(LookRightBinding), 0.0f).GetClampedToMaxSize(1.0f);
-		if (Direction.Size()>0.25)//if size is bigger than 1/4 we rotate (otherwise character always face up when no input was given)
+		
+		//Engine will use this variable during interpolation from starter rotation to target rotation (so rotation can be nice and smooth)
+		static FRotator InterpolatedRotation = GetControlRotation();
+		if (Direction.Size() > 0.25)//if vector magnitude is greater than 0.25 we rotate (it prevents rotating to (0,0,0) if we released the analog)
 		{
-			//then we create rotator (basically it is vector(roll,pitch,yaw) with some extras)
-			const FRotator NewRotation = Direction.Rotation();
+			//then we create rotator (basically it is vector(pitch,yaw,roll) with some extras)
+			const FRotator TargetRotation = Direction.Rotation();
 			//here i need to slow it down a little bit
-			
+			InterpolatedRotation = FMath::Lerp(InterpolatedRotation, TargetRotation,RotationSpeed);
 			//and then we tell controller to rotate our character.
-			GetController()->SetControlRotation(NewRotation);
+			GetController()->SetControlRotation(InterpolatedRotation);
 		}
-
 	}
-
 }
 
 // Called to bind functionality to input

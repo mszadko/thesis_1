@@ -55,6 +55,14 @@ public:
 	static const FName LookUpBinding;
 	static const FName LookRightBinding;
 
+	//Returns true if player is playing with pad, false if keyboard and mouse is used
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,Category = Settings)
+	bool bIsUsingPad;
+
+	//Determines how fast the interpolation of rotation should be([0;1] 1 means that interpolation will took only 1 step)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Settings)
+	float RotationSpeed;
+
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
