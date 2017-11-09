@@ -25,7 +25,7 @@ ABaseCharacter::ABaseCharacter()
 	//make boom child of RootComponent. now boom will inherit rotation and location of RootComponent of a character.
 	CameraBoom->SetupAttachment(RootComponent);
 	//Set how far the camera will be
-	CameraBoom->TargetArmLength = 300.f;
+	CameraBoom->TargetArmLength = 400.f;
 	CameraBoom->SetRelativeRotation(FRotator(-55.0f,0.0f,0.0f));
 	CameraBoom->bDoCollisionTest = false;
 	CameraBoom->bInheritPitch = false;
@@ -58,7 +58,7 @@ void ABaseCharacter::Tick(float DeltaTime)
 		//first we create unit vector with input data
 		const FVector Direction = FVector(GetInputAxisValue(LookUpBinding), GetInputAxisValue(LookRightBinding), 0.0f).GetClampedToMaxSize(1.0f);
 		
-		//Engine will use this variable during interpolation from starter rotation to target rotation (so rotation can be nice and smooth)
+		//we will use this variable during interpolation from starter rotation to target rotation (so rotation can be nice and smooth)
 		static FRotator InterpolatedRotation = GetControlRotation();
 		if (Direction.Size() > 0.25)//if vector magnitude is greater than 0.25 we rotate (it prevents rotating to (0,0,0) if we released the analog)
 		{
@@ -69,6 +69,10 @@ void ABaseCharacter::Tick(float DeltaTime)
 			//and then we tell controller to rotate our character.
 			GetController()->SetControlRotation(InterpolatedRotation);
 		}
+	}
+	else//we will use mouse input to rotate
+	{
+		
 	}
 }
 
