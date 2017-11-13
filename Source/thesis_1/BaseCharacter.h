@@ -46,13 +46,23 @@ protected:
 	/*Called for applying rotation to character (from mouse input)*/
 	void Rotate();
 
-	
+	/*Called when player press key to Dash. For more information about specifiers visit https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/Reference/Functions/Specifiers/index.html */
+	UFUNCTION(Server,Reliable,WithValidation)
+	void Dash();
+	void Dash_Implementation();
 
+	UFUNCTION(BlueprintImplementableEvent, Category = Skills)
+	void DashSpecialEffect();
+	
 public:
 	//static names for axis bindings (Indicates that the InputComponent is interested in knowing the Axis value (via GetAxisValue) but does not want a delegate function called each frame.)
 	//more information - https://docs.unrealengine.com/latest/INT/API/Runtime/Engine/Components/UInputComponent/BindAxis/index.html
 	static const FName LookUpBinding;
 	static const FName LookRightBinding;
+	
+
+	//function needed when UFUNCTION got (WithValidation) tag
+	virtual bool Dash_Validate() { return true; }
 
 	//Returns true if player is playing with pad, false if keyboard and mouse is used
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,Category = Settings)
@@ -61,9 +71,13 @@ public:
 	//Determines how fast the interpolation of rotation should be([0;1] 1 means that interpolation will took only 1 step)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Settings)
 	float RotationSpeed;
+	//Determines how far dash will be.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Skills)
+	float DashDistance;
 
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return PlayerCamera; }
 };
+

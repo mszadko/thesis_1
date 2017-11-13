@@ -39,6 +39,8 @@ ABaseCharacter::ABaseCharacter()
 	PlayerCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	//=======================END OF CHARACTER CAMERA SETTING===========================
 
+	DashDistance = 200.0f;
+	RotationSpeed = 0.1f;
 }
 
 // Called when the game starts or when spawned
@@ -72,6 +74,9 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	//(it is different than moving becouse we don't want to call delegate functions each frame)
 	PlayerInputComponent->BindAxis(LookUpBinding);
 	PlayerInputComponent->BindAxis(LookRightBinding);
+
+	//==========DASH============
+	PlayerInputComponent->BindAction("Dash", IE_Pressed, this, &ABaseCharacter::Dash);
 
 }
 
@@ -128,4 +133,10 @@ void ABaseCharacter::Rotate()
 			}
 		}
 	}
+}
+
+void ABaseCharacter::Dash_Implementation()
+{
+	SetActorLocation(GetActorLocation() + GetActorForwardVector()*DashDistance, true);
+	DashSpecialEffect();
 }
