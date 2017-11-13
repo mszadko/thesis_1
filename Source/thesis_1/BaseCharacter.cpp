@@ -59,7 +59,7 @@ void ABaseCharacter::Tick(float DeltaTime)
 		const FVector Direction = FVector(GetInputAxisValue(LookUpBinding), GetInputAxisValue(LookRightBinding), 0.0f).GetClampedToMaxSize(1.0f);
 		
 		//we will use this variable during interpolation from starter rotation to target rotation (so rotation can be nice and smooth)
-		static FRotator InterpolatedRotation = GetControlRotation();
+		FRotator InterpolatedRotation = GetControlRotation();
 		if (Direction.Size() > 0.25)//if vector magnitude is greater than 0.25 we rotate (it prevents rotating to (0,0,0) if we released the analog)
 		{
 			//then we create rotator (basically it is vector(pitch,yaw,roll) with some extras)
@@ -72,7 +72,25 @@ void ABaseCharacter::Tick(float DeltaTime)
 	}
 	else//we will use mouse input to rotate
 	{
-		
+		if (APlayerController* PC = Cast<APlayerController>(GetController()))
+		{
+			//this will store info where our cursor hits.
+			FHitResult TraceHitResult;
+			//in ue4 repo gethitresultundercursor is marked as deprecated so im using this one
+			PC->GetHitResultUnderCursorByChannel(UEngineTypes::ConvertToTraceType(ECC_Visibility), true, TraceHitResult);
+			FVector CharacterLocation = GetActorLocation();
+			FVector CursorLocation = TraceHitResult.Location;
+			//calculates vector from character location to cursor location (we will use its direction later)
+			FVector CharacterToCursor = CursorLocation - CharacterLocation;
+			if (CharacterToCursor.Size() > 100.0f)//we don't want to rotate when cursor is on the player (it shakes the character)
+			{
+				//we will use this variable during interpolation from starter rotation to target rotation (so rotation can be nice and smooth)
+				FRotator InterpolatedRotation = GetControlRotation();
+				InterpolatedRotation = FMath::Lerp(InterpolatedRotation, CharacterToCursor.Rotation(), RotationSpeed);
+				GetController()->SetControlRotation(InterpolatedRotation);
+			}
+			
+		}
 	}
 }
 
