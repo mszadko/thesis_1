@@ -44,12 +44,11 @@ protected:
 	void MoveRight(float Value);
 	
 	/*Called for applying rotation to character (from mouse input)*/
-	void RotateTowardsMouse(float Value);
+	void Rotate();
 
 	
 
 public:
-
 	//static names for axis bindings (Indicates that the InputComponent is interested in knowing the Axis value (via GetAxisValue) but does not want a delegate function called each frame.)
 	//more information - https://docs.unrealengine.com/latest/INT/API/Runtime/Engine/Components/UInputComponent/BindAxis/index.html
 	static const FName LookUpBinding;
