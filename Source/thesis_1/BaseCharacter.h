@@ -37,15 +37,8 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* PlayerCamera;
 
-	/*this will make character look in the direction indicated by the axis values (called form move to look forward and some attacks so druids can shoot from wands in right directions (or whack an axe if you are a friend of a druid)*/
-	void TurnToDirection(float HorizontalAxisValue,float VerticalAxisValue);
 
-	/*Called for applying rotation to character (from mouse input)*/
-	void RotateTowardsMouse();
 protected:
-	/*Called for applying forward/backward & side to side input to character*/
-	void Move();
-	/*Called when right analog is used. It will face the player in the proper direction and do basic attack*/
 	void BasicAttack();
 
 	/*Called when player press key to Dash. For more information about specifiers visit https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/Reference/Functions/Specifiers/index.html */
@@ -57,23 +50,22 @@ protected:
 	void DashSpecialEffect();
 	
 public:
-	//static names for axis bindings (Indicates that the InputComponent is interested in knowing the Axis value (via GetAxisValue) but does not want a delegate function called each frame.)
-	//more information - https://docs.unrealengine.com/latest/INT/API/Runtime/Engine/Components/UInputComponent/BindAxis/index.html
-	static const FName LookUpBinding;
-	static const FName LookRightBinding;
-	static const FName MoveUpBinding;
-	static const FName MoveRightBinding;
-
+	
 	//function needed when UFUNCTION got (WithValidation) tag
 	virtual bool Dash_Validate() { return true; }
 
+
+
+	//WARNINIG THOSE 2 PROPERTIES ARE NOW IN BASEPLAYERCONTROLLER. LEFT THOSE SO THE REST OF THE PROJECT WILL WORK ON MONDAY
 	//Returns true if player is playing with pad, false if keyboard and mouse is used
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,Category = Settings)
 	bool bIsUsingPad;
-
 	//Determines how fast the interpolation of rotation should be([0;1] 1 means that interpolation will took only 1 step)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Settings)
 	float RotationSpeed;
+
+
+
 	//Determines how far dash will be.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Skills)
 	float DashDistance;
