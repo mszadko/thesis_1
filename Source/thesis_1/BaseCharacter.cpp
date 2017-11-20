@@ -5,7 +5,7 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Classes/GameFramework/CharacterMovementComponent.h"
-//needed to print text on screen should be removed on later.
+#include "BasePlayerController.h"
 #include "Engine.h"
 
 // Sets default values
@@ -55,27 +55,76 @@ void ABaseCharacter::Tick(float DeltaTime)
 	
 }
 
-// Called to bind functionality to input
-void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	
-	//==========DASH============
-	PlayerInputComponent->BindAction("Dash", IE_Pressed, this, &ABaseCharacter::Dash);
-	//====Basic attack(mouse)==
-	PlayerInputComponent->BindAction("BasicAttack", IE_Pressed, this, &ABaseCharacter::BasicAttack);
-}
-
-
 //========================================SKILLS================================================
 void ABaseCharacter::Dash_Implementation()
 {
-	SetActorLocation(GetActorLocation() + GetActorForwardVector()*DashDistance, true);
+	//try to cache and cast player controller to BasePlayerController
+	if (ABasePlayerController* BPC = Cast<ABasePlayerController, AController>(GetController()))
+	{
+		//read values form left analog (moving)
+		float MoveHorizontalInputValue = BPC->GetInputAxisValue(BPC->MoveUpBinding);
+		float MoveVerticalInputValue = BPC->GetInputAxisValue(BPC->MoveRightBinding);
+		//calculate the dash direction
+		FVector DashDirection = FVector(MoveHorizontalInputValue, MoveVerticalInputValue, 0.0f).GetSafeNormal()*DashDistance;
+		//if we don't move we want to dash forward
+		if (DashDirection.SizeSquared() < 1.0f)
+			DashDirection = BPC->GetActorForwardVector()*DashDistance;
+		//adding dash distance to current direction
+		SetActorLocation(GetActorLocation() + DashDirection, true);
+	}
 }
 void ABaseCharacter::BasicAttack()
 {
+	
 	if (GEngine)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("BasicAttack"));
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("BaseCharacter::BasicAttack"));
 	}
 }
+void ABaseCharacter::Skill1()
+{
+	//in class derived class code should look like this
+	/*
+	switch(ContainerOfChosenSkills[0])
+		case Fireball:
+			Fireball()
+			break;
+		case PlantBomb:
+			PlantBomb()
+			break;
+		....
+		...
+		..
+		we can also check if bIsUsingRightAnalog or bIsLmpPressedDown is true so we can 
+		shoot a bomb instead of placing it on the ground or increase damage etc etc.
+	*/
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("BaseCharacter::Skill1"));
+	}
+}
+void ABaseCharacter::Skill2()
+{
+
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("BaseCharacter::Skill2"));
+	}
+}
+void ABaseCharacter::Skill3()
+{
+
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("BaseCharacter::Skill3"));
+	}
+}
+void ABaseCharacter::Skill4()
+{
+
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("BaseCharacter::Skill4"));
+	}
+}
+

@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BasePlayerController.h"
+#include "BaseCharacter.h"
 #include "Runtime/Engine/Classes/GameFramework/Character.h"
 
 
@@ -13,21 +14,23 @@ const FName ABasePlayerController::MoveRightBinding("MoveRight");
 ABasePlayerController::ABasePlayerController()
 {
 	RotationSpeed = 0.1f;
+	bIsLmbPressedDown = false;
 }
-
 
 void ABasePlayerController::PlayerTick(float DeltaTime)
 {
 	Super::PlayerTick(DeltaTime);
 	Move();
+	if (bIsUsingRightAnalog)
+		CallBasicAttack();
+	
 }
 void ABasePlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 	//=========JUMPING==========
-	InputComponent->BindAction("Jump", IE_Pressed, this, &ABasePlayerController::Jump);
-	InputComponent->BindAction("Jump", IE_Released, this, &ABasePlayerController::StopJumping);
-
+	InputComponent->BindAction("Jump", IE_Pressed, this, &ABasePlayerController::CallJump);
+	InputComponent->BindAction("Jump", IE_Released, this, &ABasePlayerController::CallStopJumping);
 
 	//=========MOVING===========
 	InputComponent->BindAxis(MoveUpBinding);
@@ -37,15 +40,24 @@ void ABasePlayerController::SetupInputComponent()
 	//(we don't want to call delegate functions each frame - we will handle it like man without built in functions)
 	InputComponent->BindAxis(LookUpBinding);
 	InputComponent->BindAxis(LookRightBinding);
+
+	//=========SKILLS==========
+	InputComponent->BindAction("Skill1", IE_Pressed, this, &ABasePlayerController::CallSkill1);
+	InputComponent->BindAction("Skill2", IE_Pressed, this, &ABasePlayerController::CallSkill2);
+	InputComponent->BindAction("Skill3", IE_Pressed, this, &ABasePlayerController::CallSkill3);
+	InputComponent->BindAction("Skill4", IE_Pressed, this, &ABasePlayerController::CallSkill4);
+	InputComponent->BindAction("Dash", IE_Pressed, this, &ABasePlayerController::CallDash);
+	InputComponent->BindAction("BasicAttack", IE_Pressed, this, &ABasePlayerController::CallBasicAttack);
+	InputComponent->BindAction("BasicAttack", IE_Released, this, &ABasePlayerController::ReleaseBasicAttack);
 }
 
-void ABasePlayerController::Jump()
+void ABasePlayerController::CallJump()
 {
 	if (ACharacter* ControlledCharacter = Cast<ACharacter,APawn>(GetPawn()))
 		ControlledCharacter->Jump();
 }
 
-void ABasePlayerController::StopJumping()
+void ABasePlayerController::CallStopJumping()
 {
 	if (ACharacter* ControlledCharacter = Cast<ACharacter, APawn>(GetPawn()))
 		ControlledCharacter->StopJumping();
@@ -60,8 +72,6 @@ void ABasePlayerController::Move()
 		float MoveVerticalInputValue = GetInputAxisValue(MoveRightBinding);
 		//then we apply it to a character
 		ControlledCharacter->AddMovementInput(FVector(MoveHorizontalInputValue, MoveVerticalInputValue, 0.0f));
-
-		
 		if (bIsUsingPad)//if pad is used check what analog indicate direction
 		{
 			//we have to check if player is using right analog
@@ -125,3 +135,39 @@ void ABasePlayerController::RotateTowardsMouse()
 	}
 }
 //===============================END OF ROTATING THE PLAYER=========================================
+void ABasePlayerController::CallDash()
+{
+	if (ABaseCharacter* BC = Cast<ABaseCharacter,APawn>(GetPawn()))
+		BC->Dash();
+}
+void ABasePlayerController::CallSkill1()
+{
+	if (ABaseCharacter* BC = Cast<ABaseCharacter, APawn>(GetPawn()))
+		BC->Skill1();
+}
+void ABasePlayerController::CallSkill2()
+{
+	if (ABaseCharacter* BC = Cast<ABaseCharacter, APawn>(GetPawn()))
+		BC->Skill2();
+}
+void ABasePlayerController::CallSkill3()
+{
+	if (ABaseCharacter* BC = Cast<ABaseCharacter, APawn>(GetPawn()))
+		BC->Skill3();
+}
+void ABasePlayerController::CallSkill4()
+{
+	if (ABaseCharacter* BC = Cast<ABaseCharacter, APawn>(GetPawn()))
+		BC->Skill4();
+}
+
+void ABasePlayerController::CallBasicAttack()
+{
+	bIsLmbPressedDown = true;
+	if (ABaseCharacter* BC = Cast<ABaseCharacter, APawn>(GetPawn()))
+		BC->BasicAttack();
+}
+void ABasePlayerController::ReleaseBasicAttack()
+{
+	bIsLmbPressedDown = false;
+}

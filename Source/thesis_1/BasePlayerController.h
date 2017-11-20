@@ -34,7 +34,8 @@ public:
 	//Determines how fast the interpolation of rotation should be([0;1] 1 means that interpolation will took only 1 step)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Settings)
 	float RotationSpeed;
-
+private:
+	bool bIsLmbPressedDown;
 
 protected:
 	// Begin PlayerController interface
@@ -49,10 +50,21 @@ private:
 	void RotateTowardsMouse();
 	/*Called for applying forward/backward & side to side input to character. This also checks whether rotation should be inherited form left or right analog and call RotateToDirection with proper parameters*/
 	void Move();
-	/*Called when right analog is used. It will face the player in the proper direction and do basic attack*/
-	void BasicAttack();
+	/*Called when right analog is used. It will face the player in the proper direction and do call basic attack function form controlled character*/
+	void CallBasicAttack();
 
-	//Those are going to call Jump and StopJumping from PlayerMovementComponent
-	void Jump();
-	void StopJumping();
+	void ReleaseBasicAttack();
+
+	//Those are going to call Jump and StopJumping from PlayerMovementComponent of controlled character
+	void CallJump();
+	void CallStopJumping();
+
+	void CallDash();
+	void CallSkill1();
+	void CallSkill2();
+	void CallSkill3();
+	void CallSkill4();
+
+
+
 };
