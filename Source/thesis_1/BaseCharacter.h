@@ -46,8 +46,6 @@ protected:
 	void Dash();
 	void Dash_Implementation();
 
-	UFUNCTION(BlueprintImplementableEvent, Category = Skills)
-	void DashSpecialEffect();
 	
 public:
 	

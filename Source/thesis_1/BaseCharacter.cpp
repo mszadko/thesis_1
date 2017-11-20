@@ -71,7 +71,6 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 void ABaseCharacter::Dash_Implementation()
 {
 	SetActorLocation(GetActorLocation() + GetActorForwardVector()*DashDistance, true);
-	DashSpecialEffect();
 }
 void ABaseCharacter::BasicAttack()
 {

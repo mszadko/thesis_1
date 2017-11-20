@@ -41,6 +41,7 @@ protected:
 	virtual void PlayerTick(float DeltaTime) override;
 	virtual void SetupInputComponent() override;
 	// End PlayerController interface
+
 private:
 	/*this will make character look in the direction indicated by the axis values (called form move to look forward and some attacks so druids can shoot from wands in right directions (or whack an axe if you are a friend of a druid)*/
 	void TurnToDirection(float HorizontalAxisValue, float VerticalAxisValue);
