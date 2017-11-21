@@ -23,7 +23,7 @@ ABaseCharacter::ABaseCharacter()
 	//make boom child of RootComponent. now boom will inherit rotation and location of RootComponent of a character.
 	CameraBoom->SetupAttachment(RootComponent);
 	//Set how far the camera will be
-	CameraBoom->TargetArmLength = 400.f;
+	CameraBoom->TargetArmLength = 800.f;
 	CameraBoom->SetRelativeRotation(FRotator(-55.0f,0.0f,0.0f));
 	CameraBoom->bDoCollisionTest = false;
 	CameraBoom->bInheritPitch = false;
