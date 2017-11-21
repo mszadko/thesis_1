@@ -64,13 +64,19 @@ void ABaseCharacter::Dash_Implementation()
 		//read values form left analog (moving)
 		float MoveHorizontalInputValue = BPC->GetInputAxisValue(BPC->MoveUpBinding);
 		float MoveVerticalInputValue = BPC->GetInputAxisValue(BPC->MoveRightBinding);
-		//calculate the dash direction
-		FVector DashDirection = FVector(MoveHorizontalInputValue, MoveVerticalInputValue, 0.0f).GetSafeNormal()*DashDistance;
+		//creat the dash vector that will be addet to current location
+		FVector DashVector = FVector(MoveHorizontalInputValue, MoveVerticalInputValue, 0.0f);
 		//if we don't move we want to dash forward
-		if (DashDirection.SizeSquared() < 1.0f)
-			DashDirection = BPC->GetActorForwardVector()*DashDistance;
-		//adding dash distance to current direction
-		SetActorLocation(GetActorLocation() + DashDirection, true);
+		if (FMath::IsNearlyZero(DashVector.Size()))
+		{
+			DashVector = GetActorForwardVector()*DashDistance;
+		}	
+		else
+		{
+			DashVector = DashVector.GetUnsafeNormal()*DashDistance;
+		}
+
+		SetActorLocation(GetActorLocation() + DashVector, true);
 	}
 }
 void ABaseCharacter::BasicAttack()
