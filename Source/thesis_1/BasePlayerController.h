@@ -60,10 +60,15 @@ private:
 	void CallStopJumping();
 
 	void CallDash();
-	void CallSkill1();
-	void CallSkill2();
-	void CallSkill3();
-	void CallSkill4();
+	void CallSkill0OnPress();
+	void CallSkill1OnPress();
+	void CallSkill2OnPress();
+	void CallSkill3OnPress();
+
+	void CallSkill0OnRelease();
+	void CallSkill1OnRelease();
+	void CallSkill2OnRelease();
+	void CallSkill3OnRelease();
 
 
 

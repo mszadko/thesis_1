@@ -23,13 +23,6 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	
-	//Methods that are called from ABasePlayerController
-	//Derived class will have container with skills chosen by player
-	//Skill 1 will call proper function from first element of mentioned container
-	virtual void Skill1();
-	virtual void Skill2();
-	virtual void Skill3();
-	virtual void Skill4();
 	virtual void BasicAttack();
 
 	//code added to ACharacter
@@ -44,6 +37,11 @@ private:
 
 	
 public:
+
+	//array of 4 skills that will be called when player press trigger or bumper
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Skills)
+    TArray<class USkill*> Skills;
+
 	/*Called when player press key to Dash. For more information about specifiers visit https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/Reference/Functions/Specifiers/index.html */
 	UFUNCTION(Server,Reliable,WithValidation)
 	void Dash();

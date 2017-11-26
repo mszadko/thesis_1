@@ -3,6 +3,7 @@
 #include "BasePlayerController.h"
 #include "BaseCharacter.h"
 #include "Runtime/Engine/Classes/GameFramework/Character.h"
+#include "Skill.h"
 
 
 //sets static names for axis binding (more info in header file)
@@ -42,10 +43,14 @@ void ABasePlayerController::SetupInputComponent()
 	InputComponent->BindAxis(LookRightBinding);
 
 	//=========SKILLS==========
-	InputComponent->BindAction("Skill1", IE_Pressed, this, &ABasePlayerController::CallSkill1);
-	InputComponent->BindAction("Skill2", IE_Pressed, this, &ABasePlayerController::CallSkill2);
-	InputComponent->BindAction("Skill3", IE_Pressed, this, &ABasePlayerController::CallSkill3);
-	InputComponent->BindAction("Skill4", IE_Pressed, this, &ABasePlayerController::CallSkill4);
+	InputComponent->BindAction("Skill0", IE_Pressed, this, &ABasePlayerController::CallSkill0OnPress);
+	InputComponent->BindAction("Skill1", IE_Pressed, this, &ABasePlayerController::CallSkill1OnPress);
+	InputComponent->BindAction("Skill2", IE_Pressed, this, &ABasePlayerController::CallSkill2OnPress);
+	InputComponent->BindAction("Skill3", IE_Pressed, this, &ABasePlayerController::CallSkill3OnPress);
+	InputComponent->BindAction("Skill0", IE_Released, this, &ABasePlayerController::CallSkill0OnRelease);
+	InputComponent->BindAction("Skill1", IE_Released, this, &ABasePlayerController::CallSkill1OnRelease);
+	InputComponent->BindAction("Skill2", IE_Released, this, &ABasePlayerController::CallSkill2OnRelease);
+	InputComponent->BindAction("Skill3", IE_Released, this, &ABasePlayerController::CallSkill3OnRelease);
 	InputComponent->BindAction("Dash", IE_Pressed, this, &ABasePlayerController::CallDash);
 	InputComponent->BindAction("BasicAttack", IE_Pressed, this, &ABasePlayerController::CallBasicAttack);
 	InputComponent->BindAction("BasicAttack", IE_Released, this, &ABasePlayerController::ReleaseBasicAttack);
@@ -140,25 +145,85 @@ void ABasePlayerController::CallDash()
 	if (ABaseCharacter* BC = Cast<ABaseCharacter,APawn>(GetPawn()))
 		BC->Dash();
 }
-void ABasePlayerController::CallSkill1()
+void ABasePlayerController::CallSkill0OnPress()
 {
 	if (ABaseCharacter* BC = Cast<ABaseCharacter, APawn>(GetPawn()))
-		BC->Skill1();
+	{
+		if (BC->Skills[0]!=nullptr)
+		{
+			BC->Skills[0]->OnPress(BC, this);
+		}	
+	}
 }
-void ABasePlayerController::CallSkill2()
+void ABasePlayerController::CallSkill0OnRelease()
 {
 	if (ABaseCharacter* BC = Cast<ABaseCharacter, APawn>(GetPawn()))
-		BC->Skill2();
+	{
+		if (BC->Skills[0] != nullptr)
+		{
+			BC->Skills[0]->OnRelease(BC, this);
+		}
+	}
 }
-void ABasePlayerController::CallSkill3()
+void ABasePlayerController::CallSkill1OnPress()
 {
 	if (ABaseCharacter* BC = Cast<ABaseCharacter, APawn>(GetPawn()))
-		BC->Skill3();
+	{
+		if (BC->Skills[1] != nullptr)
+		{
+			BC->Skills[1]->OnPress(BC, this);
+		}
+	}
 }
-void ABasePlayerController::CallSkill4()
+void ABasePlayerController::CallSkill1OnRelease()
 {
 	if (ABaseCharacter* BC = Cast<ABaseCharacter, APawn>(GetPawn()))
-		BC->Skill4();
+	{
+		if (BC->Skills[1] != nullptr)
+		{
+			BC->Skills[1]->OnRelease(BC, this);
+		}
+	}
+}
+void ABasePlayerController::CallSkill2OnPress()
+{
+	if (ABaseCharacter* BC = Cast<ABaseCharacter, APawn>(GetPawn()))
+	{
+		if (BC->Skills[2] != nullptr)
+		{
+			BC->Skills[2]->OnPress(BC, this);
+		}
+	}
+}
+void ABasePlayerController::CallSkill2OnRelease()
+{
+	if (ABaseCharacter* BC = Cast<ABaseCharacter, APawn>(GetPawn()))
+	{
+		if (BC->Skills[2] != nullptr)
+		{
+			BC->Skills[2]->OnRelease(BC, this);
+		}
+	}
+}
+void ABasePlayerController::CallSkill3OnPress()
+{
+	if (ABaseCharacter* BC = Cast<ABaseCharacter, APawn>(GetPawn()))
+	{
+		if (BC->Skills[3] != nullptr)
+		{
+			BC->Skills[3]->OnPress(BC, this);
+		}
+	}
+}
+void ABasePlayerController::CallSkill3OnRelease()
+{
+	if (ABaseCharacter* BC = Cast<ABaseCharacter, APawn>(GetPawn()))
+	{
+		if (BC->Skills[3] != nullptr)
+		{
+			BC->Skills[3]->OnRelease(BC, this);
+		}
+	}
 }
 
 void ABasePlayerController::CallBasicAttack()

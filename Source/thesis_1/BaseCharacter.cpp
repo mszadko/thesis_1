@@ -7,6 +7,7 @@
 #include "Classes/GameFramework/CharacterMovementComponent.h"
 #include "BasePlayerController.h"
 #include "Engine.h"
+#include "Skill.h"
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
@@ -39,20 +40,24 @@ ABaseCharacter::ABaseCharacter()
 
 	DashDistance = 200.0f;
 	RotationSpeed = 0.1f;
+
+	//setting up default skill array
+	Skills.Add(CreateDefaultSubobject<USkill>(TEXT("Skill0")));
+	Skills.Add(CreateDefaultSubobject<USkill>(TEXT("Skill1")));
+	Skills.Add(CreateDefaultSubobject<USkill>(TEXT("Skill2")));
+	Skills.Add(CreateDefaultSubobject<USkill>(TEXT("Skill3")));
 }
 
 // Called when the game starts or when spawned
 void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
 void ABaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
 }
 
 //========================================SKILLS================================================
@@ -75,62 +80,14 @@ void ABaseCharacter::Dash_Implementation()
 		{
 			DashVector = DashVector.GetUnsafeNormal()*DashDistance;
 		}
-
 		SetActorLocation(GetActorLocation() + DashVector, true);
 	}
 }
 void ABaseCharacter::BasicAttack()
 {
-	
 	if (GEngine)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("BaseCharacter::BasicAttack"));
-	}
-}
-void ABaseCharacter::Skill1()
-{
-	//in class derived class code should look like this
-	/*
-	switch(ContainerOfChosenSkills[0])
-		case Fireball:
-			Fireball()
-			break;
-		case PlantBomb:
-			PlantBomb()
-			break;
-		....
-		...
-		..
-		we can also check if bIsUsingRightAnalog or bIsLmpPressedDown is true so we can 
-		shoot a bomb instead of placing it on the ground or increase damage etc etc.
-	*/
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("BaseCharacter::Skill1"));
-	}
-}
-void ABaseCharacter::Skill2()
-{
-
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("BaseCharacter::Skill2"));
-	}
-}
-void ABaseCharacter::Skill3()
-{
-
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("BaseCharacter::Skill3"));
-	}
-}
-void ABaseCharacter::Skill4()
-{
-
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("BaseCharacter::Skill4"));
 	}
 }
 
