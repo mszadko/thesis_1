@@ -18,6 +18,6 @@ class THESIS_1_API ABoss0LevelScriptActor : public ALevelScriptActor
 	
 public:
 	ABoss0LevelScriptActor();
-	
+	void BeginPlay();
 	
 };
