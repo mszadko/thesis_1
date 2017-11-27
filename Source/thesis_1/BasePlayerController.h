@@ -69,7 +69,4 @@ private:
 	void CallSkill1OnRelease();
 	void CallSkill2OnRelease();
 	void CallSkill3OnRelease();
-
-
-
 };

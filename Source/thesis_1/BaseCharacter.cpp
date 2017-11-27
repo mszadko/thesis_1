@@ -40,10 +40,10 @@ ABaseCharacter::ABaseCharacter()
 	//=======================END OF CHARACTER CAMERA SETTING===========================
 	
 
-	DashDuration = 0.3f;
-	DashDistance = 200.0f;
+	DashSpeed = 1000.0f;
 	RotationSpeed = 0.1f;
 	bIsDashing = false;
+	DashCooldown = 1.0f;
 
 	//setting up default skill array
 	Skills.Add(CreateDefaultSubobject<USkill>(TEXT("Skill0")));
@@ -71,16 +71,7 @@ void ABaseCharacter::Dash_Implementation()
 	//if we are in the air or we are dashing already we can't dash
 	if (GetMovementComponent()->IsFalling() || bIsDashing)
 		return;
-
 	bIsDashing = true;
-
-	//here i want to disable input
-	
-	//Timer will call NumberOfUpdates updates
-	int NumberOfUpdates = DashDuration*DashDistance;
-	//Time between updates
-	float DeltaTime = DashDuration / NumberOfUpdates;
-
 	//Now let's calculate DashVector
 	//try to cache and cast player controller to BasePlayerController
 	if (ABasePlayerController* BPC = Cast<ABasePlayerController, AController>(GetController()))
@@ -93,36 +84,20 @@ void ABaseCharacter::Dash_Implementation()
 		//if we don't move we want to dash forward
 		if (FMath::IsNearlyZero(DashVector.Size()))
 		{
-			DashVector = GetActorForwardVector()*DashDistance;
+			DashVector = GetActorForwardVector()*DashSpeed;
 		}	
 		else
 		{
-			DashVector = DashVector.GetUnsafeNormal()*DashDistance;
+			DashVector = DashVector.GetUnsafeNormal()*DashSpeed;
 		}
-		//Now we've got how much we have to move on every update
-		DashVector /= NumberOfUpdates;
-
-		FTimerDelegate TimerDel;
-		TimerDel.BindUFunction(this, FName("AdvanceDashTimer"), DashVector, NumberOfUpdates);
-
-		GetWorldTimerManager().SetTimer(DashTimerHandle, TimerDel,DeltaTime, true);
+		DashVector += FVector(0.0f, 0.0f, 150.0f);
+		LaunchCharacter(DashVector, true, false);
+		GetWorldTimerManager().SetTimer(DashTimerHandle, this, &ABaseCharacter::FinishDash, DashCooldown);
 	}
 }
-
-void ABaseCharacter::AdvanceDashTimer(const FVector DeltaPosition,int TotalNumberOfUpdates)
+void ABaseCharacter::FinishDash()
 {
-	static int NumberOfUpdatesMade = 0;
-	if (NumberOfUpdatesMade++<TotalNumberOfUpdates)
-	{
-		SetActorLocation(GetActorLocation() + DeltaPosition, true);
-	}
-	else//if dash is completed we clear the timer and reset TimeLeft
-	{
-		//Here i want to enable input 
-		GetWorldTimerManager().ClearTimer(DashTimerHandle);
-		NumberOfUpdatesMade = 0;
-		bIsDashing = false;
-	}
+	bIsDashing = false;
 }
 
 //=============End of Dashing================

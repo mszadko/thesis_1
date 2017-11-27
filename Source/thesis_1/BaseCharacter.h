@@ -40,7 +40,7 @@ private:
 
 	//Function that will be called by timer every deltaTime. It's going to update character position so dash won't last 1 tick.
 	UFUNCTION()
-	void AdvanceDashTimer(const FVector DeltaPosition, int TotalNumberOfUpdates);
+	void FinishDash();
 	FTimerHandle DashTimerHandle;
 	bool bIsDashing;
 public:
@@ -67,10 +67,10 @@ public:
 
 	//Determines how far dash will be.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Skills)
-	float DashDistance;
-	//Determines how long dash will take.
+	float DashSpeed;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Skills)
-	float DashDuration;
+	float DashCooldown;
+
 
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
