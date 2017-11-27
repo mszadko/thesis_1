@@ -8,6 +8,7 @@
 #include "BasePlayerController.h"
 #include "Engine.h"
 #include "Skill.h"
+#include "Runtime/Engine/Public/TimerManager.h"
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
@@ -37,7 +38,9 @@ ABaseCharacter::ABaseCharacter()
 	//Pin our camera to the camera hook.
 	PlayerCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	//=======================END OF CHARACTER CAMERA SETTING===========================
+	
 
+	DashDuration = 0.3f;
 	DashDistance = 200.0f;
 	RotationSpeed = 0.1f;
 
@@ -61,15 +64,30 @@ void ABaseCharacter::Tick(float DeltaTime)
 }
 
 //========================================SKILLS================================================
+//===============Dashing================
 void ABaseCharacter::Dash_Implementation()
-{
+{	
+	//if we are in the air we can't dash
+	if (GetMovementComponent()->IsFalling())
+		return;
+
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	DisableInput(PlayerController);
+
+	//Timer will call NumberOfUpdates updates
+	int NumberOfUpdates = DashDuration*DashDistance;
+
+	//Time between updates
+	float DeltaTime = DashDuration / NumberOfUpdates;
+
+	//Now let's calculate DashVector
 	//try to cache and cast player controller to BasePlayerController
 	if (ABasePlayerController* BPC = Cast<ABasePlayerController, AController>(GetController()))
 	{
 		//read values form left analog (moving)
 		float MoveHorizontalInputValue = BPC->GetInputAxisValue(BPC->MoveUpBinding);
 		float MoveVerticalInputValue = BPC->GetInputAxisValue(BPC->MoveRightBinding);
-		//creat the dash vector that will be addet to current location
+		//create the dash vector that will be added to current location
 		FVector DashVector = FVector(MoveHorizontalInputValue, MoveVerticalInputValue, 0.0f);
 		//if we don't move we want to dash forward
 		if (FMath::IsNearlyZero(DashVector.Size()))
@@ -80,9 +98,36 @@ void ABaseCharacter::Dash_Implementation()
 		{
 			DashVector = DashVector.GetUnsafeNormal()*DashDistance;
 		}
-		SetActorLocation(GetActorLocation() + DashVector, true);
+		//Now we've got how much we have to move on every update
+		DashVector /= NumberOfUpdates;
+
+		FTimerDelegate TimerDel;
+		TimerDel.BindUFunction(this, FName("AdvanceDashTimer"), DashVector, NumberOfUpdates);
+
+		GetWorldTimerManager().SetTimer(DashTimerHandle, TimerDel,DeltaTime, true);
 	}
 }
+
+void ABaseCharacter::AdvanceDashTimer(const FVector DeltaPosition,int TotalNumberOfUpdates)
+{
+	static int NumberOfUpdatesMade = 0;
+	if (NumberOfUpdatesMade++<TotalNumberOfUpdates)
+	{
+		SetActorLocation(GetActorLocation() + DeltaPosition, true);
+	}
+	else//if dash is completed we clear the timer and reset TimeLeft
+	{
+		APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+		DisableInput(PlayerController);
+		GetWorldTimerManager().ClearTimer(DashTimerHandle);
+		NumberOfUpdatesMade = 0;
+	}
+}
+
+//=============End of Dashing================
+
+
+
 void ABaseCharacter::BasicAttack()
 {
 	if (GEngine)

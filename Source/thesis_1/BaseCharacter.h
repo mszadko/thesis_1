@@ -25,6 +25,10 @@ public:
 	
 	virtual void BasicAttack();
 
+
+
+
+
 	//code added to ACharacter
 private:
 	/*Camera boom*/
@@ -34,8 +38,10 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* PlayerCamera;
 
-
-	
+	//Function that will be called by timer every deltaTime. It's going to update character position so dash won't last 1 tick.
+	UFUNCTION()
+	void AdvanceDashTimer(const FVector DeltaPosition, int TotalNumberOfUpdates);
+	FTimerHandle DashTimerHandle;
 public:
 
 	//array of 4 skills that will be called when player press trigger or bumper
@@ -61,6 +67,9 @@ public:
 	//Determines how far dash will be.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Skills)
 	float DashDistance;
+	//Determines how long dash will take.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Skills)
+	float DashDuration;
 
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
