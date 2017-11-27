@@ -5,14 +5,14 @@
 #include "BasePlayerController.h"
 #include "Engine.h"
 
-void USkill::OnPress(ABaseCharacter* BaseCharacter, ABasePlayerController* PlayerController)
+void USkill::OnPress_Implementation(ABaseCharacter* BaseCharacter, ABasePlayerController* PlayerController)
 {
 	if (GEngine)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("USkill::OnPressed()"));
 	}
 }
-void USkill::OnRelease(class ABaseCharacter* BaseCharacter, class ABasePlayerController* PlayerController)
+void USkill::OnRelease_Implementation(class ABaseCharacter* BaseCharacter, class ABasePlayerController* PlayerController)
 {
 	if (GEngine)
 	{
