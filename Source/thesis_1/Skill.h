@@ -31,5 +31,5 @@ public:
 	
 	/*an array of character classes that can use this skill*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<class ABaseCharacter*> UsedBy;
+	TArray<TSubclassOf<ABaseCharacter>> UsedBy; //TSubclassOf: https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/TSubclassOf/
 };
