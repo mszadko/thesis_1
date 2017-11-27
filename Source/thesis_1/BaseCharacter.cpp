@@ -43,6 +43,7 @@ ABaseCharacter::ABaseCharacter()
 	DashDuration = 0.3f;
 	DashDistance = 200.0f;
 	RotationSpeed = 0.1f;
+	bIsDashing = false;
 
 	//setting up default skill array
 	Skills.Add(CreateDefaultSubobject<USkill>(TEXT("Skill0")));
@@ -67,16 +68,16 @@ void ABaseCharacter::Tick(float DeltaTime)
 //===============Dashing================
 void ABaseCharacter::Dash_Implementation()
 {	
-	//if we are in the air we can't dash
-	if (GetMovementComponent()->IsFalling())
+	//if we are in the air or we are dashing already we can't dash
+	if (GetMovementComponent()->IsFalling() || bIsDashing)
 		return;
 
-	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
-	DisableInput(PlayerController);
+	bIsDashing = true;
 
+	//here i want to disable input
+	
 	//Timer will call NumberOfUpdates updates
 	int NumberOfUpdates = DashDuration*DashDistance;
-
 	//Time between updates
 	float DeltaTime = DashDuration / NumberOfUpdates;
 
@@ -117,10 +118,10 @@ void ABaseCharacter::AdvanceDashTimer(const FVector DeltaPosition,int TotalNumbe
 	}
 	else//if dash is completed we clear the timer and reset TimeLeft
 	{
-		APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
-		DisableInput(PlayerController);
+		//Here i want to enable input 
 		GetWorldTimerManager().ClearTimer(DashTimerHandle);
 		NumberOfUpdatesMade = 0;
+		bIsDashing = false;
 	}
 }
 

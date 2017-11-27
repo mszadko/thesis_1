@@ -42,6 +42,7 @@ private:
 	UFUNCTION()
 	void AdvanceDashTimer(const FVector DeltaPosition, int TotalNumberOfUpdates);
 	FTimerHandle DashTimerHandle;
+	bool bIsDashing;
 public:
 
 	//array of 4 skills that will be called when player press trigger or bumper
