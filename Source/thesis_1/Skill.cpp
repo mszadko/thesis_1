@@ -5,6 +5,14 @@
 #include "BasePlayerController.h"
 #include "Engine.h"
 
+USkill::USkill()
+{
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("USkill constructed"));
+	}
+}
+
 void USkill::OnPress_Implementation(ABaseCharacter* BaseCharacter, ABasePlayerController* PlayerController)
 {
 	if (GEngine)

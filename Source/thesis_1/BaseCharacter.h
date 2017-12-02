@@ -48,10 +48,10 @@ private:
 public:
 
 	//array of 4 skills that will be called when player press trigger or bumper
-	/*UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Skills)
-    TArray<class USkill*> Skills;*/
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Skills)
-	TArray< TSubclassOf<USkill> > Skills;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Skills)
+    TArray<USkill*> Skills;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Skills)
+	//TArray< TSubclassOf<USkill> > Skills;
 
 	/*Called when player press key to Dash. For more information about specifiers visit https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/Reference/Functions/Specifiers/index.html */
 	UFUNCTION(Server,Reliable,WithValidation)

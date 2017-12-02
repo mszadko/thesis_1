@@ -51,14 +51,15 @@ ABaseCharacter::ABaseCharacter()
 	//Skills.Add(CreateDefaultSubobject<USkill>(TEXT("Skill1")));
 	//Skills.Add(CreateDefaultSubobject<USkill>(TEXT("Skill2")));
 	//Skills.Add(CreateDefaultSubobject<USkill>(TEXT("Skill3")));
-	TSubclassOf<USkill> skillclass0;
+
+	/*TSubclassOf<USkill> skillclass0;
 	TSubclassOf<USkill> skillclass1;
 	TSubclassOf<USkill> skillclass2;
 	TSubclassOf<USkill> skillclass3;
 	Skills.Add(skillclass0);
 	Skills.Add(skillclass1);
 	Skills.Add(skillclass2);
-	Skills.Add(skillclass3);
+	Skills.Add(skillclass3);*/
 }
 
 // Called when the game starts or when spawned
@@ -67,7 +68,20 @@ void ABaseCharacter::BeginPlay()
 	Super::BeginPlay();
 	if (ABasePlayerController* BPC = Cast<ABasePlayerController, AController>(GetController()))
 	{
-		Skills = BPC->Skills;
+		Skills.SetNumZeroed(4);
+		//creating USkill objects based on USkill classes from BPC. couldnt use CreateDefaultSubobject as it doesn't accept a class type value as a parameter
+		
+		Skills[0] = BPC->Skills[0]->GetDefaultObject<USkill>();
+		Skills[1] = BPC->Skills[1]->GetDefaultObject<USkill>();
+		Skills[2] = BPC->Skills[2]->GetDefaultObject<USkill>();
+		Skills[3] = BPC->Skills[3]->GetDefaultObject<USkill>();
+
+		//possible crash if a skill slot is left empty! has to be tested
+		/*if (BPC->Skills[2]->IsValidLowLevel())
+		{
+			Skills[2] = NewObject<USkill>(BPC->Skills[2]->GetDefaultObject<USkill>());
+			Skills[3] = NewObject<USkill>(BPC->Skills[3]->GetDefaultObject<USkill>());
+		}*/
 	}
 }
 
