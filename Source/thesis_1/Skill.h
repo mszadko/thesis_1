@@ -16,6 +16,7 @@ class THESIS_1_API USkill : public UObject
 	GENERATED_BODY()
 
 public:
+	USkill();
 	/*will be called when player press the button. it can do whole logic for the skill or prepare character do use one. 
 	(for ex. it can block character movement so the pawn wont move when we cast the spell
 	or it can draw a line so the player can aim)

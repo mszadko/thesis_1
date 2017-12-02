@@ -151,7 +151,8 @@ void ABasePlayerController::CallSkill0OnPress()
 	{
 		if (BC->Skills[0]!=nullptr)
 		{
-			BC->Skills[0]->GetDefaultObject<USkill>()->OnPress(BC, this);
+			//BC->Skills[0]->GetDefaultObject<USkill>()->OnPress(BC, this);
+			BC->Skills[0]->OnPress(BC, this);
 		}	
 	}
 }
@@ -161,7 +162,8 @@ void ABasePlayerController::CallSkill0OnRelease()
 	{
 		if (BC->Skills[0] != nullptr)
 		{
-			BC->Skills[0]->GetDefaultObject<USkill>()->OnRelease(BC, this);
+			//BC->Skills[0]->GetDefaultObject<USkill>()->OnRelease(BC, this);
+			BC->Skills[0]->OnRelease(BC, this);
 		}
 	}
 }
@@ -171,7 +173,8 @@ void ABasePlayerController::CallSkill1OnPress()
 	{
 		if (BC->Skills[1] != nullptr)
 		{
-			BC->Skills[1]->GetDefaultObject<USkill>()->OnPress(BC, this);
+			//BC->Skills[1]->GetDefaultObject<USkill>()->OnPress(BC, this);
+			BC->Skills[1]->OnPress(BC, this);
 		}
 	}
 }
@@ -181,7 +184,8 @@ void ABasePlayerController::CallSkill1OnRelease()
 	{
 		if (BC->Skills[1] != nullptr)
 		{
-			BC->Skills[1]->GetDefaultObject<USkill>()->OnRelease(BC, this);
+			//BC->Skills[1]->GetDefaultObject<USkill>()->OnRelease(BC, this);
+			BC->Skills[1]->OnRelease(BC, this);
 		}
 	}
 }
@@ -191,7 +195,8 @@ void ABasePlayerController::CallSkill2OnPress()
 	{
 		if (BC->Skills[2] != nullptr)
 		{
-			BC->Skills[2]->GetDefaultObject<USkill>()->OnPress(BC, this);
+			//BC->Skills[2]->GetDefaultObject<USkill>()->OnPress(BC, this);
+			BC->Skills[2]->OnPress(BC, this);
 		}
 	}
 }
@@ -201,7 +206,8 @@ void ABasePlayerController::CallSkill2OnRelease()
 	{
 		if (BC->Skills[2] != nullptr)
 		{
-			BC->Skills[2]->GetDefaultObject<USkill>()->OnRelease(BC, this);
+			//BC->Skills[2]->GetDefaultObject<USkill>()->OnRelease(BC, this);
+			BC->Skills[2]->OnRelease(BC, this);
 		}
 	}
 }
@@ -211,7 +217,8 @@ void ABasePlayerController::CallSkill3OnPress()
 	{
 		if (BC->Skills[3] != nullptr)
 		{
-			BC->Skills[3]->GetDefaultObject<USkill>()->OnPress(BC, this);
+			//BC->Skills[3]->GetDefaultObject<USkill>()->OnPress(BC, this);
+			BC->Skills[3]->OnPress(BC, this);
 		}
 	}
 }
@@ -221,7 +228,8 @@ void ABasePlayerController::CallSkill3OnRelease()
 	{
 		if (BC->Skills[3] != nullptr)
 		{
-			BC->Skills[3]->GetDefaultObject<USkill>()->OnRelease(BC, this);
+			//BC->Skills[3]->GetDefaultObject<USkill>()->OnRelease(BC, this);
+			BC->Skills[3]->OnRelease(BC, this);
 		}
 	}
 }
