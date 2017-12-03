@@ -71,10 +71,13 @@ void ABaseCharacter::BeginPlay()
 		Skills.SetNumZeroed(4);
 		//creating USkill objects based on USkill classes from BPC. couldnt use CreateDefaultSubobject as it doesn't accept a class type value as a parameter
 		
-		Skills[0] = BPC->Skills[0]->GetDefaultObject<USkill>();
-		Skills[1] = BPC->Skills[1]->GetDefaultObject<USkill>();
-		Skills[2] = BPC->Skills[2]->GetDefaultObject<USkill>();
-		Skills[3] = BPC->Skills[3]->GetDefaultObject<USkill>();
+		if (BPC->Skills.Num() == 4)
+		{
+			Skills[0] = BPC->Skills[0]->GetDefaultObject<USkill>();
+			Skills[1] = BPC->Skills[1]->GetDefaultObject<USkill>();
+			Skills[2] = BPC->Skills[2]->GetDefaultObject<USkill>();
+			Skills[3] = BPC->Skills[3]->GetDefaultObject<USkill>();
+		}
 
 		//possible crash if a skill slot is left empty! has to be tested
 		/*if (BPC->Skills[2]->IsValidLowLevel())
