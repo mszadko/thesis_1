@@ -3,7 +3,9 @@
 #include "BasePlayerController.h"
 #include "BaseCharacter.h"
 #include "Runtime/Engine/Classes/GameFramework/Character.h"
+#include "Runtime/Engine/Classes/GameFramework/CharacterMovementComponent.h"
 #include "Skill.h"
+
 
 
 //sets static names for axis binding (more info in header file)
@@ -21,7 +23,7 @@ ABasePlayerController::ABasePlayerController()
 void ABasePlayerController::PlayerTick(float DeltaTime)
 {
 	Super::PlayerTick(DeltaTime);
-	Move();
+	Move(DeltaTime);
 	if (bIsUsingRightAnalog)
 		CallBasicAttack();
 	
@@ -51,7 +53,7 @@ void ABasePlayerController::SetupInputComponent()
 	InputComponent->BindAction("Skill1", IE_Released, this, &ABasePlayerController::CallSkill1OnRelease);
 	InputComponent->BindAction("Skill2", IE_Released, this, &ABasePlayerController::CallSkill2OnRelease);
 	InputComponent->BindAction("Skill3", IE_Released, this, &ABasePlayerController::CallSkill3OnRelease);
-	InputComponent->BindAction("Dash", IE_Pressed, this, &ABasePlayerController::CallDash);
+	InputComponent->BindAction("Dodge", IE_Pressed, this, &ABasePlayerController::CallDodge);
 	InputComponent->BindAction("BasicAttack", IE_Pressed, this, &ABasePlayerController::CallBasicAttack);
 	InputComponent->BindAction("BasicAttack", IE_Released, this, &ABasePlayerController::ReleaseBasicAttack);
 }
@@ -68,15 +70,15 @@ void ABasePlayerController::CallStopJumping()
 		ControlledCharacter->StopJumping();
 }
 
-void ABasePlayerController::Move()
+void ABasePlayerController::Move(float DeltaTime)
 {
-	if (ACharacter* ControlledCharacter = Cast<ACharacter, APawn>(GetPawn()))
+	if (ACharacter* ControlledCharacter = GetCharacter())
 	{
 		//we have to read input values form the hardware
 		float MoveHorizontalInputValue = GetInputAxisValue(MoveUpBinding);
 		float MoveVerticalInputValue = GetInputAxisValue(MoveRightBinding);
 		//then we apply it to a character
-		ControlledCharacter->AddMovementInput(FVector(MoveHorizontalInputValue, MoveVerticalInputValue, 0.0f));
+		ControlledCharacter->AddMovementInput(FVector(MoveHorizontalInputValue, MoveVerticalInputValue, 0.0f), DeltaTime*ControlledCharacter->GetMovementComponent()->GetMaxSpeed());
 		if (bIsUsingPad)//if pad is used check what analog indicate direction
 		{
 			//we have to check if player is using right analog
@@ -102,7 +104,7 @@ void ABasePlayerController::Move()
 //==================================ROTATING THE PLAYER=========================================
 void ABasePlayerController::TurnToDirection(float HorizontalAxisValue, float VerticalAxisValue)
 {
-	if (ACharacter* ControlledCharacter = Cast<ACharacter, APawn>(GetPawn()))
+	if (ACharacter* ControlledCharacter = GetCharacter())
 	{
 		const FVector Direction = FVector(HorizontalAxisValue, VerticalAxisValue, 0.0f);// .GetClampedToMaxSize(1.0f);
 		FRotator InterpolatedRotation = GetControlRotation();
@@ -120,8 +122,12 @@ void ABasePlayerController::TurnToDirection(float HorizontalAxisValue, float Ver
 
 void ABasePlayerController::RotateTowardsMouse()
 {
-	if (ACharacter* ControlledCharacter = Cast<ACharacter, APawn>(GetPawn()))
+	if (ABaseCharacter* ControlledCharacter = Cast<ABaseCharacter>(GetCharacter()))
 	{
+		//we basicaly want to block input so we don't want to rotate player towards cursor when character is dodging
+		if (ControlledCharacter->bIsDodging)
+			return;
+
 		//this will store info where our cursor hits.
 		FHitResult TraceHitResult;
 		//in ue4 repo gethitresultundercursor is marked as deprecated so im using this one
@@ -140,10 +146,11 @@ void ABasePlayerController::RotateTowardsMouse()
 	}
 }
 //===============================END OF ROTATING THE PLAYER=========================================
-void ABasePlayerController::CallDash()
+
+void ABasePlayerController::CallDodge()
 {
 	if (ABaseCharacter* BC = Cast<ABaseCharacter,APawn>(GetPawn()))
-		BC->Dash();
+		BC->Dodge(CalculateDodgeDirection());
 }
 void ABasePlayerController::CallSkill0OnPress()
 {
@@ -243,4 +250,38 @@ void ABasePlayerController::CallBasicAttack()
 void ABasePlayerController::ReleaseBasicAttack()
 {
 	bIsLmbPressedDown = false;
+}
+
+FVector ABasePlayerController::CalculateDodgeDirection()
+{
+	//read values form left analog (moving)
+	float MoveHorizontalInputValue = GetInputAxisValue(MoveUpBinding);
+	float MoveVerticalInputValue = GetInputAxisValue(MoveRightBinding);
+	//create the dodge vector that will be passed to add movement method
+	FVector DodgeVector = FVector(MoveHorizontalInputValue, MoveVerticalInputValue, 0.0f);
+	//if we don't move we want to dash backwards
+	if (FMath::IsNearlyZero(DodgeVector.Size()))
+	{
+		DodgeVector = -GetActorForwardVector();
+		//if (GEngine)
+		//	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FString::Printf(TEXT("Input = (%f,%f,%f)"),DodgeVector.X,DodgeVector.Y,DodgeVector.Z));
+	}
+	else
+	{
+		DodgeVector = DodgeVector.GetUnsafeNormal();
+	}
+	return DodgeVector;
+}
+
+
+
+
+void ABasePlayerController::Disable()
+{
+	DisableInput(Cast<APlayerController>(this));
+}
+
+void ABasePlayerController::Enable()
+{
+	EnableInput(Cast<APlayerController>(this));
 }

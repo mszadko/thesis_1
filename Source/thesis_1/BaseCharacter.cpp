@@ -6,13 +6,16 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Classes/GameFramework/CharacterMovementComponent.h"
-#include "BasePlayerController.h"
 #include "Engine.h"
-#include "Skill.h"
 #include "Runtime/Engine/Public/TimerManager.h"
+#include "BasePlayerController.h"
+#include "Skill.h"
+#include "BaseCharacterMovementComponent.h"
+
 
 // Sets default values
-ABaseCharacter::ABaseCharacter()
+ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjectInitializer)
+	:Super(ObjectInitializer.SetDefaultSubobjectClass<UBaseCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -41,25 +44,9 @@ ABaseCharacter::ABaseCharacter()
 	//=======================END OF CHARACTER CAMERA SETTING===========================
 	
 
-	DashDuration = 0.3f;
-	DashDistance = 200.0f;
-	RotationSpeed = 0.1f;
-	bIsDashing = false;
-
-	//setting up default skill array
-	//Skills.Add(CreateDefaultSubobject<USkill>(TEXT("Skill0")));
-	//Skills.Add(CreateDefaultSubobject<USkill>(TEXT("Skill1")));
-	//Skills.Add(CreateDefaultSubobject<USkill>(TEXT("Skill2")));
-	//Skills.Add(CreateDefaultSubobject<USkill>(TEXT("Skill3")));
-
-	/*TSubclassOf<USkill> skillclass0;
-	TSubclassOf<USkill> skillclass1;
-	TSubclassOf<USkill> skillclass2;
-	TSubclassOf<USkill> skillclass3;
-	Skills.Add(skillclass0);
-	Skills.Add(skillclass1);
-	Skills.Add(skillclass2);
-	Skills.Add(skillclass3);*/
+	DodgeDuration = 0.3f;
+	DodgeCooldown = 0.5f;
+	bCanDodge = true;
 }
 
 // Called when the game starts or when spawned
@@ -95,67 +82,46 @@ void ABaseCharacter::Tick(float DeltaTime)
 }
 
 //========================================SKILLS================================================
-//===============Dashing================
-void ABaseCharacter::Dash_Implementation()
-{	
-	//if we are in the air or we are dashing already we can't dash
-	if (GetMovementComponent()->IsFalling() || bIsDashing)
-		return;
-
-	bIsDashing = true;
-
-	//here i want to disable input
-	
-	//Timer will call NumberOfUpdates updates
-	int NumberOfUpdates = DashDuration*DashDistance;
-	//Time between updates
-	float DeltaTime = DashDuration / NumberOfUpdates;
-
-	//Now let's calculate DashVector
-	//try to cache and cast player controller to BasePlayerController
-	if (ABasePlayerController* BPC = Cast<ABasePlayerController, AController>(GetController()))
-	{
-		//read values form left analog (moving)
-		float MoveHorizontalInputValue = BPC->GetInputAxisValue(BPC->MoveUpBinding);
-		float MoveVerticalInputValue = BPC->GetInputAxisValue(BPC->MoveRightBinding);
-		//create the dash vector that will be added to current location
-		FVector DashVector = FVector(MoveHorizontalInputValue, MoveVerticalInputValue, 0.0f);
-		//if we don't move we want to dash forward
-		if (FMath::IsNearlyZero(DashVector.Size()))
-		{
-			DashVector = GetActorForwardVector()*DashDistance;
-		}	
-		else
-		{
-			DashVector = DashVector.GetUnsafeNormal()*DashDistance;
-		}
-		//Now we've got how much we have to move on every update
-		DashVector /= NumberOfUpdates;
-
-		FTimerDelegate TimerDel;
-		TimerDel.BindUFunction(this, FName("AdvanceDashTimer"), DashVector, NumberOfUpdates);
-
-		GetWorldTimerManager().SetTimer(DashTimerHandle, TimerDel,DeltaTime, true);
-	}
-}
-
-void ABaseCharacter::AdvanceDashTimer(const FVector DeltaPosition,int TotalNumberOfUpdates)
+//===============Dodge================
+void ABaseCharacter::Dodge(FVector CalculatedDodgeDirection)
 {
-	static int NumberOfUpdatesMade = 0;
-	if (NumberOfUpdatesMade++<TotalNumberOfUpdates)
+	if (bCanDodge && !(GetMovementComponent()->IsFalling()))
 	{
-		SetActorLocation(GetActorLocation() + DeltaPosition, true);
-	}
-	else//if dash is completed we clear the timer and reset TimeLeft
-	{
-		//Here i want to enable input 
-		GetWorldTimerManager().ClearTimer(DashTimerHandle);
-		NumberOfUpdatesMade = 0;
-		bIsDashing = false;
+		bCanDodge = false;
+		bIsDodging = true;
+		if (ABasePlayerController* BPC = Cast<ABasePlayerController>(GetController()))
+			BPC->Disable();
+		UBaseCharacterMovementComponent* MoveComp = Cast<UBaseCharacterMovementComponent>(GetCharacterMovement());
+		if (MoveComp)
+			MoveComp->SetDodging(true);
+		GetWorldTimerManager().SetTimer(DodgeDurationTimerHandle, this, &ABaseCharacter::FinishedDodge, DodgeDuration);
+		GetWorldTimerManager().SetTimer(DodgeCooldownTimerHandle, this, &ABaseCharacter::AfterDodgeCooldown, DodgeCooldown);
+		//LaunchCharacter(FVector(0.0f, 0.0f, 150.0f), false, false);//will make character jump a little bit on dash. if will be used we can add variable with DodgeJumpHeight
+		//turn of colliders
+		//set character so it can't recive damage
+		//etc.
 	}
 }
 
-//=============End of Dashing================
+void ABaseCharacter::FinishedDodge()
+{
+	bIsDodging = false;
+	Cast<ABasePlayerController>(GetController())->Enable();
+	UBaseCharacterMovementComponent* MoveComp = Cast<UBaseCharacterMovementComponent>(GetCharacterMovement());
+	if (MoveComp)
+	{
+		MoveComp->SetDodging(false);
+	}
+	//turn on colliders
+	//set character so it can recive dmg 
+	//etc.
+}
+void ABaseCharacter::AfterDodgeCooldown()
+{
+	bCanDodge = true;
+}
+
+//=============End of Dodge================
 
 
 

@@ -41,7 +41,6 @@ public:
 	(that's also why we can't read skills from playerinfo directly to a character if we wanted to do this in cpp)*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Skills)
 	TArray<TSubclassOf<USkill>> Skills;
-	//TArray<class USkill*> Skills;
 
 private:
 	bool bIsLmbPressedDown;
@@ -58,7 +57,7 @@ private:
 	/*Called for applying rotation to character (from mouse input)*/
 	void RotateTowardsMouse();
 	/*Called for applying forward/backward & side to side input to character. This also checks whether rotation should be inherited form left or right analog and call RotateToDirection with proper parameters*/
-	void Move();
+	void Move(float DeltaTime);
 	/*Called when right analog is used. It will face the player in the proper direction and do call basic attack function form controlled character*/
 	void CallBasicAttack();
 
@@ -68,7 +67,7 @@ private:
 	void CallJump();
 	void CallStopJumping();
 
-	void CallDash();
+	void CallDodge();
 	void CallSkill0OnPress();
 	void CallSkill1OnPress();
 	void CallSkill2OnPress();
@@ -79,6 +78,9 @@ private:
 	void CallSkill2OnRelease();
 	void CallSkill3OnRelease();
 
-
-
+public:
+	void Disable();
+	void Enable();
+	/*@Returns FVector with values that should be added to movement to Dodge*/
+	FVector CalculateDodgeDirection();
 };

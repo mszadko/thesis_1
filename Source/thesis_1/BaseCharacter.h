@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include "Skill.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "BaseCharacter.generated.h"
@@ -15,7 +14,7 @@ class THESIS_1_API ABaseCharacter : public ACharacter
 
 public:
 	// Sets default values for this character's properties
-	ABaseCharacter();
+	ABaseCharacter(const FObjectInitializer& ObjectInitializer);
 
 protected:
 	// Called when the game starts or when spawned
@@ -24,12 +23,8 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	
+
 	virtual void BasicAttack();
-
-
-
-
 
 	//code added to ACharacter
 private:
@@ -40,42 +35,28 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* PlayerCamera;
 
-	//Function that will be called by timer every deltaTime. It's going to update character position so dash won't last 1 tick.
+	/*Function called by timer after dodge duration. It will enable input and clean all stuff that Dodge() did.*/
 	UFUNCTION()
-	void AdvanceDashTimer(const FVector DeltaPosition, int TotalNumberOfUpdates);
-	FTimerHandle DashTimerHandle;
-	bool bIsDashing;
+	void FinishedDodge();
+	/*Timer handle that will be set with FinishedDodge function*/
+	FTimerHandle DodgeDurationTimerHandle;
+	/*Function called by timer after the dodge cooldown will time out. It will set character ready to another dash.*/
+	UFUNCTION()
+	void AfterDodgeCooldown();
+	FTimerHandle DodgeCooldownTimerHandle;
+	//indicates whether dodge cooldown timed out and we can do next one.
+	bool bCanDodge;
 public:
-
+	//indicates whether we are in the middle of dodging. ( i think it may be helpful with making state machine for animation behavior)
+	bool bIsDodging;
+	void Dodge(FVector CalculatedDodgeDirection);
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Dodge)
+	float DodgeCooldown;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Dodge)
+	float DodgeDuration;
 	//array of 4 skills that will be called when player press trigger or bumper
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Skills)
-    TArray<USkill*> Skills;
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Skills)
-	//TArray< TSubclassOf<USkill> > Skills;
-
-	/*Called when player press key to Dash. For more information about specifiers visit https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/Reference/Functions/Specifiers/index.html */
-	UFUNCTION(Server,Reliable,WithValidation)
-	void Dash();
-	void Dash_Implementation();
-
-	//function needed when UFUNCTION got (WithValidation) tag
-	virtual bool Dash_Validate() { return true; }
-
-	//WARNINIG THOSE 2 PROPERTIES ARE NOW IN BASEPLAYERCONTROLLER. LEFT THOSE SO THE REST OF THE PROJECT WILL WORK ON MONDAY
-	//Returns true if player is playing with pad, false if keyboard and mouse is used
-	UPROPERTY(EditAnywhere, BlueprintReadWrite,Category = Settings)
-	bool bIsUsingPad;
-	//Determines how fast the interpolation of rotation should be([0;1] 1 means that interpolation will took only 1 step)
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Settings)
-	float RotationSpeed;
-
-	//Determines how far dash will be.
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Skills)
-	float DashDistance;
-	//Determines how long dash will take.
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Skills)
-	float DashDuration;
-
+    TArray<class USkill*> Skills;
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
