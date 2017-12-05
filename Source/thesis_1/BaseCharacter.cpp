@@ -2,6 +2,7 @@
 
 
 #include "BaseCharacter.h"
+#include "UnrealNetwork.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -49,15 +50,25 @@ ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjectInitializer)
 	bCanDodge = true;
 }
 
+void ABaseCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(ABaseCharacter, Skills);
+}
+
 // Called when the game starts or when spawned
 void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+}
+
+void ABaseCharacter::LoadSkills()
+{
 	if (ABasePlayerController* BPC = Cast<ABasePlayerController, AController>(GetController()))
 	{
 		Skills.SetNumZeroed(4);
 		//creating USkill objects based on USkill classes from BPC. couldnt use CreateDefaultSubobject as it doesn't accept a class type value as a parameter
-		
+
 		if (BPC->Skills.Num() == 4)
 		{
 			Skills[0] = BPC->Skills[0]->GetDefaultObject<USkill>();
@@ -65,13 +76,6 @@ void ABaseCharacter::BeginPlay()
 			Skills[2] = BPC->Skills[2]->GetDefaultObject<USkill>();
 			Skills[3] = BPC->Skills[3]->GetDefaultObject<USkill>();
 		}
-
-		//possible crash if a skill slot is left empty! has to be tested
-		/*if (BPC->Skills[2]->IsValidLowLevel())
-		{
-			Skills[2] = NewObject<USkill>(BPC->Skills[2]->GetDefaultObject<USkill>());
-			Skills[3] = NewObject<USkill>(BPC->Skills[3]->GetDefaultObject<USkill>());
-		}*/
 	}
 }
 

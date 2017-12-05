@@ -18,6 +18,9 @@ class THESIS_1_API ABasePlayerController : public APlayerController
 public:
 	ABasePlayerController();
 
+	//needed for skills replication
+	void GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const override;
+
 	//static names for axis bindings (Indicates that the InputComponent is interested in knowing the Axis value (via GetAxisValue) but does not want a delegate function called each frame.)
 	//more information - https://docs.unrealengine.com/latest/INT/API/Runtime/Engine/Components/UInputComponent/BindAxis/index.html
 	static const FName LookUpBinding;
@@ -39,7 +42,7 @@ public:
 	/*a character will load its skills from this array.
 	it has to be populated from blueprints, because playerinfo is a bp structure and it can't be referenced in cpp
 	(that's also why we can't read skills from playerinfo directly to a character if we wanted to do this in cpp)*/
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Skills)
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = Skills)
 	TArray<TSubclassOf<USkill>> Skills;
 
 private:

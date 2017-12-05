@@ -2,6 +2,7 @@
 
 #include "BasePlayerController.h"
 #include "BaseCharacter.h"
+#include "UnrealNetwork.h"
 #include "Runtime/Engine/Classes/GameFramework/Character.h"
 #include "Runtime/Engine/Classes/GameFramework/CharacterMovementComponent.h"
 #include "Skill.h"
@@ -16,8 +17,15 @@ const FName ABasePlayerController::MoveRightBinding("MoveRight");
 
 ABasePlayerController::ABasePlayerController()
 {
+	SetReplicates(true);
 	RotationSpeed = 0.1f;
 	bIsLmbPressedDown = false;
+}
+
+void ABasePlayerController::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{ 
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(ABasePlayerController, Skills);
 }
 
 void ABasePlayerController::PlayerTick(float DeltaTime)

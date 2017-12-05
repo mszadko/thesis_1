@@ -16,6 +16,9 @@ public:
 	// Sets default values for this character's properties
 	ABaseCharacter(const FObjectInitializer& ObjectInitializer);
 
+	//needed for skills replication
+	void GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const override;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -54,9 +57,14 @@ public:
 	float DodgeCooldown;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Dodge)
 	float DodgeDuration;
+
 	//array of 4 skills that will be called when player press trigger or bumper
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Skills)
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadOnly, Category = Skills)
     TArray<class USkill*> Skills;
+
+	UFUNCTION(BlueprintCallable)
+	void LoadSkills();
+
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
