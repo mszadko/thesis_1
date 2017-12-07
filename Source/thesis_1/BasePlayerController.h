@@ -29,7 +29,7 @@ public:
 	static const FName MoveRightBinding;
 
 	//Returns true if player is playing with pad, false if keyboard and mouse is used
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Settings)
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = Settings)
 	bool bIsUsingPad = true;
 
 	//this will indicate if we want to get rotation from left or right analog

@@ -26,6 +26,8 @@ void ABasePlayerController::GetLifetimeReplicatedProps(TArray< FLifetimeProperty
 { 
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(ABasePlayerController, Skills);
+	DOREPLIFETIME(ABasePlayerController, bIsUsingPad);
+	
 }
 
 void ABasePlayerController::PlayerTick(float DeltaTime)
