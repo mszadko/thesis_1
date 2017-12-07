@@ -30,8 +30,4 @@ public:
 	UFUNCTION(BlueprintNativeEvent)
 	void OnRelease(class ABaseCharacter* BaseCharacter, class ABasePlayerController* PlayerController);
 	void OnRelease_Implementation(class ABaseCharacter* BaseCharacter, class ABasePlayerController* PlayerController);
-	
-	/*an array of character classes that can use this skill*/
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<TSubclassOf<ABaseCharacter>> UsedBy; //TSubclassOf: https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/TSubclassOf/
 };
