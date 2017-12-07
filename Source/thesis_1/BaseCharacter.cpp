@@ -44,10 +44,15 @@ ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjectInitializer)
 	PlayerCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	//=======================END OF CHARACTER CAMERA SETTING===========================
 	
-
 	DodgeDuration = 0.3f;
 	DodgeCooldown = 0.5f;
 	bCanDodge = true;
+
+	Skills.Add(CreateDefaultSubobject<USkill>(TEXT("Skill0")));
+	Skills.Add(CreateDefaultSubobject<USkill>(TEXT("Skill1")));
+	Skills.Add(CreateDefaultSubobject<USkill>(TEXT("Skill2")));
+	Skills.Add(CreateDefaultSubobject<USkill>(TEXT("Skill3")));
+
 }
 
 void ABaseCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
@@ -60,23 +65,6 @@ void ABaseCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & Ou
 void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-}
-
-void ABaseCharacter::LoadSkills()
-{
-	if (ABasePlayerController* BPC = Cast<ABasePlayerController, AController>(GetController()))
-	{
-		Skills.SetNumZeroed(4);
-		//creating USkill objects based on USkill classes from BPC. couldnt use CreateDefaultSubobject as it doesn't accept a class type value as a parameter
-
-		if (BPC->Skills.Num() == 4)
-		{
-			Skills[0] = BPC->Skills[0]->GetDefaultObject<USkill>();
-			Skills[1] = BPC->Skills[1]->GetDefaultObject<USkill>();
-			Skills[2] = BPC->Skills[2]->GetDefaultObject<USkill>();
-			Skills[3] = BPC->Skills[3]->GetDefaultObject<USkill>();
-		}
-	}
 }
 
 // Called every frame

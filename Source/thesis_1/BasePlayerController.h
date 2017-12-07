@@ -38,12 +38,7 @@ public:
 	//Determines how fast the interpolation of rotation should be([0;1] 1 means that interpolation will took only 1 step)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Settings)
 	float RotationSpeed;
-
-	/*a character will load its skills from this array.
-	it has to be populated from blueprints, because playerinfo is a bp structure and it can't be referenced in cpp
-	(that's also why we can't read skills from playerinfo directly to a character if we wanted to do this in cpp)*/
-	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = Skills)
-	TArray<TSubclassOf<USkill>> Skills;
+	
 
 private:
 	bool bIsLmbPressedDown;

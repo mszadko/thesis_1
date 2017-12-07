@@ -62,9 +62,6 @@ public:
 	UPROPERTY(Replicated, EditAnywhere, BlueprintReadOnly, Category = Skills)
     TArray<class USkill*> Skills;
 
-	UFUNCTION(BlueprintCallable)
-	void LoadSkills();
-
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
