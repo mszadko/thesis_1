@@ -5,26 +5,26 @@
 #include "BasePlayerController.h"
 #include "Engine.h"
 
-USkill::USkill()
+ASkill::ASkill()
 {
 	if (GEngine)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("USkill constructed"));
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("ASkill constructed"));
 	}
 }
 
-void USkill::OnPress_Implementation(ABaseCharacter* BaseCharacter, ABasePlayerController* PlayerController)
+void ASkill::OnPress_Implementation(ABaseCharacter* BaseCharacter, ABasePlayerController* PlayerController)
 {
 	if (GEngine)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("USkill::OnPressed()"));
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("ASkill::OnPressed()"));
 	}
 }
-void USkill::OnRelease_Implementation(class ABaseCharacter* BaseCharacter, class ABasePlayerController* PlayerController)
+void ASkill::OnRelease_Implementation(class ABaseCharacter* BaseCharacter, class ABasePlayerController* PlayerController)
 {
 	if (GEngine)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("USkill::OnReleased()"));
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("ASkill::OnReleased()"));
 	}
 }
 

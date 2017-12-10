@@ -60,7 +60,7 @@ public:
 
 	//array of 4 skills that will be called when player press trigger or bumper
 	UPROPERTY(Replicated, EditAnywhere, BlueprintReadOnly, Category = Skills)
-    TArray<class USkill*> Skills;
+    TArray<class ASkill*> Skills;
 
 	UFUNCTION(BlueprintCallable)
 	void LoadSkills();

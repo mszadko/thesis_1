@@ -43,7 +43,7 @@ public:
 	it has to be populated from blueprints, because playerinfo is a bp structure and it can't be referenced in cpp
 	(that's also why we can't read skills from playerinfo directly to a character if we wanted to do this in cpp)*/
 	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = Skills)
-	TArray<TSubclassOf<USkill>> Skills;
+	TArray<TSubclassOf<ASkill>> Skills;
 
 private:
 	bool bIsLmbPressedDown;
