@@ -55,6 +55,7 @@ void ABaseCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & Ou
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(ABaseCharacter, Skills);
 	DOREPLIFETIME(ABaseCharacter, bIsDodging);
+	DOREPLIFETIME(ABaseCharacter, bIsCasting);
 }
 
 // Called when the game starts or when spawned
@@ -138,7 +139,11 @@ void ABaseCharacter::BasicAttack()
 	}
 }
 
-void ABaseCharacter::SetIsDodgingOnServer_Implementation(bool NewDodging)
+void ABaseCharacter::SetIsDodgingOnServer_Implementation(bool NewIsDodging)
 {
-	bIsDodging = NewDodging;
+	bIsDodging = NewIsDodging;
+}
+void ABaseCharacter::SetIsCastingOnServer_Implementation(bool NewIsCasting)
+{
+	bIsCasting = NewIsCasting;
 }
