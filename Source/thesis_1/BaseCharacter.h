@@ -51,7 +51,14 @@ private:
 	bool bCanDodge;
 public:
 	//indicates whether we are in the middle of dodging. ( i think it may be helpful with making state machine for animation behavior)
+	UPROPERTY(Replicated,BlueprintReadOnly)
 	bool bIsDodging;
+
+	UFUNCTION(Server, Reliable, WithValidation)
+	void SetIsDodgingOnServer(bool NewDodging);
+	void SetIsDodgingOnServer_Implementation(bool NewDodging);
+	bool SetIsDodgingOnServer_Validate(bool NewDodging) { return true; }
+
 	void Dodge(FVector CalculatedDodgeDirection);
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Dodge)
 	float DodgeCooldown;

@@ -54,6 +54,7 @@ void ABaseCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & Ou
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(ABaseCharacter, Skills);
+	DOREPLIFETIME(ABaseCharacter, bIsDodging);
 }
 
 // Called when the game starts or when spawned
@@ -92,7 +93,7 @@ void ABaseCharacter::Dodge(FVector CalculatedDodgeDirection)
 	if (bCanDodge && !(GetMovementComponent()->IsFalling()))
 	{
 		bCanDodge = false;
-		bIsDodging = true;
+		SetIsDodgingOnServer(true);
 		if (ABasePlayerController* BPC = Cast<ABasePlayerController>(GetController()))
 			BPC->Disable();
 		UBaseCharacterMovementComponent* MoveComp = Cast<UBaseCharacterMovementComponent>(GetCharacterMovement());
@@ -109,7 +110,7 @@ void ABaseCharacter::Dodge(FVector CalculatedDodgeDirection)
 
 void ABaseCharacter::FinishedDodge()
 {
-	bIsDodging = false;
+	SetIsDodgingOnServer(false);
 	Cast<ABasePlayerController>(GetController())->Enable();
 	UBaseCharacterMovementComponent* MoveComp = Cast<UBaseCharacterMovementComponent>(GetCharacterMovement());
 	if (MoveComp)
@@ -137,3 +138,7 @@ void ABaseCharacter::BasicAttack()
 	}
 }
 
+void ABaseCharacter::SetIsDodgingOnServer_Implementation(bool NewDodging)
+{
+	bIsDodging = NewDodging;
+}
