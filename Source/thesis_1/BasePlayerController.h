@@ -82,7 +82,9 @@ private:
 	void CallSkill3OnRelease();
 
 public:
+	UFUNCTION(BlueprintCallable)
 	void Disable();
+	UFUNCTION(BlueprintCallable)
 	void Enable();
 	/*@Returns FVector with values that should be added to movement to Dodge*/
 	FVector CalculateDodgeDirection();
