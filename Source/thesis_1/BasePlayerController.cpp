@@ -167,13 +167,13 @@ void ABasePlayerController::CallSkill0OnPress()
 {
 	if (ABaseCharacter* BC = Cast<ABaseCharacter, APawn>(GetPawn()))
 	{
-		if (!(BC->bCanCastNewSpell))
+		if (!(BC->bCanUseSkill0))
 			return;
 		if (BC->Skills[0]!=nullptr)
 		{
 			BC->SetIsCastingOnServer(true);
-			BC->bCanCastNewSpell = false;
-			GetWorldTimerManager().SetTimer(CooldownTimer, this, &ABasePlayerController::ClearCooldown, BC->Skills[0]->Cooldown);
+			BC->bCanUseSkill0 = false;
+			GetWorldTimerManager().SetTimer(Cooldown0Timer, this, &ABasePlayerController::ClearSkill0Cooldown, BC->Skills[0]->Cooldown);
 			BC->Skills[0]->OnPress(BC, this);
 		}	
 	}
@@ -193,13 +193,13 @@ void ABasePlayerController::CallSkill1OnPress()
 {
 	if (ABaseCharacter* BC = Cast<ABaseCharacter, APawn>(GetPawn()))
 	{
-		if (!(BC->bCanCastNewSpell))
+		if (!(BC->bCanUseSkill1))
 			return;
 		if (BC->Skills[1] != nullptr)
 		{
 			BC->SetIsCastingOnServer(true);
-			BC->bCanCastNewSpell = false;
-			GetWorldTimerManager().SetTimer(CooldownTimer, this, &ABasePlayerController::ClearCooldown, BC->Skills[1]->Cooldown);
+			BC->bCanUseSkill1 = false;
+			GetWorldTimerManager().SetTimer(Cooldown1Timer, this, &ABasePlayerController::ClearSkill1Cooldown, BC->Skills[1]->Cooldown);
 			BC->Skills[1]->OnPress(BC, this);
 		}
 	}
@@ -219,13 +219,13 @@ void ABasePlayerController::CallSkill2OnPress()
 {
 	if (ABaseCharacter* BC = Cast<ABaseCharacter, APawn>(GetPawn()))
 	{
-		if (!(BC->bCanCastNewSpell))
+		if (!(BC->bCanUseSkill2))
 			return;
 		if (BC->Skills[2] != nullptr)
 		{
 			BC->SetIsCastingOnServer(true);
-			BC->bCanCastNewSpell = false;
-			GetWorldTimerManager().SetTimer(CooldownTimer, this, &ABasePlayerController::ClearCooldown, BC->Skills[2]->Cooldown);
+			BC->bCanUseSkill2 = false;
+			GetWorldTimerManager().SetTimer(Cooldown2Timer, this, &ABasePlayerController::ClearSkill2Cooldown, BC->Skills[2]->Cooldown);
 			BC->Skills[2]->OnPress(BC, this);
 		}
 	}
@@ -245,13 +245,13 @@ void ABasePlayerController::CallSkill3OnPress()
 {
 	if (ABaseCharacter* BC = Cast<ABaseCharacter, APawn>(GetPawn()))
 	{
-		if (!(BC->bCanCastNewSpell))
+		if (!(BC->bCanUseSkill3))
 			return;
 		if (BC->Skills[3] != nullptr)
 		{
 			BC->SetIsCastingOnServer(true);
-			BC->bCanCastNewSpell = false;
-			GetWorldTimerManager().SetTimer(CooldownTimer, this, &ABasePlayerController::ClearCooldown, BC->Skills[3]->Cooldown);
+			BC->bCanUseSkill3 = false;
+			GetWorldTimerManager().SetTimer(Cooldown3Timer, this, &ABasePlayerController::ClearSkill3Cooldown, BC->Skills[3]->Cooldown);
 			BC->Skills[3]->OnPress(BC, this);
 		}
 	}
@@ -300,9 +300,6 @@ FVector ABasePlayerController::CalculateDodgeDirection()
 	return DodgeVector;
 }
 
-
-
-
 void ABasePlayerController::Disable()
 {
 	DisableInput(Cast<APlayerController>(this));
@@ -313,8 +310,23 @@ void ABasePlayerController::Enable()
 	EnableInput(Cast<APlayerController>(this));
 }
 
-void ABasePlayerController::ClearCooldown()
+void ABasePlayerController::ClearSkill0Cooldown()
 {
 	if (ABaseCharacter* BC = Cast<ABaseCharacter, APawn>(GetPawn()))
-		BC->bCanCastNewSpell = true;
+		BC->bCanUseSkill0 = true;
+}
+void ABasePlayerController::ClearSkill1Cooldown()
+{
+	if (ABaseCharacter* BC = Cast<ABaseCharacter, APawn>(GetPawn()))
+		BC->bCanUseSkill1 = true;
+}
+void ABasePlayerController::ClearSkill2Cooldown()
+{
+	if (ABaseCharacter* BC = Cast<ABaseCharacter, APawn>(GetPawn()))
+		BC->bCanUseSkill2 = true;
+}
+void ABasePlayerController::ClearSkill3Cooldown()
+{
+	if (ABaseCharacter* BC = Cast<ABaseCharacter, APawn>(GetPawn()))
+		BC->bCanUseSkill3 = true;
 }

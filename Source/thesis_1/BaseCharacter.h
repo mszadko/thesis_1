@@ -57,7 +57,13 @@ public:
 	bool bIsCasting;
 
 	UPROPERTY(BlueprintReadOnly)
-	bool bCanCastNewSpell;
+	bool bCanUseSkill0;
+	UPROPERTY(BlueprintReadOnly)
+	bool bCanUseSkill1;
+	UPROPERTY(BlueprintReadOnly)
+	bool bCanUseSkill2;
+	UPROPERTY(BlueprintReadOnly)
+	bool bCanUseSkill3;
 
 	UFUNCTION(Server, Reliable, WithValidation)
 	void SetIsDodgingOnServer(bool NewIsDodging);
