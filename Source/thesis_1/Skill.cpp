@@ -11,6 +11,7 @@ USkill::USkill()
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("USkill constructed"));
 	}
+	Cooldown = 0.3f;
 }
 
 void USkill::OnPress_Implementation(ABaseCharacter* BaseCharacter, ABasePlayerController* PlayerController)

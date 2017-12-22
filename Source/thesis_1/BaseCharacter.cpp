@@ -48,6 +48,8 @@ ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjectInitializer)
 	DodgeDuration = 0.3f;
 	DodgeCooldown = 0.5f;
 	bCanDodge = true;
+	bIsCasting = false;
+	bCanCastNewSpell = true;
 }
 
 void ABaseCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const

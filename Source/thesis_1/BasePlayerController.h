@@ -81,6 +81,9 @@ private:
 	void CallSkill2OnRelease();
 	void CallSkill3OnRelease();
 
+	UFUNCTION()
+	void ClearCooldown();
+	FTimerHandle CooldownTimer;
 public:
 	UFUNCTION(BlueprintCallable)
 	void Disable();

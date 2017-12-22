@@ -56,6 +56,9 @@ public:
 	UPROPERTY(Replicated, BlueprintReadOnly)
 	bool bIsCasting;
 
+	UPROPERTY(BlueprintReadOnly)
+	bool bCanCastNewSpell;
+
 	UFUNCTION(Server, Reliable, WithValidation)
 	void SetIsDodgingOnServer(bool NewIsDodging);
 	void SetIsDodgingOnServer_Implementation(bool NewIsDodging);

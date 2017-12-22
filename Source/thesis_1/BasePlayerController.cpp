@@ -6,6 +6,7 @@
 #include "Runtime/Engine/Classes/GameFramework/Character.h"
 #include "Runtime/Engine/Classes/GameFramework/CharacterMovementComponent.h"
 #include "Skill.h"
+#include "Runtime/Engine/Public/TimerManager.h"
 
 
 
@@ -166,9 +167,13 @@ void ABasePlayerController::CallSkill0OnPress()
 {
 	if (ABaseCharacter* BC = Cast<ABaseCharacter, APawn>(GetPawn()))
 	{
+		if (!(BC->bCanCastNewSpell))
+			return;
 		if (BC->Skills[0]!=nullptr)
 		{
 			BC->SetIsCastingOnServer(true);
+			BC->bCanCastNewSpell = false;
+			GetWorldTimerManager().SetTimer(CooldownTimer, this, &ABasePlayerController::ClearCooldown, BC->Skills[0]->Cooldown);
 			BC->Skills[0]->OnPress(BC, this);
 		}	
 	}
@@ -188,9 +193,13 @@ void ABasePlayerController::CallSkill1OnPress()
 {
 	if (ABaseCharacter* BC = Cast<ABaseCharacter, APawn>(GetPawn()))
 	{
+		if (!(BC->bCanCastNewSpell))
+			return;
 		if (BC->Skills[1] != nullptr)
 		{
 			BC->SetIsCastingOnServer(true);
+			BC->bCanCastNewSpell = false;
+			GetWorldTimerManager().SetTimer(CooldownTimer, this, &ABasePlayerController::ClearCooldown, BC->Skills[1]->Cooldown);
 			BC->Skills[1]->OnPress(BC, this);
 		}
 	}
@@ -210,9 +219,13 @@ void ABasePlayerController::CallSkill2OnPress()
 {
 	if (ABaseCharacter* BC = Cast<ABaseCharacter, APawn>(GetPawn()))
 	{
+		if (!(BC->bCanCastNewSpell))
+			return;
 		if (BC->Skills[2] != nullptr)
 		{
 			BC->SetIsCastingOnServer(true);
+			BC->bCanCastNewSpell = false;
+			GetWorldTimerManager().SetTimer(CooldownTimer, this, &ABasePlayerController::ClearCooldown, BC->Skills[2]->Cooldown);
 			BC->Skills[2]->OnPress(BC, this);
 		}
 	}
@@ -232,9 +245,13 @@ void ABasePlayerController::CallSkill3OnPress()
 {
 	if (ABaseCharacter* BC = Cast<ABaseCharacter, APawn>(GetPawn()))
 	{
+		if (!(BC->bCanCastNewSpell))
+			return;
 		if (BC->Skills[3] != nullptr)
 		{
 			BC->SetIsCastingOnServer(true);
+			BC->bCanCastNewSpell = false;
+			GetWorldTimerManager().SetTimer(CooldownTimer, this, &ABasePlayerController::ClearCooldown, BC->Skills[3]->Cooldown);
 			BC->Skills[3]->OnPress(BC, this);
 		}
 	}
@@ -294,4 +311,10 @@ void ABasePlayerController::Disable()
 void ABasePlayerController::Enable()
 {
 	EnableInput(Cast<APlayerController>(this));
+}
+
+void ABasePlayerController::ClearCooldown()
+{
+	if (ABaseCharacter* BC = Cast<ABaseCharacter, APawn>(GetPawn()))
+		BC->bCanCastNewSpell = true;
 }
