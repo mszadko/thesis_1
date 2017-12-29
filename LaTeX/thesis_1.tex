@@ -8,8 +8,12 @@
 \album{172407}
 \thesis{Praca dyplomowa inżynierska}
 \course{Informatyka}
-\promotor{dr Bartłomieja Kubicy}
+\promotor{dr. Bartłomieja Kubicy}
 \pworkplace{Wydział Zastosowań Informatyki i Matematyki\\Katedra Zastosowań Informatyki}
+
+\usepackage{enumitem}
+%\usepackage{hyperref}
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref} %https://tex.stackexchange.com/a/3034
 
 \begin{document}
 \maketitle
@@ -26,10 +30,7 @@
 \tableofcontents
 
 \chapter{Wstęp}
-Dlaczego robienie gier jest super i jak gry wideo ratują świat przed zagładą.
-
-\section{Podrozdział}
-To jest podrozdział.
+Gry wideo stanowią rozrywkę dla coraz szerszego grona odbiorców, a sama branża nieustannie rośnie, o czym najlepiej świadczy fakt, iż pod względem wygenerowanych przychodów prześcignęła już branże filmową oraz muzyczną~\cite{nasdaq-video-games-industry}. Gry coraz częściej postrzegane są jako nowoczesne medium przekazu oraz forma wyrazu artystycznego i poruszają tematy dotychczas zarezerwowane dla literatury i kinematografii. W związku z tym istnieje wiele narzędzi wspierających tworzenie gier, a jednym z najpopularniejszych jest silnik {\em Unreal Engine 4} (zwany dalej "UE4"). Motywację do stworzenia niniejszej pracy stanowiły dla nas chęć zgłębienia technologii UE4, podjęcia technicznego wyzwania, jakie stawia zaprogramowanie gry wideo oraz pasja do gier.
 
 \section{Kolejny podrozdział}
 To jest kolejny podrozdział. Spis treści tworzy się automatycznie dopóki zaznaczamy gdzie zaczynają się rozdziały i podrozdziały.
@@ -37,5 +38,15 @@ To jest kolejny podrozdział. Spis treści tworzy się automatycznie dopóki zaz
 \chapter{Jakiś rozdział}
 
 \chapter{Kolejny rozdział}
+
+\begin{thebibliography}{9}
+
+\bibitem{nasdaq-video-games-industry}
+Trevir Nath, \textit{Investing in Video Games: This Industry Pulls In More Revenue Than Movies, Music},
+\url{http://www.nasdaq.com/article/investing-in-video-games-this-industry-pulls-in-more-revenue-than-movies-music-cm634585} {\mbox(dostęp 29.12.2017)}
+
+\end{thebibliography}
+
+\beforelastpage
 
 \end{document} 
