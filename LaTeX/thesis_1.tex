@@ -11,9 +11,15 @@
 \promotor{dr. Bartłomieja Kubicy}
 \pworkplace{Wydział Zastosowań Informatyki i Matematyki\\Katedra Zastosowań Informatyki}
 
+%obrazki
+\usepackage{graphicx}
 \usepackage{enumitem}
 %\usepackage{hyperref}
-\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref} %https://tex.stackexchange.com/a/3034
+%https://tex.stackexchange.com/a/3034
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
+%https://tex.stackexchange.com/questions/28333/continuous-v-per-chapter-section-numbering-of-figures-tables-and-other-docume
+\usepackage{chngcntr}
+\counterwithout{figure}{chapter}
 
 \begin{document}
 \maketitle
@@ -49,19 +55,29 @@ Przez pojęcie ,,silnik gry`` rozumie się zbiór funkcji i narzędzi ({\em ang.
 %\newline\url{https://docs.unrealengine.com/latest/INT/Engine/index.html}
 UE4 swoją popularność zawdzięcza między innymi otwartemu źródłu, co w pewnym stopniu umożliwia producentom gier dostosowanie silnika do własnych potrzeb na przykład poprzez programowanie narzędzi dla mniej technicznych członków zespołu czy modyfikacje w działaniu silnika. Ponadto UE4 jest w stanie renderować grafikę bardzo zbliżoną do fotorealizmu, co w połączeniu z szeroką gamą oferowanych funkcji sprawia, że poza grami korzysta się z niego na przykład do produkcji spotów i aplikacji reklamowych. \cite{the-human-race}\cite{ikea-vr}
 \newline
-\newline Oprócz podstawowych funkcji takich jak renderowanie grafiki czy obsługa sterowania do dyspozycji oddane zostały między innymi \cite{ue4-features}:
+\newline Oprócz podstawowych funkcji takich jak renderowanie grafiki czy obsługa sterowania do dyspozycji oddane zostały między innymi \cite{docs-ue4-features}:
 \begin{description}
 \item[Symulacja fizyki:]UE4 korzysta z silnika fizyki {\em PhysX 3.3} dzięki czemu wiarygodnie symuluje kolizje obiektów i inne oddziaływania fizyczne. Producenci mają również możliwość modyfikowania panujących zasad celem lepszego przedstawienia własnej wizji.
 \item[Edytor interfejsu użytkownika:] Interfejs stanowi istotny element w komunikacji między grą, a grającym. UE4 zapewnia rozbudowany edytor pozwalający na tworzenie między innymi takich elementów interfejsu jak {\em HUD (head-up display)} czy menu.
 \item[Drzewa behawioralne:]Stanowią one podstawę sztucznej inteligencji w UE4 i pozwalają na zaprogramowanie zachowania postaci sterowanych przez komputer w zależności od odbieranych przez nie bodźców i stanu sceny.
 \clearpage \item[Sequencer:]Jest to narzędzie służące do produkcji przerywników filmowych. Jego obsługa przypomina pracę z oprogramowaniem do montażu filmów i modelowania 3D. Edytor ten uwzględnia elementy takie jak oś czasu, ujęcia kamery, szkielety i animacje obiektów.
-\item[Networking:]https://docs.unrealengine.com/latest/INT/Gameplay/Networking/index.html
-\item[Analiza wydajności:]https://docs.unrealengine.com/latest/INT/Engine/Performance/index.html
-\item[Edytor materiałów:]https://docs.unrealengine.com/latest/INT/Engine/Rendering/Materials/index.html
-\item[Blueprinty:]
+\item[Networking:]UE4 powstał z myślą o rozgrywce sieciowej, wobec tego dużo uwagi poświęcono stworzeniu odpowiedniej abstrakcji ułatwiającej programowanie komunikacji sieciowej. Komunikacja ta wykorzystuje model klient-serwer co oznacza, że istnieje jeden serwer z autorytatywną instancją świata oraz wielu klientów, których światy są aktualizowane na podstawie tego, co dzieje się na serwerze. Aktualizacje te opierają się o aktualizacje właściwości obiektów i zdalne wywołania procedur {\em (ang. remote procedure calls - RPC)}. W obu przypadkach wykorzystywany jest protokół {\em UDP}, który jest zawodny, ale generuje o wiele mniejszy narzut na sieć niż w przypadku {\em TCP}. UE4 ma zaimplementowany własny system zapewniający częściową niezawodność komunikacji. \cite{unreal-wiki-replication}
+%https://docs.unrealengine.com/latest/INT/Gameplay/Networking/index.html
+\item[Analiza wydajności:]Osiągnięcie iluzji ruchomego obrazu wymaga wygenerowania przynajmniej 15 klatek na sekundę ({\em ang. frames per second - FPS}), obecnie na konsolach do gier pożądaną wartością jest przynajmniej 30FPS, na komputerach 60FPS, a w tytułach esportowych nawet dwa razy więcej. Miara ta jest odzwierciedleniem płynności obrazu i wydajności gry, a na wydajność składają się stopień skomplikowania scen i obliczeń oraz optymalizacja. UE4 zapewnia narzędzia do profilowania, dzięki którym łatwiejsze staje się zidentyfikowanie obszarów wymagających optymalizacji.
+\item[Edytor materiałów:]W konwencji UE4 materiał to zbiór informacji o wizualnej stronie obiektu. Do pewnego stopnia można o nim myśleć jak o farbie. Należy jednak uwzględnić, że materiał poza kolorem czy teksturą definiuje również rodzaj powierzchni obiektu (na przykład metal, drewno), przezroczystość i inne cechy, które mogą mieć wpływ na zachowanie światła padającego na dany obiekt. UE4 posiada rozbudowany edytor materiałów opierający się na programowaniu graficznym ({\em ang. visual scripting}).
+\item[Blueprints Visual Scripting:]Jest to system graficznego programowania rozgrywki oparty o węzły reprezentujące elementy takie jak funkcje, klasy czy zmienne, które po połączeniu stanowią pewną logikę (rys. \ref{fig-bp-example}). Za pomocą blueprintów można (często w krótszym czasie) osiągnąć podobny efekt co za pomocą kodu przy czym dla osób mniej technicznych są one o wiele prostsze w użyciu. Ponadto mogą dziedziczyć klasy napisane kodem, a programiści mają możliwość rozwijania blueprintów poprzez programowanie kolejnych węzłów do użycia przez resztę zespołu. Jest możliwe napisanie kompletnej gry bez nawet jednej linii kodu, a jedynie z użyciem blueprintów. Nie oznacza to jednak, że kod stał się bezużyteczny. W każdym wypadku kod {\em C++} jest wydajniejszy od blueprintów (to znaczy szybciej się wykonuje, co bezpośrednio wpływa na liczbę generowanych klatek na sekundę), w wielu przypadkach jest czytelniejszy (na przykład obliczenia w pętli) i łatwiejszy w utrzymaniu (na przykład kontrola wersji przy pracy zespołowej).\cite{docs-blueprints}
+\newline Oba te podejścia są wykorzystywane w profesjonalnym środowisku, a kluczem do sukcesu jest ich umiejętne połączenie, co zaprezentowano w dalszej części tej pracy.
+\begin{figure}
+	\centering
+		\includegraphics[width=1\textwidth]{figures/bp_example.jpg}
+	\caption{Przykład blueprinta}
+	\label{fig-bp-example}
+\end{figure}
+
 \end{description}
 
-\section{Konwencja}
+\section{Konwencja i architektura rozgrywki}
+\label{sec:konwencja}
 \url{https://docs.unrealengine.com/latest/INT/Gameplay/Framework/index.html}
 \newline\url{https://docs.unrealengine.com/latest/INT/Gameplay/Framework/QuickReference/index.html}
 \newline obowiazkowo obrazek z dolu strony :D
@@ -75,11 +91,17 @@ UE4 swoją popularność zawdzięcza między innymi otwartemu źródłu, co w pe
 \bibitem{learning-unreal}
 Joanna Lee, \textit{Learning Unreal Engine Game Development}, Packt Publishing, 2016
 
-\bibitem{ue4-features}
+\bibitem{docs-ue4-features}
 \textit{Engine Features}, \url{https://docs.unrealengine.com/latest/INT/Engine/index.html} (dostęp 30.12.2017)
+
+\bibitem{docs-blueprints}
+\textit{Blueprints Visual Scripting}, \url{https://docs.unrealengine.com/latest/INT/Engine/Blueprints/index.html} (dostęp 30.12.2017)
 
 \bibitem{wiki-game-engine}
 \textit{,,Game engine``, Wikipedia}, \url{https://en.wikipedia.org/wiki/Game_engine} {\mbox(dostęp 29.12.2017)}
+
+\bibitem{unreal-wiki-replication}
+\textit{Everything you ever wanted to know about replication (but were afraid to ask)}, \url{https://wiki.beyondunreal.com/Everything_you_ever_wanted_to_know_about_replication_\%28but_were_afraid_to_ask\%29#Function_call_replication_-_Sending_messages_between_server_and_client} (dostęp 30.12.2017)
 
 \bibitem{nasdaq-video-games-industry}
 Trevir Nath, \textit{Investing in Video Games: This Industry Pulls In More Revenue Than Movies, Music},
