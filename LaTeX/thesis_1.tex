@@ -43,10 +43,23 @@ Głównym celem niniejszej pracy jest rozwój wiedzy o procesie tworzenia gier w
 Przez pojęcie ,,silnik gry`` rozumie się zbiór funkcji i narzędzi ({\em ang. framework}) wspierający tworzenie gier. Musi on oferować przede wszystkim renderowanie grafiki, dźwięku i obsługę sterowania aczkolwiek obecnie najpopularniejsze silniki posiadają znacznie więcej funkcji, a są to między innymi obsługa sieci, symulacja fizyki, edytory shaderów i efektów cząsteczkowych, produkcja przerywników filmowych oraz obsługa wielu platform na przykład komputerów, konsol czy urządzeń mobilnych takich jak smartfony. Każdy popularny silnik dystrybuowany jest wraz z edytorem będacym graficznym interfejsem między programistą, a funkcjami silnika.
 \newline Wykorzystanie jednego silnika do stworzenia wielu różnych gier znacząco skraca okres produkcji i stanowi powszechną w branży praktykę.\cite{learning-unreal}\cite{wiki-game-engine}
 
-\section{Komponenty UE4}
-tu chodzi o ficzery unreala, info m.in. z naszej prezentacji na seminarium oraz
-\newline\url{https://www.unrealengine.com/en-US/features}
-\newline\url{https://docs.unrealengine.com/latest/INT/Engine/index.html}
+\section{Funkcje silnika Unreal Engine 4}
+%tu chodzi o ficzery unreala, info m.in. z naszej prezentacji na seminarium oraz
+%\newline\url{https://www.unrealengine.com/en-US/features}
+%\newline\url{https://docs.unrealengine.com/latest/INT/Engine/index.html}
+UE4 swoją popularność zawdzięcza między innymi otwartemu źródłu, co w pewnym stopniu umożliwia producentom gier dostosowanie silnika do własnych potrzeb na przykład poprzez programowanie narzędzi dla mniej technicznych członków zespołu czy modyfikacje w działaniu silnika. Ponadto UE4 jest w stanie renderować grafikę bardzo zbliżoną do fotorealizmu, co w połączeniu z szeroką gamą oferowanych funkcji sprawia, że poza grami korzysta się z niego na przykład do produkcji spotów i aplikacji reklamowych. \cite{the-human-race}\cite{ikea-vr}
+\newline
+\newline Oprócz podstawowych funkcji takich jak renderowanie grafiki czy obsługa sterowania do dyspozycji oddane zostały między innymi \cite{ue4-features}:
+\begin{description}
+\item[Symulacja fizyki:]UE4 korzysta z silnika fizyki {\em PhysX 3.3} dzięki czemu wiarygodnie symuluje kolizje obiektów i inne oddziaływania fizyczne. Producenci mają również możliwość modyfikowania panujących zasad celem lepszego przedstawienia własnej wizji.
+\item[Edytor interfejsu użytkownika:] Interfejs stanowi istotny element w komunikacji między grą, a grającym. UE4 zapewnia rozbudowany edytor pozwalający na tworzenie między innymi takich elementów interfejsu jak {\em HUD (head-up display)} czy menu.
+\item[Drzewa behawioralne:]Stanowią one podstawę sztucznej inteligencji w UE4 i pozwalają na zaprogramowanie zachowania postaci sterowanych przez komputer w zależności od odbieranych przez nie bodźców i stanu sceny.
+\clearpage \item[Sequencer:]Jest to narzędzie służące do produkcji przerywników filmowych. Jego obsługa przypomina pracę z oprogramowaniem do montażu filmów i modelowania 3D. Edytor ten uwzględnia elementy takie jak oś czasu, ujęcia kamery, szkielety i animacje obiektów.
+\item[Networking:]https://docs.unrealengine.com/latest/INT/Gameplay/Networking/index.html
+\item[Analiza wydajności:]https://docs.unrealengine.com/latest/INT/Engine/Performance/index.html
+\item[Edytor materiałów:]https://docs.unrealengine.com/latest/INT/Engine/Rendering/Materials/index.html
+\item[Blueprinty:]
+\end{description}
 
 \section{Konwencja}
 \url{https://docs.unrealengine.com/latest/INT/Gameplay/Framework/index.html}
@@ -62,12 +75,21 @@ tu chodzi o ficzery unreala, info m.in. z naszej prezentacji na seminarium oraz
 \bibitem{learning-unreal}
 Joanna Lee, \textit{Learning Unreal Engine Game Development}, Packt Publishing, 2016
 
+\bibitem{ue4-features}
+\textit{Engine Features}, \url{https://docs.unrealengine.com/latest/INT/Engine/index.html} (dostęp 30.12.2017)
+
 \bibitem{wiki-game-engine}
 \textit{,,Game engine``, Wikipedia}, \url{https://en.wikipedia.org/wiki/Game_engine} {\mbox(dostęp 29.12.2017)}
 
 \bibitem{nasdaq-video-games-industry}
 Trevir Nath, \textit{Investing in Video Games: This Industry Pulls In More Revenue Than Movies, Music},
 \url{http://www.nasdaq.com/article/investing-in-video-games-this-industry-pulls-in-more-revenue-than-movies-music-cm634585} {\mbox(dostęp 29.12.2017)}
+
+\bibitem{the-human-race}
+\textit{The Human Race – An Inside Look at the Technology Behind the Groundbreaking Real-Time Film from Epic Games, The Mill and Chevrolet}, \url{https://www.unrealengine.com/en-US/showcase/the-human-race-an-inside-look-at-the-technology-behind-the-groundbreaking-real-time-film-from-epic-games-the-mill-and-chevrolet} (dostęp 30.12.2017)
+
+\bibitem{ikea-vr}
+\textit{VIRTUAL REALITY - INTO THE MAGIC}, \url{http://www.ikea.com/ms/en_US/this-is-ikea/ikea-highlights/Virtual-reality/index.html} (dostęp 30.12.2017)
 
 \end{thebibliography}
 
