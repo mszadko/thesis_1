@@ -78,9 +78,35 @@ UE4 swoją popularność zawdzięcza między innymi otwartemu źródłu, co w pe
 
 \section{Konwencja i architektura rozgrywki}
 \label{sec:konwencja}
-\url{https://docs.unrealengine.com/latest/INT/Gameplay/Framework/index.html}
-\newline\url{https://docs.unrealengine.com/latest/INT/Gameplay/Framework/QuickReference/index.html}
-\newline obowiazkowo obrazek z dolu strony :D
+%\url{https://docs.unrealengine.com/latest/INT/Gameplay/Framework/index.html}
+%\newline\url{https://docs.unrealengine.com/latest/INT/Gameplay/Framework/QuickReference/index.html}
+%\newline obowiazkowo obrazek z dolu strony :D
+Styl rozgrywki zależy od gry i wizji jej autora, jednak istnieją pewne cechy wspólne widoczne w niemal każdym tytule. Jest to na przykład sterowanie za pomocą urządzeń wejścia czy pewien zbiór zasad gry. Poniżej zaprezentowano konwencję dotyczącą rozgrywki przyjętą w UE4 oraz diagram poglądowy (rys. \ref{fig-gameplay-chart})\cite{docs-gameplay-framework}:
+\begin{description}
+\item[Actor:]Jest to bazowa klasa dla każego obiektu, który można umieścić w scenie. Obiekty te nie muszą mieć fizycznej reprezentacji. Często zawierają dodatkowe komponenty ~({\em ActorComponents}) określające między innymi w jaki sposób obiekt się porusza czy jak jest renderowany. Oprócz tego {\em aktor} posiada obsługę replikacji właściwości i wywołań funkcji przez sieć.
+\item[Pawn:]Jest to {\em aktor}, który może być kontrolowany przez gracza lub komputer. Stanowi ich fizyczną reprezentację w grach, które tego wymagają.
+\item[Character:]Jest to humanoidalny {\em pawn} rozszerzony o następujące komponenty:
+	\begin{description}
+	\item[SkeletalMeshComponent] wykorzystywany przy animacjach szkieletowych,
+	\item[CapsuleComponent] wykorzystywany przy kolizjach z innymi obiektami,
+	\item[CharacterMovementComponent] opisujący ludzkie ruchy takie jak chodzenie, bieganie czy pływanie oraz właściwości związane z ruchem na przykład prędkość chodzenia czy wpływ grawitacji.
+	\end{description}
+\item[Controller:] jest to {\em aktor}, który po przejęciu {\em pawna} sprawuje nad nim kontrolę. Wyróżniamy dwa rodzaje: {\em PlayerController}, który stanowi interfejs między grającym, a sterowaną przez niego postacią (reprezentuje wolę gracza) oraz {\em AIController}, który decyduje o zachowaniach postaci na podstawie zaprogramowanych wcześniej drzew behawioralnych.
+\newline {\em PlayerController} danego gracza w przypadku rozgrywki sieciowej występuje w dwóch instancjach: po jednej na serwerze oraz urządzeniu grającego, co należy brać pod uwagę podczas programowania tego elementu.
+\item[HUD ({\em ang. head-up display}):] podręczne informacje dla gracza na przykład jego obecny wynik, stan zdrowia sterowanej przez niego postaci czy tak zwana minimapa.
+\item[Camera:] decyduje o perspektywie, z której grający obserwuje scenę.\newline Jest elementem PlayerControllera.
+\item[GameMode:] zawiera informacje takie jak zasady gry czy warunki zwycięstwa. Nie powinien zawierać żadnych informacji potrzebnych klientom, ponieważ istnieje jedynie na serwerze.
+\item[GameState:] zawiera informacje o obecnym stanie rozgrywki na przykład czy mecz już się rozpoczął, wykonane misje, wyniki, listę graczy. {\em GameState} istnieje zarówno na serwerze jak i u klientów i jest replikowalny.
+\item[PlayerState:] zawiera informacje u uczestniku rozgrywki na przykład jego imię, wynik czy zespół, do którego należy. Zarówno serwer jak i wszyscy klienci posiadają kopie {\em PlayerState-ów} dotyczących każdego grającego (co nie ma miejsca w przypadku {\em PlayerControllerów} -- każdy klient wie jedynie o swoim {\em PlayerControllerze}).
+
+\begin{figure}
+	\centering
+		\includegraphics[width=1\textwidth]{figures/gameplay_chart.jpg}
+	\caption{Diagram architektury rozgrywki}
+	\label{fig-gameplay-chart}
+\end{figure}
+
+\end{description}
 
 \chapter{thesis\_1, rozdzial dot. naszej gry}
 
@@ -96,6 +122,9 @@ Joanna Lee, \textit{Learning Unreal Engine Game Development}, Packt Publishing, 
 
 \bibitem{docs-blueprints}
 \textit{Blueprints Visual Scripting}, \url{https://docs.unrealengine.com/latest/INT/Engine/Blueprints/index.html} (dostęp 30.12.2017)
+
+\bibitem{docs-gameplay-framework}
+\textit{Gameplay Framework Quick Reference}, \url{https://docs.unrealengine.com/latest/INT/Gameplay/Framework/QuickReference/index.html} (dostęp 31.12.2017)
 
 \bibitem{wiki-game-engine}
 \textit{,,Game engine``, Wikipedia}, \url{https://en.wikipedia.org/wiki/Game_engine} {\mbox(dostęp 29.12.2017)}
