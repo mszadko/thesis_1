@@ -81,7 +81,7 @@ UE4 swoją popularność zawdzięcza między innymi otwartemu źródłu, co w pe
 %\url{https://docs.unrealengine.com/latest/INT/Gameplay/Framework/index.html}
 %\newline\url{https://docs.unrealengine.com/latest/INT/Gameplay/Framework/QuickReference/index.html}
 %\newline obowiazkowo obrazek z dolu strony :D
-Styl rozgrywki zależy od gry i wizji jej autora, jednak istnieją pewne cechy wspólne widoczne w niemal każdym tytule. Jest to na przykład sterowanie za pomocą urządzeń wejścia czy pewien zbiór zasad gry. Poniżej zaprezentowano konwencję dotyczącą rozgrywki przyjętą w UE4 oraz diagram poglądowy (rys. \ref{fig-gameplay-chart})\cite{docs-gameplay-framework}:
+Styl rozgrywki zależy od gry i wizji jej autora, jednak istnieją pewne cechy wspólne widoczne w niemal każdym tytule. Jest to na przykład sterowanie za pomocą urządzeń wejścia czy pewien zbiór zasad gry. Z tego powodu w UE4 przyjęto zaprezentowaną poniżej konwencję dotyczącą rozgrywki (rys. \ref{fig-gameplay-chart}).\cite{docs-gameplay-framework}
 \begin{description}
 \item[Actor:]Jest to bazowa klasa dla każego obiektu, który można umieścić w scenie. Obiekty te nie muszą mieć fizycznej reprezentacji. Często zawierają dodatkowe komponenty ~({\em ActorComponents}) określające między innymi w jaki sposób obiekt się porusza czy jak jest renderowany. Oprócz tego {\em aktor} posiada obsługę replikacji właściwości i wywołań funkcji przez sieć.
 \item[Pawn:]Jest to {\em aktor}, który może być kontrolowany przez gracza lub komputer. Stanowi ich fizyczną reprezentację w grach, które tego wymagają.
@@ -95,9 +95,13 @@ Styl rozgrywki zależy od gry i wizji jej autora, jednak istnieją pewne cechy w
 \newline {\em PlayerController} danego gracza w przypadku rozgrywki sieciowej występuje w dwóch instancjach: po jednej na serwerze oraz urządzeniu grającego, co należy brać pod uwagę podczas programowania tego elementu.
 \item[HUD ({\em ang. head-up display}):] podręczne informacje dla gracza na przykład jego obecny wynik, stan zdrowia sterowanej przez niego postaci czy tak zwana minimapa.
 \item[Camera:] decyduje o perspektywie, z której grający obserwuje scenę.\newline Jest elementem PlayerControllera.
-\item[GameMode:] zawiera informacje takie jak zasady gry czy warunki zwycięstwa. Nie powinien zawierać żadnych informacji potrzebnych klientom, ponieważ istnieje jedynie na serwerze.
-\item[GameState:] zawiera informacje o obecnym stanie rozgrywki na przykład czy mecz już się rozpoczął, wykonane misje, wyniki, listę graczy. {\em GameState} istnieje zarówno na serwerze jak i u klientów i jest replikowalny.
-\item[PlayerState:] zawiera informacje u uczestniku rozgrywki na przykład jego imię, wynik czy zespół, do którego należy. Zarówno serwer jak i wszyscy klienci posiadają kopie {\em PlayerState-ów} dotyczących każdego grającego (co nie ma miejsca w przypadku {\em PlayerControllerów} -- każdy klient wie jedynie o swoim {\em PlayerControllerze}).
+\item[GameMode:] zawiera informacje takie jak zasady gry czy warunki zwycięstwa. Nie powinien zawierać żadnych informacji potrzebnych klientom, ponieważ istnieje jedynie na serwerze. Decyduje również o tym, który {\em GameState} i {\em PlayerState} zostanie wykorzystany. Wybór {\em GameMode-a} zależy od wczytywanego poziomu.
+\item[GameState:] zawiera informacje o obecnym stanie rozgrywki na przykład czy mecz już się rozpoczął, wykonane misje, wyniki, listę graczy. {\em GameState} istnieje zarówno na serwerze jak i u klientów oraz jest replikowalny.
+\item[PlayerState:] zawiera informacje o uczestniku rozgrywki na przykład jego imię, wynik czy zespół, do którego należy. Zarówno serwer jak i wszyscy klienci posiadają kopie {\em PlayerState-ów} dotyczących każdego grającego (co nie ma miejsca w przypadku {\em PlayerControllerów} -- każdy klient wie jedynie o swoim {\em PlayerControllerze}).
+\item[GameInstance:] zawiera informacje o danej instancji gry. Istnieje jeden obiekt tej klasy na każdą uruchomioną grę i pozostaje on do dyspozycji aż do jej wyłączenia. Wczytywanie poziomów nie ma wpływu na {\em GameInstance}, dzięki czemu klasa ta umożliwia przenoszenie informacji między poziomami.
+\end{description}
+%dopisac cos ze trzymalismy sie tej konwencji i dalej prezentujemy jej wykorzystanie
+Stosowanie się do tej konwencji zaprezentowano w kolejnych rozdziałach.
 
 \begin{figure}
 	\centering
@@ -106,10 +110,20 @@ Styl rozgrywki zależy od gry i wizji jej autora, jednak istnieją pewne cechy w
 	\label{fig-gameplay-chart}
 \end{figure}
 
-\end{description}
+\chapter{Opis implementacji gry ,,thesis\_1``}
 
-\chapter{thesis\_1, rozdzial dot. naszej gry}
+\section{Uruchomienie gry i podstawowe funkcje}
+	\subsection{GameInfoInstance}
 
+\section{System zapisu stanu}
+
+\section{Postacie i zdolności}
+	\subsection{BaseCharacter}
+	\subsection{Skill}
+
+\section{Networking}
+
+\section{Animacje}
 \chapter{Kolejny rozdział}
 
 \begin{thebibliography}{9}
