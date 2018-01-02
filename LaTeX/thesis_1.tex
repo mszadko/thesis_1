@@ -110,8 +110,15 @@ Stosowanie się do tej konwencji zaprezentowano w rozdziale \ref{implementacja} 
 	\label{fig-gameplay-chart}
 \end{figure}
 
-\chapter{Przykładowy przebieg rozgrywki} 
-zeby opisac JAK zaimplementowalismy, trzeba najpierw opisac CO zaimplementowalismy
+\chapter{Przykładowy przebieg rozgrywki} %zeby opisac JAK zaimplementowalismy, trzeba najpierw opisac CO zaimplementowalismy
+\begin{enumerate}
+	\item Gracz 1 uruchamia grę po raz pierwszy, wobec czego jest przenoszony do menu opcji w celu wybrania ustawień. Wpisuje swoje imię w odpowiednim polu, wybiera klasę postaci, zdolności, obrazek oraz czy będzie korzystał z klawiatury i myszki czy z kontrolera do gier (pada). Klika przycisk {\em Accept}, w katalogu gry powstaje plik z zapisem ustawień, gracz przenoszony jest do menu głównego.
+	\item Gracz 2 uruchamiał już grę wcześniej, wobec czego posiada plik z zapisem. Po uruchomieniu przenoszony jest prosto do menu głównego.
+	\item Gracz 1 w menu głównym klika przycisk {\em Host game}, a następnie ustala nazwę serwera, maksymalną liczbę graczy i metodę połączenia (Internet lub LAN). Aplikacja tego gracza będzie jednocześnie serwerem i klientem. Gracz zatwierdza przyciskiem {\em Accept}, po czym wczytuje mu się poziom, otrzymuje kontrolę nad swoją postacią, a serwer jest gotowy do przyjmowania klientów.
+	\item Aplikacja Gracza 2 będzie klientem. W menu głównym gracz klika przycisk {\em Find game}, a następnie podaje adres IP Gracza 1 i zatwierdza przyciskiem {\em Connect}. Po chwili łączy się z serwerem i otrzymuje kontrolę nad swoją postacią.
+	\item Obaj gracze prowadzą rozgrywkę, mogą chodzić, skakać, unikać oraz używać wybranych wcześniej zdolności. Sterowanie zależy od ustawień (mysz i klawiatura lub pad). Atakowanie postaci przeciwnika odbiera jej punkty zdrowia. Po utraceniu wszystkich punktów zdrowia dany gracz zostaje wyłączony z rozgrywki na siedem sekund, a wynik jego rywala jest zwiększany o jeden punkt. Obaj gracze widzą na swoich ekranach tablicę wyników aktualizowaną na bieżąco. Po upływie 7 sekund czasu gracz z powrotem otrzymuje kontrolę nad swoją postacią i gra jest kontynuowana.
+	\item Gracze kończą rozgrywkę przyciskiem {\em X} w prawym górnym rogu okna. Gracz o najwyższym wyniku zostaje zwycięzcą.
+\end{enumerate}
 
 \chapter{Opis implementacji gry ,,thesis\_1``}
 \label{implementacja}
@@ -144,8 +151,11 @@ Wywołanie pliku wykonywalnego z grą ({\em thesis\_1.exe}) powoduje uruchomieni
 		\label{fig-show-host-menu}
 	\end{figure}
 
+\clearpage
 \section{System zapisu stanu gry}
 	\label{sejwy}
+	W grze ,,thesis\_1`` zaimplementowano system zapisu gry, który umożliwia grającemu zachowanie swoich ustawień do kolejnego uruchomienia lub przeniesienia ich na inny komputer. System ten korzysta z klasy {\em PlayerSaveGame}, funkcji {\em SaveGameToSlot} i {\em LoadGameFromSlot} oraz struktury {\em PlayerInfo}. Obiekty klasy {\em PlayerSaveGame} są serializowane i deserializowane z pliku "thesis\_1/Saved/SaveGames/PlayerSettingsSave.sav" oraz posiadają w sobie strukturę {\em PlayerInfo}, w której przechowywane są ustawienia grającego: imię, obrazek, klasa postaci, rodzaj sterowania oraz zdolności.
+	\newline Po uruchomieniu gry wywoływana jest funkcja {\em SaveGameCheck} z klasy {\em GameInfoInstance}, która jest odpowiedzialna za sprawdzenie, czy istnieje plik \newline "thesis\_1/Saved/SaveGames/PlayerSettingsSave.sav". Jeżeli nie istnieje, grający przenoszony jest do menu opcji, w którym wybiera ustawienia i powoduje stworzenie pliku z zapisem. Jeżeli plik ten istnieje, grający przenoszony jest do menu głównego, a dane z pliku wczytywane są przy wejściu do menu opcji (w celu wyświetlenia zapisanych ustawień) lub dołączeniu do rozgrywki (w celu utworzenia postaci oraz zdolności zgodnych z wyborami grającego). 
 
 \section{Postacie i zdolności}
 	\label{characters-skills}
