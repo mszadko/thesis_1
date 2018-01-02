@@ -149,7 +149,19 @@ Wywołanie pliku wykonywalnego z grą ({\em thesis\_1.exe}) powoduje uruchomieni
 
 \section{Postacie i zdolności}
 	\label{characters-skills}
+Gra składa się wielu nieodzownych elementów, jednym z istotniejszych jest niewątpliwie postać którą gracz kontroluje. Podstawową reprezentacją gracza w silniku UE4 jest klasa Pawn. 
+Pionek jest fizyczną reprezentacją gracza w świecie gry który może być kontrolowany przez gracza lub komputer za pomocą kontrolerów przedstawionych we wstępie dokumentu. Pionek jest klasą bazową dla klasy Character, której głownym rozszerzeniem jest CharacterMovementComponent pozwalający naszemu awatarowi na poruszanie się przez chodzenie, skakanie, bieganie, spadanie czy pływanie. CharacterMovementComponent posiada w pełni zaimplementowaną obsługę networkingu w skład którego wchodzi system korekcji oraz predykcji ruchów podczas opóźnień wynikających z transmisji danych przez sieć.
+	\subsection{Pawn, Character i PlayerController}
+	Podczas tworzenia owej postaci pojawia się wiele pytań i problemów do rozwiązania.
+Pierwszym z nich jest sposób zbierania danych od gracza w sposób pozwalający na ponowne wykorzystanie kodu w postaciach o podobnych cechach. UE4 pozwala na obsługę danych wejściowych w klasach Pawn lub w PlayerController. Rzeczą wartą rozważenia jest sposób w jaki rozdzielimy które funkcjonalności powinny zostać obsłużone przez którą z tych klas. W prostych przypadkach możliwa jest obsługa zebranych informacji o woli gracza całkowicie w klasie Pawn. Jednak gdy obsługa sterowania jest skomplikowana implementacja PlayerController’a staje się nieunikniona. PlayerController pozwala na przykład na sterowanie wieloma awatarami na jednej maszynie czy dynamiczne przełączanie się pomiędzy postaciami.  Kolejną zaletą PlayerController’a jest to, że jedna jego instancja jest przypisana do gracza przez całą rozgrywkę a kontrolowane przez niego pionki mogą się zmieniać. Przykładowo podczas odradzania naszego pionka utworzony zostaje nowy obiekt a kontroler pozostaje ten sam, więc dane których nie chcemy stracić takie jak zdobyte punkty czy złoto powinny być składową PlayerControllera.
+
+	W projekcie jako klasy bazowej do wirtualnej reprezentacji gracza użyto klasy Character, a dane wejściowe są całkowicie obsługiwane przez PlayerController
 	\subsection{BaseCharacter}
+	Na potrzeby projektu, w celu rozwinięcia podstawowych możliwości klasy udostępnionej przez silnik stworzono klasę BaseCharacter dziedzicząca po Character. Głównym celem było pozwolenie graczom na dowolne dostosowanie zdolności awatara. Problem ten został rozwiązany za pomocą tablicy obiektów USkill które posiadają metody OnPress oraz OnRelease zawierające logikę, która wykonywana jest gdy gracz naciska lub zwalnia odpowiedni przycisk.		
+	Dodane zostały również zmienne których silnik używa do odgrywania odpowiednich animacji takich jak animacja uniku czy animacja czarowania oraz funkcje które zmieniają wartości tych zmiennych na serwerze gdy gracz na maszynie klienckiej wciśnie odpowiednie przyciski.
+	\subsection{BasePlayerController}
+	Klasa BasePlayerController jest stworzonym na potrzeby projektu rozszerzeniem klasy PlayerController. Jest ona odpowiedzialna za obsługę danych wejściowych zebranych od gracza. 
+Gracz ma do wyboru dwa sposoby kontrolowania swojej postaci. W zależności od ustawień w odpowiednim oknie interfejsu użytkownika gracz może korzystać z klawiatury oraz myszy lub z kontrolera gier. Przy wyborze klawiatury i myszy postać można poruszać za pomocą klawiszy W, A, S oraz D a postać obrócona jest zawsze w kierunku kursora myszy.  Przy wyborze kontrolera gier kierunek, w który postać spogląda oraz porusza się jest wyznaczany na podstawie wychyleń odpowiednio, prawego oraz lewego drążka kontrolera. W obu przypadkach wciśniecie klawisza odpowiadającego za skok lub unik wywołuje odpowiednie metody które odpowiedzialne są za ruch naszego awatara oraz odegranie animacji. Wciśnięcie klawiszy odpowiadających za wykonanie zdolności działa 2 etapowo. Podczas wciśnięcia klawisza odgrywana jest animacja oraz wykonywany jest kod metody OnPress z klasy USkill, który może wykonać całą logikę zdolności lub przygotować naszą postać do momentu gdy gracz zwolni przycisk. Następnie wykona się metoda OnRelease, która może pozostać pusta, dokończyć wykonanie zdolności lub przywrócić stan gracza do momentu przed kliknięciem przycisku.
 	\subsection{Skill}
 	\subsection{Wybór postaci i zdolności}
 		\label{wybor-postaci}
@@ -158,6 +170,8 @@ Wywołanie pliku wykonywalnego z grą ({\em thesis\_1.exe}) powoduje uruchomieni
 	\label{networking}
 
 \section{Animacje}
+
+
 \chapter{Kolejny rozdział}
 
 \begin{thebibliography}{9}
