@@ -27,10 +27,10 @@
 \statementpage
 \abstractpage
 {Implementacja sieciowej gry wideo z wykorzystaniem silnika Unreal Engine 4}
-{Niniejsza praca jest opisem implementacji sieciowej gry wideo z wykorzystaniem silnika Unreal Engine 4. Zawiera opis silnika, procesu projektowania i implementowania gry, prezentuje jej architekturę oraz zastosowane rozwiązania.}
+{Niniejsza praca jest opisem implementacji sieciowej gry wideo pod tytułem ,,thesis\_1`` z wykorzystaniem silnika Unreal Engine 4. Zawiera opis silnika, prezentuje architekturę gry oraz zastosowane rozwiązania.}
 {Unreal Engine 4, tworzenie gier wideo, gamedev, gra wideo}
 {Implementation of an online video game using Unreal Engine 4}
-{This study is a description of an implementation of an online video game using Unreal Engine 4. It describes the engine, the processes of designing and implementing the game and also presents the game's architecture and applied solutions.}
+{This study is a description of an implementation of an online video game ,,thesis\_1`` using Unreal Engine 4. It describes the engine and presents the game's architecture and applied solutions.}
 {Unreal Engine 4, game development, gamedev, video game}
 
 \tableofcontents
@@ -101,7 +101,7 @@ Styl rozgrywki zależy od gry i wizji jej autora, jednak istnieją pewne cechy w
 \item[GameInstance:] zawiera informacje o danej instancji gry. Istnieje jeden obiekt tej klasy na każdą uruchomioną grę i pozostaje on do dyspozycji aż do jej wyłączenia. Wczytywanie poziomów nie ma wpływu na {\em GameInstance}, dzięki czemu klasa ta umożliwia przenoszenie informacji między poziomami.
 \end{description}
 %dopisac cos ze trzymalismy sie tej konwencji i dalej prezentujemy jej wykorzystanie
-Stosowanie się do tej konwencji zaprezentowano w kolejnych rozdziałach.
+Stosowanie się do tej konwencji zaprezentowano w rozdziale \ref{implementacja} skupiającym się na implementacji gry ,,thesis\_1``.
 
 \begin{figure}
 	\centering
@@ -110,18 +110,52 @@ Stosowanie się do tej konwencji zaprezentowano w kolejnych rozdziałach.
 	\label{fig-gameplay-chart}
 \end{figure}
 
+\chapter{Przykładowy przebieg rozgrywki} 
+zeby opisac JAK zaimplementowalismy, trzeba najpierw opisac CO zaimplementowalismy
+
 \chapter{Opis implementacji gry ,,thesis\_1``}
+\label{implementacja}
 
 \section{Uruchomienie gry i podstawowe funkcje}
+Wywołanie pliku wykonywalnego z grą ({\em thesis\_1.exe}) powoduje uruchomienie silnika, utworzenie obiektu klasy {\em GameInfoInstance} (opisanej w podrozdziale \ref{gameinfoinstance}), a następnie wczytanie początkowego poziomu {\em MainMenu}, który wywołuje funkcję {\em SaveGameCheck} z {\em GameInfoInstance} sprawdzającą czy istnieje plik z zapisem gry (system opisany w podrozdziale \ref{sejwy}) i wyświetlający interfejs użytkownika. Na tym etapie grający otrzymuję kontrolę nad dalszym przebiegiem programu. Sprowadza się ona do wywołań funkcji z {\em GameInfoInstance} poprzez interfejs.
 	\subsection{GameInfoInstance}
+		\label{gameinfoinstance}
+		Klasa {\em GameInfoInstance} dziedziczy po klasie {\em GameInstance} (opisanej w podrozdziale \ref{sec:konwencja}), zawiera podstawowe informacje wykorzystywane w innych obszarach gry (na przykład dostępne zdolności i klasy postaci wykorzystywane w systemie opisanym w podrozdziale \ref{wybor-postaci}) oraz odpowiada za wyświetlanie {\em widgetów} interfejsu (podrozdział \ref{interface}) i tworzenie oraz dołączanie do istniejących rozgrywek sieciowych (podrozdział \ref{networking}).
+	
 
-\section{System zapisu stanu}
+\section{Interfejs}
+	\label{interface}
+	Podstawę interfejsu w UE4 stanowią {\em widgety} czyli elementy posiadające pewną logikę, które można wyświetlać w oknie użytkownika w warstwie interfejsu. Są to na przykład przyciski, listy, suwaki, pola tekstowe i tym podobne. Za pomocą edytora {\em widgetów} z podstawowych {\em widgetów} buduje się bardziej skomplikowane (na przykład menu główne lub tablica wyników), z których konstruuje się docelowy interfejs.
+	\newline
+	\newline W przypadku gry ,,thesis\_1`` {\em widgety} wyświetlane są poprzez wywoływanie odpowiednich funkcji z {\em GameInfoInstance} (rys. \ref{fig-save-game-check}, \ref{fig-show-host-menu}). 
+	\newline Z menu głównego grający ma możliwość przejścia do menu tworzenia lub dołączania do gry (rozdział \ref{networking}), menu opcji (rozdział \ref{wybor-postaci}) oraz zamknięcia gry.
+
+	\begin{figure}
+		\centering
+			\includegraphics[width=1\textwidth]{figures/savegamecheck.jpg}
+		\caption{Funkcja wywołująca wyświetlenie {\em widgetu} interfejsu wybranego na podstawie istnienia pliku zapisu stanu}
+		\label{fig-save-game-check}
+	\end{figure}
+	
+	\begin{figure}
+		\centering
+			\includegraphics[width=1\textwidth]{figures/showhostmenu.jpg}
+		\caption{Funkcja wyświetlająca {\em widget} interfejsu hostowania gry}
+		\label{fig-show-host-menu}
+	\end{figure}
+
+\section{System zapisu stanu gry}
+	\label{sejwy}
 
 \section{Postacie i zdolności}
+	\label{characters-skills}
 	\subsection{BaseCharacter}
 	\subsection{Skill}
+	\subsection{Wybór postaci i zdolności}
+		\label{wybor-postaci}
 
-\section{Networking}
+\section{Networking -- tworzenie oraz dołączanie do rozgrywki sieciowej}
+	\label{networking}
 
 \section{Animacje}
 \chapter{Kolejny rozdział}
