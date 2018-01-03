@@ -183,8 +183,43 @@ Na potrzeby projektu, aby dodać możliwość uniku, polegającego na gwałtowny
 
 \section{Networking -- tworzenie oraz dołączanie do rozgrywki sieciowej}
 	\label{networking}
+\clearpage
+\section{Modele i Animacje }
+Wartym zaznaczenia jest fakt, że głównym celem tworzenia modeli i animacji było zapoznanie się z narzędziami oraz samym procesem tworzenia tej części gier komputerowych. Podczas pracy nad projektem skupiono uwagę na aspektach technicznych. Znaczną część elementów środowiska udało się stworzyć za pomocą obracania i skalowania gotowych kształtów udostępnionych przez UE4, jednak bardziej skomplikowane kształty wymagały wymodelowania w osobnym oprogramowaniu dedykowanym do tego celu. Do stworzenia modeli i animacji użytych w projekcie wykorzystano oprogramowanie Blender w wersji 2.79 (rys. \ref{blender-start}).
+\begin{figure}
+		\centering
+			\includegraphics[width=1\textwidth]{figures/blenderstart.jpg}
+		\caption{Graficzny interfejs użytkownika programu Blender}
+		\label{blender-start}
+\end{figure}
 
-\section{Animacje}
+	\subsection{Modelowanie}
+Modelowanie w Blenderze polega na przemieszczaniu odpowiednich wierzchołków podstawowych kształtów, takich jak sfera czy sześcian, aż do momentu otrzymania upragnionego obiektu. 
+\begin{figure}
+		\centering
+			\includegraphics[width=1\textwidth]{figures/adimodel.jpg}
+		\caption{Model postaci wykorzystany w grze}
+		\label{blender-model}
+\end{figure}
+Tak wymodelowaną siatkę obiektu (rys. \ref{blender-model}) możemy traktować jak kamienną rzeźbę. Na tym etapie animowanie jej jest praktycznie niemożliwe.
+	\subsection{Rigging}
+Następnym krokiem jest proces nazwany rigging\cite{whats-rigging}. Rigging polega na wyposażeniu modelu w kości, stawy oraz stworzeniu mapy wag informującej o tym jak dane kości mają wpływać na kształt modelu (rys. \ref{blender-rigging}).
+\begin{figure}
+		\centering
+			\includegraphics[width=1\textwidth]{figures/adirig.jpg}
+		\caption{Kości oraz stawy użyte w modelu (po lewej) oraz mapa wag dla jednej z kości (po prawej)}
+		\label{blender-rigging}
+\end{figure}
+\clearpage
+	\subsection{Animacje}
+\begin{figure}
+		\centering
+			\includegraphics[width=1\textwidth]{figures/adiwalk.jpg}
+		\caption{Jedna z klatek animacji chodzenia}
+		\label{blender-anim}
+\end{figure}
+Z odpowiednio przygotowanym modelem możemy zacząć animowanie postaci. Proces tworzenia animacji polega na ustawianiu kości w odpowiednich pozach i zapisywaniu ich zmian w rotacji oraz położeniu (rys. \ref{blender-anim}). 
+	Nawet w animacjach podstawowych ruchów pojawia się wiele ciekawych problemów do rozwiązania. Przykładem może być animacja skoku, w której problematyczny jest zmienny czas przebywania postaci w powietrzu. Animacja zeskakiwania z wysokiej przeszkody powinna trwać dłużej niż animacja wskakiwania na przeszkodę. Zostało to rozwiązane rozbiciem sekwencji skoku na 3 oddzielne animacje – wybicie się, przebywanie w powietrzu oraz lądowanie. Ostatnia klatka wybicia jest jednocześnie pierwszą i ostatnią klatką przebywania w powietrzu oraz pierwszą klatką lądowania. Pozwoliło to na zapętlone odgrywanie animacji przebywania w powietrzu z płynnymi przejściami pomiędzy wybiciem a lądowaniem.
 
 
 \chapter{Kolejny rozdział}
@@ -219,6 +254,8 @@ Trevir Nath, \textit{Investing in Video Games: This Industry Pulls In More Reven
 \bibitem{ikea-vr}
 \textit{VIRTUAL REALITY - INTO THE MAGIC}, \url{http://www.ikea.com/ms/en_US/this-is-ikea/ikea-highlights/Virtual-reality/index.html} (dostęp 30.12.2017)
 
+\bibitem{whats-rigging}
+Justin Slick, \textit{What is Rigging? Preparing a 3D Model For Animation }, \url{https://www.lifewire.com/what-is-rigging-2095}  (dostęp 3.01.2018)
 \end{thebibliography}
 
 \beforelastpage
