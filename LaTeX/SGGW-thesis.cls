@@ -42,7 +42,7 @@
 
 \RequirePackage{titlesec} % zmiana formatu chapter do (1 Nazwa)
 \titleformat{\chapter}
-  {\normalfont\fourteen\bfseries}{\thechapter}{1em}{}
+  {\normalfont\LARGE\bfseries}{\thechapter}{1em}{}
 \titlespacing*{\chapter}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
 
 \renewcommand{\normalsize}{\fontsize{12}{13}\selectfont}
