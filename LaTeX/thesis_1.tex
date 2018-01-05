@@ -25,7 +25,7 @@
 
 \begin{document}
 \maketitle
-\twoppage{Maciej Wygoda}{172407}{}{Marcin Szadkowski}{167607}{rozdzialu 1 ze strony 8, podrozdziału 4.4.1 ze strony 17, podrozdziałów 4.4.2, 4.4.3 i 4.4.4 ze strony 18, podrozdziału 4.4.5 ze strony 19, podrozdziału 4.4.6 ze strony 20,podrozdziału 4.5 ze strony 20, podrozdziału 4.6 ze stron 21- 23. }
+\twoppage{Maciej Wygoda}{172407}{}{Marcin Szadkowski}{167607}{rozdziału 1 ze strony 8, podrozdziału 4.4.1 ze strony 17, podrozdziałów 4.4.2, 4.4.3 i 4.4.4 ze strony 18, podrozdziału 4.4.5 ze strony 19, podrozdziału 4.4.6 ze strony 20, podrozdziału 4.5 ze strony 20, podrozdziału 4.6 ze stron 21-23. }
 \statementpage
 \abstractpage
 {Implementacja sieciowej gry wideo z wykorzystaniem silnika Unreal Engine 4}
@@ -137,6 +137,7 @@ Stosowanie się do tej konwencji zaprezentowano w rozdziale \ref{implementacja} 
 \end{figure}
 \chapter{Opis implementacji gry ,,thesis\_1``}
 \label{implementacja}
+Opis dotyczy projektu dostępnego w publicznym repozytorium pod adresem \newline https://github.com/mszadko/thesis\_1.
 
 \section{Uruchomienie gry i podstawowe funkcje}
 Wywołanie pliku wykonywalnego z grą ({\em thesis\_1.exe}) powoduje uruchomienie silnika, utworzenie obiektu klasy {\em GameInfoInstance} (opisanej w podrozdziale \ref{gameinfoinstance}), a następnie wczytanie początkowego poziomu {\em MainMenu}, który wywołuje funkcję {\em SaveGameCheck} z {\em GameInfoInstance} sprawdzającą czy istnieje plik z zapisem gry (system opisany w podrozdziale \ref{sejwy}) i wyświetlający interfejs użytkownika. Na tym etapie grający otrzymuję kontrolę nad dalszym przebiegiem programu. Sprowadza się ona do wywołań funkcji z {\em GameInfoInstance} poprzez interfejs.
@@ -254,7 +255,15 @@ Następnym krokiem jest proces nazwany {\em rigging}\cite{whats-rigging}. {\em R
 Proces tworzenia animacji polega na ustawianiu kości w odpowiednich pozach i zapisywaniu ich zmian w rotacji oraz położeniu (rys. \ref{blender-anim}). 
 W animacjach nawet podstawowych ruchów pojawia się wiele problemów do rozwiązania. Przykładem może być animacja skoku, w której problematyczny jest zmienny czas przebywania postaci w powietrzu. Animacja zeskakiwania z wysokiej przeszkody powinna trwać dłużej niż animacja wskakiwania na przeszkodę. Problem ten został rozwiązany za pomocą rozbicia sekwencji skoku na 3 oddzielne animacje – wybicie się, przebywanie w powietrzu oraz lądowanie. Ostatnia klatka wybicia jest jednocześnie pierwszą i ostatnią klatką przebywania w powietrzu oraz pierwszą klatką lądowania. Pozwoliło to na zapętlone odgrywanie animacji przebywania w powietrzu z płynnymi przejściami pomiędzy wybiciem, a lądowaniem.
 
-
+\section{Udźwiękowienie}
+Odtwarzanie dźwięków w grze obsłużono dwoma funkcjami. W przypadku muzyki i dźwięku towarzyszącego zdobyciu puntku jest to funkcja {\em PlaySound2D}, która odtwarza dźwięk u tych klientów, u których została wywołana. Dźwięki związane ze zdolnościami i ogniskiem odtwarzane są za pomocą funkcji {\em SpawnSoundAtLocation}, dzięki czemu słyszą je jedynie gracze będący blisko źródła dźwięku.
+\newline \indent Użyto następujących dźwięków pochodzących ze strony internetowej freesound.org:
+\begin{itemize}
+\item ,,06673 electronic flipper bonus.wav`` autorstwa Robinhood76 (licencja CC BY-NC)
+\item ,,avl03.wav`` autorstwa blaukreuz (licencja CC 0)
+\item ,,shatter a wine glass`` autorstwa edhutschek (licencja CC 0)
+\item ,,jumping`` autorstwa fins (licencja CC 0)
+\end{itemize}
 
 \begin{thebibliography}{9}
 
