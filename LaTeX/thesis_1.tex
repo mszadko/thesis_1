@@ -178,7 +178,7 @@ Jednym z nich jest sposób zbierania danych od gracza. UE4 pozwala na obsługę 
 	\subsection{Nazewnicto klas}
 	Utworzone klasy pochodne posiadają przedrostek  {\em Base}. Jest to spowodowane faktem, iż klasy napisane w  {\em C++} są następnie wykorzystywane jako klasy bazowe blueprintów postaci. Wszystkie podstawowe umiejętności jak poruszanie się, skakanie czy obracanie się postaci zostały zaimplementowane za pomocą języka  {\em C++},a następnie odziedziczone w blueprintach. Zyskano dzięki temu warstwę abstrakcji oddzielającą niezbędne linie kodu od dodatkowych zdolności postaci oraz łatwość zmian indywidualnych cech postaci za pomocą edytora blueprintów.
 	\subsection{BaseCharacter}
-	W celu rozwinięcia podstawowych możliwości klasy  {\em Character} udostępnionej przez silnik stworzono pochodną klasę  {\em BaseCharacter}. Głównym celem było pozwolenie graczom na dowolne dostosowanie zdolności postaci. Problem ten został rozwiązany za pomocą tablicy obiektów  {\em USkill}, które posiadają metody  {\em OnPress} oraz  {\em OnRelease} zawierające logikę, która wykonywana jest, gdy gracz naciska lub zwalnia odpowiedni przycisk.		
+	W celu rozwinięcia podstawowych możliwości klasy  {\em Character} udostępnionej przez silnik stworzono pochodną klasę  {\em BaseCharacter}. Głównym celem było pozwolenie graczom na dowolne dostosowanie zdolności postaci. Problem ten został rozwiązany za pomocą tablicy obiektów  {\em Skill}, które posiadają metody  {\em OnPress} oraz  {\em OnRelease} zawierające logikę, która wykonywana jest, gdy gracz naciska lub zwalnia odpowiedni przycisk.		
 Dodane zostały również zmienne, które są używne przez silnik do odgrywania odpowiednich animacji takich jak animacja uniku czy animacja czarowania oraz funkcje, które zmieniają wartości tych zmiennych na serwerze, gdy gracz na maszynie klienckiej wciśnie odpowiednie przyciski.
 	\subsection{BasePlayerController i sterowanie }
 	Klasa  {\em BasePlayerController} jest stworzonym na potrzeby projektu rozszerzeniem klasy  {\em PlayerController}. Jest ona odpowiedzialna między innymi za obsługę danych wejściowych zebranych od gracza. 
@@ -187,46 +187,40 @@ Gracz ma do wyboru dwa sposoby kontrolowania swojej postaci. W zależności od u
 \item[Klawiatury i myszy]
 Postać można poruszać za pomocą klawiszy W, A, S oraz D i obrócona jest zawsze w kierunku kursora myszy. Klawisz F odpowiada za unik, a {\em spacja} za skok. Zdolności uruchamiane są przyciskami 1, 2, 3 i 4.
 \item[Kontrolera Xbox One]
-Drążki kontrolera odpowiadają za ruch i kierunek postaci. Klawisz A odpowiada za unik, a B za skok. Zdolności uruchamiane są przyciskami LT, LB, RT i RB.
+Drążki kontrolera odpowiadają za ruch i kierunek postaci. Przycisk A odpowiada za unik, a B za skok. Zdolności uruchamiane są przyciskami LT, LB, RT i RB.
 \end{description}
-Uruchamianie zdolności działa dwuetapowo. Podczas wciśnięcia klawisza odgrywana jest animacja oraz wykonywany jest kod metody {\em OnPress} z klasy {\em USkill}, który może wykonać całą logikę zdolności lub przygotować naszą postać do momentu gdy gracz zwolni przycisk. Następnie wykona się metoda {\em OnRelease}, która może pozostać pusta, dokończyć wykonanie zdolności lub przywrócić gracza do stanu sprzed kliknięcia przycisku.
+Uruchamianie zdolności działa dwuetapowo. Podczas wciśnięcia klawisza odgrywana jest animacja oraz wykonywany jest kod metody {\em OnPress} z klasy {\em Skill}, który może wykonać całą logikę zdolności lub przygotować naszą postać do momentu gdy gracz zwolni przycisk. Następnie wykona się metoda {\em OnRelease}, która może pozostać pusta, dokończyć wykonanie zdolności lub przywrócić gracza do stanu sprzed kliknięcia przycisku.
 	\subsection{BaseCharacterMovementComponent}
 	{\em CharacterMovementComponent} jest komponentem klasy {\em Character} odpowiedzialnym za przemieszczanie się postaci, który automatycznie obsługuje networking. Komponent ten umożliwia między innymi predykcję, replikację i korekcję ruchu i działa w następujący sposób \cite{docs-charactermovementcomponent}. Co klatkę wywoływana jest metoda {\em TickComponent}, gdzie obliczane są zmiany przyspieszenia oraz rotacji postaci. Następnie, w zależności od tego, czy program wykonywany jest na kliencie czy na serwerze, wywoływana jest metoda {\em PerformMovement} lub {\em ReplicateMoveToServer}. {\em ReplicateMoveToServer} dodaje ruch do listy oczekujących ruchów, następnie wywołuje metodę {\em PerformMovement} i replikuje ruch na serwer za pomocą zdalnie wywoływanej metody {\em ServerMove}. {\em ServerMove} przesuwa postać na serwerze w odpowiednie miejsce, a następnie oblicza dystans pomiędzy pozycją postaci na serwerze i na maszynie klienckiej. Jeżeli dystans jest większy niż dopuszczalny, serwer zdalnie wywołuje metodę {\em ClientAdjustPosition} na kliencie, która przesuwa postać w odpowiednie miejsce. Jeżeli dane korekcyjne dotrą do klienta, a jego pozycja zostanie poprawiona, metoda {\em ClientAdjustPosition} wykona ponownie wszystkie ruchy, które zostały dodane na listę ruchów oczekujących po ruchu, który został poprawiony przez serwer.
 \newline \indent Dane o aktorze takie jak jego pozycja, prędkość czy rotacja są replikowane na inne maszyny za pomocą standardowego mechanizmu replikacji. Oznacza to, że maszyny nie dostają potrzebnych im informacji co klatkę, co twórcy silnika rozwiązali za pomocą systemów predykcji i wygładzania. Systemy te wypełniają luki w danych spowodowane rozbieżnością między częstotliwościami renderowania klatek i replikowania danych. Predykcja polega na przesuwaniu obiektu klasy Character zgodnie z ostatnio otrzymanymi danymi na temat jego ruchu. Gdy predykcja odbiega od rzeczywistych zmian, które zaszły na innych maszynach, UE4 nakłada na pozycję stopniowe korekty w celu uniknięcia nagłej jej zmiany.
 \newline \indent Z powodu tych systemów wszystkie zdolności postaci modyfikujące jej położenie powinny zostać zaimplementowane poprzez rozszerzenie klasy {\em CharacterMovementComponent}.
 W celu dodania możliwości uniku polegającego na gwałtownym odskoku postaci w danym kierunku stworzono klasę {\em BaseCharacterMovementComponent}. Implementacja polegała na nadpisaniu metod klasy bazowej\cite{uewiki-charmovement}. TickComponent oprócz swojego pierwotnego zadania sprawdza czy gracz wciska przycisk odpowiedzialny za unik. W takim przypadku dodawane są symulowane dane wejściowe, które naśladują poruszanie się gracza w odpowiednim kierunku. W celu zapewnienia szybszego poruszania się postaci podczas uniku, nadpisano metody {\em GetMaxSpeed} oraz {\em GetMaxAcceleration} tak, aby w zależności od zmiennej wskazującej na to czy postać wykonuje unik, zwracały różne wartości. Ponadto potrzebne było rozszerzenie klas używanych do predykcji i zapisywania ruchu na listę oczekujących w taki sposób, by ewentualna poprawa ruchu spowodowana opóźnieniami transmisji danych uwzględniła kliknięcie przez gracza przycisku uniku.
 	\subsection{Skill}
-	Jedną z głównych cech gry ,,thesis\_1`` jest możliwość wyboru czterech z wielu dostępnych zdolności do używania w trakcie rozgrywki. W tym celu powstała klasa {\em Skill} reprezentująca daną zdolność. Klasa ta powstała za pomocą kodu {\em C++} z myślą o rozszerzaniu jej blueprintami, co umożliwiają znaczniki {\em Blueprintable} oraz {\em BlueprintNativeEvent} użyte w nagłówku klasy. Każda klasa dziedzicząca po {\em Skill} reprezentuje jedną zdolność i nadpisuje bazowe funkcje {\em OnPress} oraz {\em OnRelease} logiką danej zdolności. Decyduje też o tym, które klasy postaci mogą używać danej zdolności.
+	Jedną z głównych cech gry ,,thesis\_1`` jest możliwość wyboru czterech z wielu dostępnych zdolności do używania w trakcie rozgrywki. W tym celu powstała klasa {\em Skill} reprezentująca zdolność. Klasa ta powstała za pomocą kodu {\em C++} z myślą o rozszerzaniu jej blueprintami, co umożliwiają znaczniki {\em Blueprintable} oraz {\em BlueprintNativeEvent} użyte w nagłówku klasy. Każda klasa dziedzicząca po {\em Skill} reprezentuje jedną zdolność i nadpisuje bazowe funkcje {\em OnPress} oraz {\em OnRelease} logiką danej zdolności. Decyduje też o tym, które klasy postaci mogą używać danej zdolności.
 	\subsection{Wybór postaci i zdolności}
 		\label{wybor-postaci}
-	Grający ma możliwość wyboru postaci oraz zdolności w menu opcji, które pobiera informacje o klasach postaci i zdolnościach z {\em GameInfoInstace}. Aby zapobiec sytuacji, w której wybrana została zdolność przeznaczona dla innej postaci niż obecnie wybrana, interfejs aktualizuje listę dostępnych zdolności przy każdej zmianie klasy postaci. Po zaakceptowaniu zmian tablica zdolności trafia do {\em PlayerInfo} oraz pliku z zapisem gry. Przy dołączeniu do rozgrywki informacje te trafiają do {\em PlayerControllera} za pomocą funkcji {\em LoadPlayerInfo}, a stamtąd do {\em Charactera} poprzez funkcję {\em ABaseCharacter::LoadSkills()} przy każdym jego odrodzeniu.
+	Grający ma możliwość wyboru postaci oraz zdolności w menu opcji, które pobiera informacje o klasach postaci i zdolnościach z {\em GameInfoInstance}. Aby zapobiec sytuacji, w której wybrana została zdolność przeznaczona dla innej postaci niż obecnie wybrana, interfejs aktualizuje listę dostępnych zdolności przy każdej zmianie klasy postaci. Po zaakceptowaniu zmian tablica zdolności trafia do {\em PlayerInfo} oraz pliku z zapisem gry. Przy dołączeniu do rozgrywki informacje te trafiają do {\em PlayerControllera} za pomocą funkcji {\em LoadPlayerInfo}, a stamtąd do {\em Charactera} poprzez funkcję {\em ABaseCharacter::LoadSkills()} przy każdym jego odrodzeniu.
 
 \section{Networking -- tworzenie oraz dołączanie do rozgrywki sieciowej}
 	\label{networking}
 \clearpage
 \section{Modele i Animacje }
-Wartym zaznaczenia jest fakt, że głównym celem tworzenia modeli i animacji było zapoznanie się z narzędziami oraz samym procesem tworzenia tej części gier komputerowych. Podczas pracy nad projektem skupiono uwagę na aspektach technicznych. Znaczną część elementów środowiska udało się stworzyć za pomocą obracania i skalowania gotowych kształtów udostępnionych przez UE4, jednak bardziej skomplikowane kształty wymagały wymodelowania w osobnym oprogramowaniu dedykowanym do tego celu. Do stworzenia modeli i animacji użytych w projekcie wykorzystano oprogramowanie Blender w wersji 2.79 (rys. \ref{blender-start}).
-\begin{figure}
-		\centering
-			\includegraphics[width=1\textwidth]{figures/blenderstart.jpg}
-		\caption{Graficzny interfejs użytkownika programu Blender}
-		\label{blender-start}
-\end{figure}
+Wartym zaznaczenia jest fakt, że głównym celem tworzenia modeli i animacji było zapoznanie się z narzędziami oraz samym procesem tworzenia tej części gier komputerowych. Podczas pracy nad projektem skupiono uwagę na aspektach technicznych. Znaczną część elementów levelu udało się stworzyć za pomocą obracania i skalowania gotowych kształtów udostępnionych w UE4. Bardziej skomplikowane kształty wymagały wymodelowania w osobnym oprogramowaniu dedykowanym do tego celu. Do stworzenia modeli i animacji użytych w projekcie wykorzystano oprogramowanie Blender w wersji 2.79.
 
 	\subsection{Modelowanie}
-Modelowanie w Blenderze polega na przemieszczaniu odpowiednich wierzchołków podstawowych kształtów, takich jak sfera czy sześcian, aż do momentu otrzymania upragnionego obiektu. 
+Modelowanie w Blenderze polega na przemieszczaniu odpowiednich wierzchołków podstawowych kształtów, takich jak sfera czy sześcian, aż do momentu otrzymania docelowego obiektu. Animowanie tak wymodelowanej siatki obiektu (rys. \ref{blender-model}) jest praktycznie niemożliwe.
+	\subsection{Rigging}
+Następnym krokiem jest proces nazwany {\em rigging}\cite{whats-rigging}. {\em Rigging} polega na wyposażeniu modelu w kości, stawy oraz stworzeniu mapy wag informującej o tym jak dane kości mają wpływać na kształt modelu (rys. \ref{blender-rigging}). Umożliwia to animowanie obiektu.
+\clearpage
 \begin{figure}
 		\centering
-			\includegraphics[width=1\textwidth]{figures/adimodel.jpg}
+			\includegraphics[width=0.6\textwidth]{figures/adimodel.jpg}
 		\caption{Model postaci wykorzystany w grze}
 		\label{blender-model}
 \end{figure}
-Tak wymodelowaną siatkę obiektu (rys. \ref{blender-model}) możemy traktować jak kamienną rzeźbę. Na tym etapie animowanie jej jest praktycznie niemożliwe.
-	\subsection{Rigging}
-Następnym krokiem jest proces nazwany rigging\cite{whats-rigging}. Rigging polega na wyposażeniu modelu w kości, stawy oraz stworzeniu mapy wag informującej o tym jak dane kości mają wpływać na kształt modelu (rys. \ref{blender-rigging}).
 \begin{figure}
 		\centering
-			\includegraphics[width=1\textwidth]{figures/adirig.jpg}
+			\includegraphics[width=0.6\textwidth]{figures/adirig.jpg}
 		\caption{Kości oraz stawy użyte w modelu (po lewej) oraz mapa wag dla jednej z kości (po prawej)}
 		\label{blender-rigging}
 \end{figure}
@@ -238,8 +232,8 @@ Następnym krokiem jest proces nazwany rigging\cite{whats-rigging}. Rigging pole
 		\caption{Jedna z klatek animacji chodzenia}
 		\label{blender-anim}
 \end{figure}
-Z odpowiednio przygotowanym modelem możemy zacząć animowanie postaci. Proces tworzenia animacji polega na ustawianiu kości w odpowiednich pozach i zapisywaniu ich zmian w rotacji oraz położeniu (rys. \ref{blender-anim}). 
-	Nawet w animacjach podstawowych ruchów pojawia się wiele ciekawych problemów do rozwiązania. Przykładem może być animacja skoku, w której problematyczny jest zmienny czas przebywania postaci w powietrzu. Animacja zeskakiwania z wysokiej przeszkody powinna trwać dłużej niż animacja wskakiwania na przeszkodę. Problem ten został rozwiązany za pomocą rozbicia sekwencji skoku na 3 oddzielne animacje – wybicie się, przebywanie w powietrzu oraz lądowanie. Ostatnia klatka wybicia jest jednocześnie pierwszą i ostatnią klatką przebywania w powietrzu oraz pierwszą klatką lądowania. Pozwoliło to na zapętlone odgrywanie animacji przebywania w powietrzu z płynnymi przejściami pomiędzy wybiciem a lądowaniem.
+Proces tworzenia animacji polega na ustawianiu kości w odpowiednich pozach i zapisywaniu ich zmian w rotacji oraz położeniu (rys. \ref{blender-anim}). 
+W animacjach nawet podstawowych ruchów pojawia się wiele problemów do rozwiązania. Przykładem może być animacja skoku, w której problematyczny jest zmienny czas przebywania postaci w powietrzu. Animacja zeskakiwania z wysokiej przeszkody powinna trwać dłużej niż animacja wskakiwania na przeszkodę. Problem ten został rozwiązany za pomocą rozbicia sekwencji skoku na 3 oddzielne animacje – wybicie się, przebywanie w powietrzu oraz lądowanie. Ostatnia klatka wybicia jest jednocześnie pierwszą i ostatnią klatką przebywania w powietrzu oraz pierwszą klatką lądowania. Pozwoliło to na zapętlone odgrywanie animacji przebywania w powietrzu z płynnymi przejściami pomiędzy wybiciem, a lądowaniem.
 
 
 \chapter{Kolejny rozdział}
