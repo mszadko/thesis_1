@@ -38,7 +38,7 @@
 \RequirePackage{polski}
 \selecthyphenation{polish}
 
-\linespread{1.25}
+\linespread{1.3}
 
 \RequirePackage{titlesec} % zmiana formatu chapter do (1 Nazwa)
 \titleformat{\chapter}
