@@ -42,13 +42,15 @@
 
 \RequirePackage{titlesec} % zmiana formatu chapter do (1 Nazwa)
 \titleformat{\chapter}
-  {\normalfont\LARGE\bfseries}{\thechapter}{1em}{}
+  {\normalfont\fourteen\bfseries}{\thechapter}{1em}{}
 \titlespacing*{\chapter}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
 
 \renewcommand{\normalsize}{\fontsize{12}{13}\selectfont}
 
-\newcommand\VeryLarge{\@setfontsize\VeryLarge{16pt}{21}}	%definicja czcionki 16pt
-\newcommand\VeryVeryLarge{\@setfontsize\VeryLarge{24pt}{30}} %definicja czcionki 24pt
+\newcommand\twelve{\@setfontsize\twelve{12pt}{21}}	%definicja czcionki 12pt
+\newcommand\fourteen{\@setfontsize\fourteen{14pt}{21}}	%definicja czcionki 14pt
+\newcommand\sixteen{\@setfontsize\sixteen{16pt}{21}}	%definicja czcionki 16pt
+\newcommand\twentyfour{\@setfontsize\twentyfour{24pt}{30}} %definicja czcionki 24pt
 
 %definicje zmiennych
 \def\@album{}
@@ -89,28 +91,28 @@
 \renewcommand{\maketitle}{ %definicja strony tytulowej
 	\begin{center}
 		\thispagestyle{empty}
-		{\VeryLarge{\@university}}\\
-		{\VeryLarge{\@dep}}\\
+		{\sixteen{\@university}}\\
+		{\sixteen{\@dep}}\\
 		\vspace{3cm}
-		{\Large{\@author}}\\
-		{\large{\@album}}\\
+		{\fourteen{\@author}}\\
+		{\twelve{\@album}}\\
 		\vspace{3cm}
-		{\VeryVeryLarge{\@title}}\\
+		{\twentyfour{\@title}}\\
+		%\vspace{1cm}
+		{\sixteen{\@Etitle}}\\
 		\vspace{1cm}
-		{\VeryLarge{\@Etitle}}\\
-		\vspace{1cm}
-		{\Large{\@thesis}}\\
+		{\fourteen{\@thesis}}\\
 		\vspace{0.1cm}
-		{\Large{na kierunku \@course}}\\
+		{\fourteen{na kierunku \@course}}\\
 
 	\begin{flushright}
 		\vfill
-		{\large{Praca wykonana pod kierunkiem}}\\
-		{\large{\@promotor}}\\
-		{\large{\@pworkplace}}\\
+		{\twelve{Praca wykonana pod kierunkiem}}\\
+		{\twelve{\@promotor}}\\
+		{\twelve{\@pworkplace}}\\
 		\vspace{1cm}
 	\end{flushright}
-	{\large{Warszawa \@date}}\\
+	{\fourteen{Warszawa, \@date}}\\
 	\end{center}
 	\newpage
 	\if@multip
@@ -125,18 +127,18 @@
 \newcommand{\twoppage}[6]{ %definicja strony z dwoma autorami pracy
 	\null
 	\vfill
-	\noindent{\large{Praca przygotowana zespo{\l}owo przez:}}\\
+	\noindent{\fourteen{Praca przygotowana zespo{\l}owo przez:}}\\
 	\begin{quote}
-	\noindent{\Large{1. #1}}\\
-	{\large{#2\\
+	\noindent{\fourteen{1. #1}}\\
+	{\fourteen{#2\\
 	kt\'{o}ry jest autorem:\\
 	#3\\
 	}}
 	\end{quote}
 	\vfill
 	\begin{quote}
-	\noindent{\Large{2. #4}}\\
-	{\large{#5\\
+	\noindent{\fourteen{2. #4}}\\
+	{\fourteen{#5\\
 	kt\'{o}ry jest autorem:\\
 	#6\\
 	}}
@@ -150,26 +152,26 @@
 \newcommand{\threeppage}[9]{ %definicja strony z trzema autorami pracy
 	\null
 	\vfill
-	\noindent{\large{Praca przygotowana zespo{\l}owo przez:}}\\
+	\noindent{\fourteen{Praca przygotowana zespo{\l}owo przez:}}\\
 	\begin{quote}
-		\noindent{\Large{1. #1}}\\
-		{\large{#2\\
+		\noindent{\fourteen{1. #1}}\\
+		{\fourteen{#2\\
 		kt\'{o}ry jest autorem:\\
 		#3\\
 		}}
 	\end{quote}
 	\vfill
 	\begin{quote}
-		\noindent{\Large{2. #4}}\\
-		{\large{#5\\
+		\noindent{\fourteen{2. #4}}\\
+		{\fourteen{#5\\
 		kt\'{o}ry jest autorem:\\
 		#6\\
 		}}
 	\end{quote}
 	\vfill
 	\begin{quote}
-		\noindent{\Large{3. #7}}\\
-		{\large{#8\\
+		\noindent{\fourteen{3. #7}}\\
+		{\fourteen{#8\\
 		kt\'{o}ry jest autorem:\\
 		#9\\
 		}}
