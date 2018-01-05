@@ -203,9 +203,26 @@ W celu dodania możliwości uniku polegającego na gwałtownym odskoku postaci w
 
 \section{Networking -- tworzenie oraz dołączanie do rozgrywki sieciowej}
 	\label{networking}
-\clearpage
+,,thesis\_1`` jest grą sieciową i do pełnego działania wymaga przynajmniej dwóch komputerów, z których jeden pełni rolę serwera, a pozostałe są klientami. W UE4 serwer może działać w jednym z dwóch trybów sieci \cite{docs-network-modes}:
+\begin{description}
+\item[NM\_DedicatedServer:]wymaga stworzenia oddzielnego oprogramowania serwera, które pozbawione jest między innymi elementów związanych z grafiką, dźwiękami czy wejściem. Dzięki temu więcej zasobów komputera wykorzystywanych jest na obliczenia związane z obsługą podłączonych klientów. Gracze do podłączenia i prowadzenia rozgrywki korzystają z oprogramowania klienckiego. Nie jest możliwe granie z poziomu serwera. To podejście stosowane jest w przypadku gier ze skomplikowaną, wymagającą komunikacją sieciową.
+
+\item[NM\_ListenServer:]zarówno serwer i klienci korzystają z dokładnie tego samego oprogramowania, a komputer będący serwerem jest jednocześnie klientem. Sprawia to, że program w wielu miejscach musi sprawdzać, w jakiej roli jest obecnie używany i na tej podstawie wykonywać różną logikę. Wydajność jest niższa niż w przypadku serwera dedykowanego w zamian za możliwość prowadzenia rozgrywki z poziomu serwera.
+\end{description}
+
+W ,,thesis\_1`` wykorzystano tryb {\em NM\_ListenServer} ze względu na zapewnianą przez niego łatwość rozpoczęcia rozgrywki i niskie wymagania sieciowe gry. W implementacji sieciowych aspektów rozgrywki wykorzystywano głównie zdalne wywoływanie procedur (co wymaga sprecyzowania, czy ma być ona wykonywana na serwerze czy na kliencie), sprawdzania roli instancji gry to znaczy czy obecnie wykonujemy kod na serwerze czy na~kliencie~(rys. \ref{switch-has-authority}) oraz oznaczania {\em actorów} do replikacji czyli przesyłania informacji o nich między serwerem, a klientami.
+\newline \indent Łączenie z serwerem inicjowane jest w menu {\em Find game} poprzez automatyczne wyszukanie gry w sieci lokalnej lub podanie adresu IP serwera w Internecie lub sieci lokalnej. Następnie na serwerze wykonywana jest funkcja {\em OnPostLogin} (rys. \ref{switch-has-authority}), która inicjuje wczytanie danych z pliku łączącego się gracza, pobiera je od niego i na ich podstawie przydziela mu postać.
+\newline \indent Utworzenie serwera odbywa się poprzez menu {\em Host game}, a jego widoczność zależy od konfiguracji sieciowej gracza i jego dostawcy Internetu. Gra ,,thesis\_1`` korzysta z portu 7777 (domyślnego w UE4).
+
+\begin{figure}
+		\centering
+			\includegraphics[width=0.7\textwidth]{figures/switchhasauth.jpg}
+		\caption{Blueprint, w którym logika zależy od roli}
+		\label{switch-has-authority}
+\end{figure}
+
 \section{Modele i Animacje }
-Wartym zaznaczenia jest fakt, że głównym celem tworzenia modeli i animacji było zapoznanie się z narzędziami oraz samym procesem tworzenia tej części gier komputerowych. Podczas pracy nad projektem skupiono uwagę na aspektach technicznych. Znaczną część elementów levelu udało się stworzyć za pomocą obracania i skalowania gotowych kształtów udostępnionych w UE4. Bardziej skomplikowane kształty wymagały wymodelowania w osobnym oprogramowaniu dedykowanym do tego celu. Do stworzenia modeli i animacji użytych w projekcie wykorzystano oprogramowanie Blender w wersji 2.79.
+Wartym zaznaczenia jest fakt, że głównym celem tworzenia modeli i animacji było zapoznanie się z narzędziami oraz samym procesem tworzenia tej części gier komputerowych. Podczas pracy nad projektem skupiono uwagę na aspektach technicznych. Znaczną część elementów {\em levelu} udało się stworzyć za pomocą obracania i skalowania gotowych kształtów udostępnionych w UE4. Bardziej skomplikowane kształty wymagały wymodelowania w osobnym oprogramowaniu dedykowanym do tego celu. Do stworzenia modeli i animacji użytych w projekcie wykorzystano oprogramowanie Blender w wersji 2.79.
 
 	\subsection{Modelowanie}
 Modelowanie w Blenderze polega na przemieszczaniu odpowiednich wierzchołków podstawowych kształtów, takich jak sfera czy sześcian, aż do momentu otrzymania docelowego obiektu. Animowanie tak wymodelowanej siatki obiektu (rys. \ref{blender-model}) jest praktycznie niemożliwe.
@@ -236,7 +253,6 @@ Proces tworzenia animacji polega na ustawianiu kości w odpowiednich pozach i za
 W animacjach nawet podstawowych ruchów pojawia się wiele problemów do rozwiązania. Przykładem może być animacja skoku, w której problematyczny jest zmienny czas przebywania postaci w powietrzu. Animacja zeskakiwania z wysokiej przeszkody powinna trwać dłużej niż animacja wskakiwania na przeszkodę. Problem ten został rozwiązany za pomocą rozbicia sekwencji skoku na 3 oddzielne animacje – wybicie się, przebywanie w powietrzu oraz lądowanie. Ostatnia klatka wybicia jest jednocześnie pierwszą i ostatnią klatką przebywania w powietrzu oraz pierwszą klatką lądowania. Pozwoliło to na zapętlone odgrywanie animacji przebywania w powietrzu z płynnymi przejściami pomiędzy wybiciem, a lądowaniem.
 
 
-\chapter{Kolejny rozdział}
 
 \begin{thebibliography}{9}
 
@@ -254,6 +270,9 @@ Joanna Lee, \textit{Learning Unreal Engine Game Development}, Packt Publishing, 
 
 \bibitem{docs-charactermovementcomponent}
 \textit{UE4 Documentation Character Movement Component}.  \url{https://docs.unrealengine.com/latest/INT/Gameplay/Networking/CharacterMovementComponent/index.html}  (dostęp 3.01.2018)
+
+\bibitem{docs-network-modes}
+\textit{UE4 Documentation Networking Overview}. \url{https://docs.unrealengine.com/latest/INT/Gameplay/Networking/Overview/} (dostęp 05.01.2018)
 
 \bibitem{docs-profiler}
 \textit{UE4 Documentation Performance and Profiling}. \url{https://docs.unrealengine.com/latest/INT/Engine/Performance/}  (dostęp 3.01.2018)
