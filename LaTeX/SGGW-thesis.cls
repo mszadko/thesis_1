@@ -112,7 +112,7 @@
 		{\twelve{\@pworkplace}}\\
 		\vspace{1cm}
 	\end{flushright}
-	{\fourteen{Warszawa, \@date}}\\
+	{\twelve{Warszawa, \@date}}\\
 	\end{center}
 	\newpage
 	\if@multip
@@ -127,10 +127,10 @@
 \newcommand{\twoppage}[6]{ %definicja strony z dwoma autorami pracy
 	\null
 	\vfill
-	\noindent{\fourteen{Praca przygotowana zespo{\l}owo przez:}}\\
+	\noindent{\twelve{Praca przygotowana zespo{\l}owo przez:}}\\
 	\begin{quote}
 	\noindent{\fourteen{1. #1}}\\
-	{\fourteen{#2\\
+	{\twelve{#2\\
 	kt\'{o}ry jest autorem:\\
 	#3\\
 	}}
@@ -138,7 +138,7 @@
 	\vfill
 	\begin{quote}
 	\noindent{\fourteen{2. #4}}\\
-	{\fourteen{#5\\
+	{\twelve{#5\\
 	kt\'{o}ry jest autorem:\\
 	#6\\
 	}}
