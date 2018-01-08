@@ -113,7 +113,7 @@ Stosowanie się do tej konwencji zaprezentowano w rozdziale \ref{implementacja} 
 	\label{fig-gameplay-chart}
 \end{figure}
 
-\chapter{Przykładowy przebieg rozgrywki} %zeby opisac JAK zaimplementowalismy, trzeba najpierw opisac CO zaimplementowalismy
+\chapter{Przykładowy przebieg rozgrywki w ,,thesis\_1``} %zeby opisac JAK zaimplementowalismy, trzeba najpierw opisac CO zaimplementowalismy
 
 \begin{enumerate}
 	\item Gracz pierwszy uruchamia grę po raz pierwszy, wobec czego jest przenoszony do menu opcji w celu wybrania ustawień (rys. \ref{settingsmenu}). Wpisuje swoje imię w odpowiednim polu, wybiera klasę postaci, zdolności, obrazek oraz czy będzie korzystał z klawiatury i myszki czy z kontrolera do gier (pada). Klika przycisk {\em Accept}, w katalogu gry powstaje plik z zapisem ustawień, gracz przenoszony jest do menu głównego.
@@ -143,14 +143,14 @@ Opis dotyczy projektu dostępnego w publicznym repozytorium pod adresem \newline
 Wywołanie pliku wykonywalnego z grą ({\em thesis\_1.exe}) powoduje uruchomienie silnika, utworzenie obiektu klasy {\em GameInfoInstance} (opisanej w podrozdziale \ref{gameinfoinstance}), a następnie wczytanie początkowego poziomu {\em MainMenu}, który wywołuje funkcję {\em SaveGameCheck} z {\em GameInfoInstance} sprawdzającą czy istnieje plik z zapisem gry (system opisany w podrozdziale \ref{sejwy}) i wyświetlający interfejs użytkownika. Na tym etapie grający otrzymuję kontrolę nad dalszym przebiegiem programu. Sprowadza się ona do wywołań funkcji z {\em GameInfoInstance} poprzez interfejs.
 	\subsection{GameInfoInstance}
 		\label{gameinfoinstance}
-		Klasa {\em GameInfoInstance} dziedziczy po klasie {\em GameInstance} (opisanej w podrozdziale \ref{sec:konwencja}), zawiera podstawowe informacje wykorzystywane w innych obszarach gry (na przykład dostępne zdolności i klasy postaci wykorzystywane w systemie opisanym w podrozdziale \ref{wybor-postaci}) oraz odpowiada za wyświetlanie {\em widgetów} interfejsu (podrozdział \ref{interface}) i tworzenie oraz dołączanie do istniejących rozgrywek sieciowych (podrozdział \ref{networking}).
+		Klasa {\em GameInfoInstance} dziedziczy po klasie {\em GameInstance} (opisanej w podrozdziale \ref{sec:konwencja}), zawiera podstawowe informacje wykorzystywane w innych obszarach gry (na przykład dostępne zdolności i klasy postaci wykorzystywane w systemie opisanym w podrozdziale \ref{wybor-postaci}) oraz odpowiada za wyświetlanie {\em widgetów} interfejsu (podrozdział \ref{interface}) i tworzenie oraz dołączanie do istniejących rozgrywek sieciowych (podrozdział \ref{networking}). Klasa została zaimplementowana za pomocą blueprintów.
 	
 
 \section{Interfejs}
 	\label{interface}
 	Podstawę interfejsu w UE4 stanowią {\em widgety} czyli elementy posiadające pewną logikę, które można wyświetlać w oknie użytkownika w warstwie interfejsu. Są to na przykład przyciski, listy, suwaki, pola tekstowe i tym podobne. Za pomocą edytora {\em widgetów} z podstawowych {\em widgetów} buduje się bardziej skomplikowane (na przykład menu główne lub tablica wyników), z których konstruuje się docelowy interfejs.
 \newline \indent W przypadku gry ,,thesis\_1`` {\em widgety} wyświetlane są poprzez wywoływanie odpowiednich funkcji z {\em GameInfoInstance} (rys. \ref{fig-save-game-check}, \ref{fig-show-host-menu}). 
-\newline \indent Z menu głównego grający ma możliwość przejścia do menu tworzenia lub dołączania do gry (rozdział \ref{networking}), menu opcji (rozdział \ref{wybor-postaci}) oraz zamknięcia gry.
+\newline \indent Z menu głównego grający ma możliwość przejścia do menu tworzenia lub dołączania do gry (rozdział \ref{networking}), menu opcji (rozdział \ref{wybor-postaci}) oraz zamknięcia gry. Wszystkie {\em widgety} zaimplementowane zostały za pomocą blueprintów.
 
 	\begin{figure}
 		\centering
@@ -174,12 +174,12 @@ Wywołanie pliku wykonywalnego z grą ({\em thesis\_1.exe}) powoduje uruchomieni
 \section{Postacie i zdolności}
 	\label{characters-skills}
 Gra składa się wielu nieodzownych elementów, jednym z istotniejszych jest niewątpliwie postać którą gracz kontroluje.
-	\subsection{Pawn a PlayerController}
+	\subsection{Pawn, a PlayerController}
 	Podczas tworzenia postaci pojawia się wiele pytań i problemów do rozwiązania.
 Jednym z nich jest sposób zbierania danych od gracza. UE4 pozwala na obsługę danych wejściowych w klasach {\em Pawn} lub w {\em PlayerController}. Rzeczą wartą rozważenia jest sposób w jaki rozdzielimy obsługę wejścia pomiędzy tymi klasami\cite{docs-playercontroller}. W prostych przypadkach możliwa jest obsługa zebranych informacji o woli gracza całkowicie w klasie  {\em Pawn}. Jednak gdy sterowanie staje się skomplikowane, jego obsługa w {\em PlayerControllerze} jest nieunikniona.  {\em PlayerController} pozwala na przykład na sterowanie wieloma  {\em pawnami} na jednej maszynie czy dynamiczne przełączanie się pomiędzy postaciami.  Kolejną zaletą  {\em PlayerControllera} jest to, że jedna jego instancja jest przypisana do gracza przez całą rozgrywkę, a kontrolowane przez niego obiekty klasy  {\em Pawn} mogą się zmieniać. Na przykład podczas odradzania naszej postaci utworzony zostaje nowy obiekt klasy  {\em Pawn}, a kontroler pozostaje ten sam, więc dane, których nie chcemy stracić, takie jak zdobyte punkty czy złoto powinny być składową  {\em PlayerControllera}.
 \newline \indent W grze ,,thesis\_1`` jako klasy bazowej do reprezentacji gracza użyto klasy  {\em Character}, a dane wejściowe są całkowicie obsługiwane przez  {\em PlayerController}.
-	\subsection{Nazewnicto klas}
-	Utworzone klasy pochodne posiadają przedrostek  {\em Base}. Jest to spowodowane faktem, iż klasy napisane w  {\em C++} są następnie wykorzystywane jako klasy bazowe blueprintów postaci. Wszystkie podstawowe umiejętności jak poruszanie się, skakanie czy obracanie się postaci zostały zaimplementowane za pomocą języka  {\em C++},a następnie odziedziczone w blueprintach. Zyskano dzięki temu warstwę abstrakcji oddzielającą niezbędne linie kodu od dodatkowych zdolności postaci oraz łatwość zmian indywidualnych cech postaci za pomocą edytora blueprintów.
+	\subsection{Nazewnicto klas C++}
+	Utworzone klasy pochodne posiadają przedrostek  {\em Base}. Jest to spowodowane faktem, iż klasy napisane w  {\em C++} są następnie wykorzystywane jako klasy bazowe blueprintów postaci. Wszystkie podstawowe umiejętności jak poruszanie się, skakanie czy obracanie się postaci zostały zaimplementowane za pomocą języka  {\em C++}, a następnie odziedziczone w blueprintach. Zyskano dzięki temu warstwę abstrakcji oddzielającą niezbędne linie kodu od dodatkowych zdolności postaci oraz łatwość zmian indywidualnych cech postaci za pomocą edytora blueprintów.
 	\subsection{BaseCharacter}
 	W celu rozwinięcia podstawowych możliwości klasy  {\em Character} udostępnionej przez silnik stworzono pochodną klasę  {\em BaseCharacter}. Głównym celem było pozwolenie graczom na dowolne dostosowanie zdolności postaci. Problem ten został rozwiązany za pomocą tablicy obiektów  {\em Skill}, które posiadają metody  {\em OnPress} oraz  {\em OnRelease} zawierające logikę, która wykonywana jest, gdy gracz naciska lub zwalnia odpowiedni przycisk.		
 Dodane zostały również zmienne, które są używne przez silnik do odgrywania odpowiednich animacji takich jak animacja uniku czy animacja czarowania oraz funkcje, które zmieniają wartości tych zmiennych na serwerze, gdy gracz na maszynie klienckiej wciśnie odpowiednie przyciski.

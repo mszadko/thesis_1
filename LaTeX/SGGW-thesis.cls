@@ -98,7 +98,7 @@
 		{\twelve{\@album}}\\
 		\vspace{3cm}
 		{\twentyfour{\@title}}\\
-		%\vspace{1cm}
+		\vspace{0.5cm}
 		{\sixteen{\@Etitle}}\\
 		\vspace{1cm}
 		{\fourteen{\@thesis}}\\
@@ -107,12 +107,12 @@
 
 	\begin{flushright}
 		\vfill
-		{\twelve{Praca wykonana pod kierunkiem}}\\
-		{\twelve{\@promotor}}\\
-		{\twelve{\@pworkplace}}\\
+		{\normalsize{Praca wykonana pod kierunkiem}}\\
+		{\normalsize{\@promotor}}\\
+		{\normalsize{\@pworkplace}}\\
 		\vspace{1cm}
 	\end{flushright}
-	{\twelve{Warszawa, \@date}}\\
+	{\normalsize{Warszawa, \@date}}\\
 	\end{center}
 	\newpage
 	\if@multip
