@@ -25,7 +25,7 @@
 
 \begin{document}
 \maketitle
-\twoppage{Maciej Wygoda}{172407}{rozdziału 1 ze strony 8, rozdziału 2 ze stron 9-12, rozdziału 3 ze stron 13-14, podrozdziałów 4.1, 4.2, 4.3 ze stron 15-17, podrozdziałów 4.4.3, 4.4.4 ze strony 18, podrozdziałów 4.4.6, 4.4.7, 4.5 ze strony 20, podrozdziału 4.7 ze strony 23}{Marcin Szadkowski}{167607}{rozdziału 1 ze strony 8, rozdziału 3 ze stron 13-14, podrozdziału 4.2 ze strony 15, podrozdziału 4.4.1 ze strony 17, podrozdziałów 4.4.2, 4.4.3 i 4.4.4 ze strony 18, podrozdziału 4.4.5 ze strony 19, podrozdziału 4.4.6 ze strony 20, podrozdziału 4.5 ze strony 20, podrozdziału 4.6 ze stron 21-23. }
+\twoppage{Maciej Wygoda}{172407}{rozdziału 1 ze strony 8, rozdziału 2 ze stron 9-14, rozdziału 3 ze stron 13-14, podrozdziałów 4.1, 4.2, 4.3 ze stron 15-17, podrozdziałów 4.4.3, 4.4.4 ze strony 18, podrozdziałów 4.4.6, 4.4.7, 4.5 ze strony 20, podrozdziału 4.7 ze strony 23}{Marcin Szadkowski}{167607}{rozdziału 1 ze strony 8, rozdziału 3 ze stron 13-14, podrozdziału 4.2 ze strony 15, podrozdziału 4.4.1 ze strony 17, podrozdziałów 4.4.2, 4.4.3 i 4.4.4 ze strony 18, podrozdziału 4.4.5 ze strony 19, podrozdziału 4.4.6 ze strony 20, podrozdziału 4.5 ze strony 20, podrozdziału 4.6 ze stron 21-23, rodziału 5, rozdziału 6. }
 \statementpage
 \abstractpage
 {Implementacja sieciowej gry wideo z wykorzystaniem silnika Unreal Engine 4}
@@ -49,6 +49,7 @@ Praca ta może z powodzeniem służyć za przykład i drogowskaz dla osób chcą
 Motywację stanowiły chęć zgłębienia technologii UE4, podjęcia technicznego wyzwania, jakie stawia zaprogramowanie gry wideo oraz pasja do gier.
 \chapter{Unreal Engine 4}
 \section{Czym jest silnik gry?}
+\label{czym-jest-silnik}
 Przez pojęcie ,,silnik gry`` rozumie się zbiór funkcji i narzędzi ({\em ang. framework}) wspierający tworzenie gier. Musi on oferować przede wszystkim renderowanie grafiki, dźwięku i obsługę sterowania. Współczesne silniki posiadają jednak znacznie więcej funkcji, a są to między innymi obsługa sieci, symulacja fizyki, edytory shaderów i efektów cząsteczkowych, produkcja przerywników filmowych oraz obsługa wielu platform na przykład komputerów, konsol czy urządzeń mobilnych takich jak smartfony. Większość silników dystrybuowana jest wraz z edytorem będacym graficznym interfejsem między programistą, a funkcjami silnika. Wykorzystanie jednego silnika do stworzenia wielu różnych gier znacząco skraca okres produkcji i stanowi powszechną w branży praktykę\cite{learning-unreal}\cite{wiki-game-engine}.
 
 \section{Funkcje silnika Unreal Engine 4}
@@ -63,7 +64,7 @@ UE4 swoją popularność zawdzięcza między innymi otwartemu źródłu, co w pe
 \item[Edytor interfejsu użytkownika:] Interfejs stanowi istotny element w komunikacji między grą, a grającym. UE4 zapewnia rozbudowany edytor pozwalający na tworzenie między innymi takich elementów interfejsu jak {\em HUD (head-up display)} czy menu.
 \item[Drzewa behawioralne:]Stanowią one podstawę sztucznej inteligencji w UE4 i pozwalają na zaprogramowanie zachowania postaci sterowanych przez komputer w zależności od odbieranych przez nie bodźców i stanu sceny.
 \item[Sequencer:]Jest to narzędzie służące do produkcji przerywników filmowych. Jego obsługa przypomina pracę z oprogramowaniem do montażu filmów i modelowania 3D. Edytor ten uwzględnia elementy takie jak oś czasu, ujęcia kamery, szkielety i animacje obiektów.
-\item[Networking:]UE4 powstał z myślą o rozgrywce sieciowej. Wobec tego dużo uwagi poświęcono utworzeniu odpowiedniej abstrakcji, ułatwiającej programowanie komunikacji sieciowej. Komunikacja ta wykorzystuje model klient-serwer, co oznacza, że istnieje jeden serwer z autorytatywną instancją świata oraz wielu klientów, których światy są aktualizowane na podstawie tego, co dzieje się na serwerze. Aktualizacje te mogą być zrealizowane dwojako: jako aktualizacje właściwości poszczególnych obiektów lub za pomocą wywołania zdalnej procedury {\em (ang. remote procedure calls -- RPC)}. W obu przypadkach wykorzystywany jest protokół {\em UDP}, który jest zawodny, ale generuje o wiele mniejszy narzut komunikacyjny, niż konkurujący z nim {\em TCP}. UE4 ma zaimplementowany własny system, zapewniający częściową niezawodność komunikacji \cite{unreal-wiki-replication}.
+\item[Networking:]UE4 powstał z myślą o rozgrywce sieciowej. Wobec tego dużo uwagi poświęcono utworzeniu odpowiedniej abstrakcji, ułatwiającej programowanie komunikacji sieciowej. Komunikacja ta wykorzystuje model klient-serwer, co oznacza, że istnieje jeden serwer z autorytatywną instancją świata oraz wielu klientów, których światy są aktualizowane na podstawie tego, co dzieje się na serwerze. Aktualizacje te mogą być zrealizowane dwojako: jako aktualizacje właściwości poszczególnych obiektów lub za pomocą wywołania zdalnej procedury {\em (ang. remote procedure calls -- RPC)}. W obu przypadkach wykorzystywany jest protokół {\em UDP}, który jest zawodny, ale generuje o wiele mniejszy narzut komunikacyjny, niż konkurujący z nim {\em TCP}. UE4 ma zaimplementowany własny system, zapewniający częściową niezawodność komunikacji \cite{unreal-wiki-replication}.
 %https://docs.unrealengine.com/latest/INT/Gameplay/Networking/index.html
 \item[Analiza wydajności:]Osiągnięcie iluzji ruchomego obrazu wymaga wygenerowania przynajmniej 15 klatek na sekundę ({\em ang. frames per second - FPS}), obecnie na konsolach do gier pożądaną wartością jest przynajmniej 30FPS, na komputerach 60FPS\cite{docs-profiler}, a w tytułach esportowych nawet dwa razy więcej. Miara ta jest odzwierciedleniem płynności obrazu i wydajności gry, a na wydajność składają się stopień skomplikowania scen i obliczeń oraz optymalizacja. UE4 zapewnia narzędzia do profilowania, dzięki którym łatwiejsze staje się zidentyfikowanie obszarów wymagających optymalizacji.
 \item[Edytor materiałów:]W konwencji UE4 materiał to zbiór informacji o wizualnej stronie obiektu. Definiuje on kolor, teksturę, rodzaj powierzchni obiektu (na przykład metal, drewno), przezroczystość i inne cechy, które mogą mieć wpływ na zachowanie światła padającego na dany obiekt. UE4 posiada rozbudowany edytor materiałów opierający się na programowaniu graficznym ({\em ang. visual scripting}).
@@ -105,6 +106,20 @@ Styl rozgrywki zależy od gry i wizji jej autora, jednak istnieją pewne cechy w
 \end{description}
 %dopisac cos ze trzymalismy sie tej konwencji i dalej prezentujemy jej wykorzystanie
 Stosowanie się do tej konwencji zaprezentowano w rozdziale \ref{implementacja} skupiającym się na implementacji gry ,,thesis\_1``.
+
+\section{Porównanie z innymi silnikami}
+Bezpośrednim konkurentem dla UE4 jest silnik {\em Unity}. Jego główne różnice w stosunku do UE4 to:
+\begin{itemize}
+\item Pełniejsza i precyzyjniejsza dokumentacja.
+\item Większa społeczność.
+\item Lepsze narzędzia do produkcji gier 2D.
+\item Bogatszy {\em AssetStore} czyli serwis, w którym użytkownicy mogą sprzedawać swoje assety (na przykład modele, dźwięki, animacje, gotowe systemy).
+\item Język programowania {\em C\#}, co jest jednym z powodów niższej wydajności gier utworzonych w {\em Unity}.
+\item Brak otwartego źródła.
+\item Brak wielu funkcji w domyślnej konfiguracji silnika. Funkcje takie jak {\em visual scripting} czy drzewa behawioralne są stworzone przez społeczność, a za dostęp do nich trzeba zapłacić.
+\item Rzadziej używany w wysokobudżetowych projektach.
+\end{itemize}
+Inną możliwością jest opracowanie własnego silnika od podstaw. W takim przypadku należy zadbać o podstawowe funkcje wymienione w podrozdziale \ref{czym-jest-silnik}. Wówczas przydatne są biblioteki {\em C++}: {\em SFML} oraz {\em SDL}. Osiągnięcie efektu porównywalnego do UE4 nawet dla dużego zespołu dośswiadczonych programistów będzie zadaniem czasochłonnym i kosztownym. Na to rozwiązanie decydują się głównie duże studia deweloperskie, które planują wykorzystać silnik do wielu projektów, a popularne silniki nie spełniają ich wymagań.
 
 \begin{figure}
 	\centering
@@ -256,7 +271,7 @@ Proces tworzenia animacji polega na ustawianiu kości w odpowiednich pozach i za
 W animacjach nawet podstawowych ruchów pojawia się wiele problemów do rozwiązania. Przykładem może być animacja skoku, w której problematyczny jest zmienny czas przebywania postaci w powietrzu. Animacja zeskakiwania z wysokiej przeszkody powinna trwać dłużej niż animacja wskakiwania na przeszkodę. Problem ten został rozwiązany za pomocą rozbicia sekwencji skoku na 3 oddzielne animacje – wybicie się, przebywanie w powietrzu oraz lądowanie. Ostatnia klatka wybicia jest jednocześnie pierwszą i ostatnią klatką przebywania w powietrzu oraz pierwszą klatką lądowania. Pozwoliło to na zapętlone odgrywanie animacji przebywania w powietrzu z płynnymi przejściami pomiędzy wybiciem, a lądowaniem.
 
 \section{Udźwiękowienie}
-Odtwarzanie dźwięków w grze obsłużono dwoma funkcjami. W przypadku muzyki i dźwięku towarzyszącego zdobyciu puntku jest to funkcja {\em PlaySound2D}, która odtwarza dźwięk u tych klientów, u których została wywołana. Dźwięki związane ze zdolnościami i ogniskiem odtwarzane są za pomocą funkcji {\em SpawnSoundAtLocation}, dzięki czemu słyszą je jedynie gracze będący blisko źródła dźwięku.
+Odtwarzanie dźwięków w grze obsłużono dwoma funkcjami. W przypadku muzyki i dźwięku towarzyszącego zdobyciu punktu jest to funkcja {\em PlaySound2D}, która odtwarza dźwięk u tych klientów, u których została wywołana. Dźwięki związane ze zdolnościami i ogniskiem odtwarzane są za pomocą funkcji {\em SpawnSoundAtLocation}, dzięki czemu słyszą je jedynie gracze będący blisko źródła dźwięku.
 \newline \indent Użyto następujących dźwięków pochodzących ze strony internetowej freesound.org:
 \begin{itemize}
 \item ,,06673 electronic flipper bonus.wav`` autorstwa Robinhood76 (licencja CC BY-NC)
@@ -264,6 +279,27 @@ Odtwarzanie dźwięków w grze obsłużono dwoma funkcjami. W przypadku muzyki i
 \item ,,shatter a wine glass`` autorstwa edhutschek (licencja CC 0)
 \item ,,jumping`` autorstwa fins (licencja CC 0)
 \end{itemize}
+
+\chapter{Dalszy rozwój gry}
+W kolejnych podrozdziałach zaprezentowano możliwości dalszego rozwoju gry. Poprzez implementację nowych klas postaci, zdolności oraz postaci sterowanych przez komputer można urozmaicić rozgrywkę, a nawet całkowicie zmienić jej charakter z rywalizacji między graczami na współpracę.
+
+\section{Klasy postaci i zdolności}
+Klasy {\em Skill} oraz {\em BaseCharacter} zostały opracowane z myślą o ułatwieniu dalszego rozwoju gry. Utworzenie nowej postaci, różniącej się od dotychczasowych na przykład liczbą punktów zdrowia czy prędkością, sprowadza się do odziedziczenia klasy bazowej i zmiany wartości odpowiednich zmiennych. Utworzenie zdolności różniącej się na przykład liczbą zadawanych obrażen czy czasem, który należy odczekać przed ponownym użyciem zdolności, to również kwestia zmiany pojedyńczych zmiennych. W przypadku implementacji zdolności o zupełnie nowej logice za wzór służą zdolności dostępne w finalnej wersji gry.
+\newline \indent Nowo opracowane postaci i zdolności muszą zostać umieszczone w -- odpowiednio -- słowniku {\em CharacterClasses} lub tablicy {\em Skills} w blueprincie {\em GameInfoInstance}, aby były widoczne w grze.
+
+\section{Sztuczna inteligencja}
+Możliwe jest również wykorzystanie dostępnego w UE4 mechanizmu drzew behawioralnych w celu zaimplementowania postaci sterowanych przez komputer. Sprowadza się to do utworzenia następujących elementów \cite{docs-behavior-tree-quick-start}:
+\begin{itemize}
+\item Nowa postać dziedzicząca po {\em BaseCharacter}
+\item {\em NavMesh} określający, w które miejsca postać może się przemieścić
+\item Drzewo behawioralne zwracające konkretne zachowanie na podstawie danych wejściowych
+\item {\em Blackboard} będący zbiorem danych dla drzewa behawioralnego
+\item {\em AIController} będący odpowiednikiem {\em PlayerControllera} i spinający wyżej wymienione elementy. {\em AIController} decyduje o wykorzystywanym {\em Blackboardzie} i drzewie behawioralnym oraz inicjuje dane zachowanie w postaci.
+\end{itemize}
+
+\chapter{Napotkane problemy}
+Niejednokrotnie trudności sprawiała niedokładna dokumentacja silnika lub nawet jej brak. W takich sytuacjach pomocne okazywały się rady społeczności skupionej wokół UE4 oraz otwarte źródło silnika.
+\newline \indent Problem stanowiło również korzystanie z systemu kontroli wersji Git, ponieważ nie jest on przystosowany do obsługi plików innych niż tekstowe. Skutkiem jest utrudnione rozwiązywanie ewentualnych konfliktów powstałych w plikach związanych na przykład z blueprintami czy modelami. Problem ten będzie dotkliwszy dla większych zespołów.
 
 \begin{thebibliography}{9}
 
@@ -289,7 +325,10 @@ Joanna Lee, \textit{Learning Unreal Engine Game Development}, Packt Publishing, 
 \textit{UE4 Documentation Performance and Profiling}. \url{https://docs.unrealengine.com/latest/INT/Engine/Performance/}  (dostęp 3.01.2018)
 
 \bibitem{docs-gameplay-framework}
-\textit{Gameplay Framework Quick Reference}. \url{https://docs.unrealengine.com/latest/INT/Gameplay/Framework/QuickReference/index.html} (dostęp 31.12.2017)
+\textit{UE4 Documentation Gameplay Framework Quick Reference}. \url{https://docs.unrealengine.com/latest/INT/Gameplay/Framework/QuickReference/index.html} (dostęp 31.12.2017)
+
+\bibitem{docs-behavior-tree-quick-start}
+\textit{UE4 Documentation Behavior Tree Quick Start Guide}. \url{https://docs.unrealengine.com/latest/INT/Engine/AI/BehaviorTrees/QuickStart/index.html} (dostęp 14.01.2018)
 
 \bibitem{wiki-game-engine}
 \textit{,,Game engine``, Wikipedia}. \url{https://en.wikipedia.org/wiki/Game_engine} {\mbox(dostęp 29.12.2017)}
