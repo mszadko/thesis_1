@@ -25,14 +25,16 @@
 
 \begin{document}
 \maketitle
-\twoppage{Maciej Wygoda}{172407}{rozdziału 1 ze strony 9, rozdziału 2 ze stron 10-14, rozdziału 3 ze stron 15-16, podrozdziałów 4.1, 4.2, 4.3 ze stron 17-19, podrozdziałów 4.4.3, 4.4.4 ze strony 20, podrozdziałów 4.4.6, 4.4.7, 4.5 ze stron 22-23, podrozdziału 4.7 ze strony 25, rozdziału 5 ze strony 27, rozdziału 6 ze strony 28, rozdziału 8 ze strony 30.}{Marcin Szadkowski}{167607}{rozdziału 1 ze strony 9, podrozdziału 2.2 ze strony 10, rozdziału 3 ze stron 15-16, podrozdziału 4.2 ze strony 17, podrozdziału 4.4.1 ze strony 19, podrozdziałów 4.4.2, 4.4.3 i 4.4.4 ze strony 20, podrozdziału 4.4.5 ze strony 21, podrozdziału 4.4.6 ze strony 22, podrozdziału 4.5 ze strony 22, podrozdziału 4.6 ze stron 23-26, rodziału 7 ze strony 29 oraz rozdziału 8 ze strony 30. }
+\twoppage{Maciej Wygoda}{172407}{rozdziału 1 ze strony 9, rozdziału 2 ze stron 10-14, rozdziału 3 ze stron 15-16, podrozdziałów 4.1, 4.2, 4.3, 4.4 ze stron 17-19, podrozdziałów 4.5.3, 4.5.4 ze strony 20, podrozdziałów 4.5.6, 4.5.7, 4.6 ze stron 22-23, podrozdziału 4.8 ze strony 25, rozdziału 5 ze strony 27, rozdziału 6 ze strony 28, rozdziału 8 ze strony 30.}{Marcin Szadkowski}{167607}{rozdziału 1 ze strony 9, podrozdziału 2.2 ze strony 10, rozdziału 3 ze stron 15-16, podrozdziału 4.3 ze strony 17, podrozdziału 4.5.1 ze strony 19, podrozdziałów 4.5.2, 4.5.3 i 4.5.4 ze strony 20, podrozdziału 4.5.5 ze strony 21, podrozdziału 4.5.6 i 4.5.8 ze strony 22, podrozdziału 4.6 ze strony 22, podrozdziału 4.7 ze stron 23-26, rodziału 7 ze strony 29 oraz rozdziału 8 ze strony 30. }
 \statementpage
 \abstractpage
 {Implementacja sieciowej gry wideo z wykorzystaniem silnika Unreal Engine 4}
-{Niniejsza praca jest opisem implementacji sieciowej gry wideo pod tytułem ,,thesis\_1`` z wykorzystaniem silnika Unreal Engine 4. Zawiera opis silnika, prezentuje architekturę gry oraz zastosowane rozwiązania.}
+{Niniejsza praca jest opisem implementacji sieciowej gry wideo pod tytułem ,,thesis\_1``, wykorzystującej silnik Unreal Engine 4. Praca zawiera opis silnika, prezentuje architekturę gry oraz zastosowane narzędzia, napotkane problemy i ich rozwiązania.
+Integraną część pracy stanowią opracowane kody -- zarówno w języku {\em C++}, jak i w postaci tzw. {\em blueprintów}.}
 {Unreal Engine 4, tworzenie gier wideo, gra wideo}
 {Implementation of an online video game using Unreal Engine 4}
-{This study is a description of an implementation of an online video game ,,thesis\_1`` using Unreal Engine 4. It describes the engine and presents the game's architecture and applied solutions.}
+{This thesis describes the implementation of an online video game ``thesis\_1``, based on Unreal Engine 4. It contains the description of this engine and presents the game's architecture and applied tools, encountered problems and their solutions.
+An integral part of the thesis are the prepared codes, both in {\em C++}, as in the form of so-called {\em blueprints}.}
 {Unreal Engine 4, game development, gamedev, video game}
 
 \tableofcontents
@@ -42,7 +44,7 @@ Gry wideo stanowią rozrywkę dla coraz szerszego grona odbiorców, a sama bran�
 \newline \indent Tworzenie gier wideo ({\em ang. game development}) to obszerne zagadnienie łączące w sobie wiele dziedzin. Od strony technicznej są to między innymi grafika komputerowa, inżynieria oprogramowania, programowanie komputerów, bezpieczeństwo komputerowe, matematyka\cite{perelki}. W związku z tym, że tworzenie gier to proces długi i skomplikowany, istnieje wiele narzędzi wspierających go, a jednym z najpopularniejszych jest silnik {\em Unreal Engine 4} (zwany dalej "UE4").
 \section{Cel i zakres pracy}
 Głównym celem niniejszej pracy jest rozwój wiedzy o procesie tworzenia gier wideo oraz technologii UE4.  Na całą pracę składa się zaprojektowanie i zaimplementowanie gry z użyciem UE4 oraz podstawowy opis silnika i implementacji gry. 
-\newline \indent Uwagę skupiono między innymi na poznawaniu działania i efektywnym wykorzystywaniu technologii UE4 oraz oprogramowania do modelowania i animacji Blender oraz zdobyciu doświadczenia w pracy zespołowej.
+\newline \indent Uwagę skupiono, między innymi, na poznawaniu działania i efektywnym wykorzystywaniu technologii UE4 oraz oprogramowania do modelowania i animacji Blender oraz zdobyciu doświadczenia w pracy zespołowej.
 Praca ta może z powodzeniem służyć za przykład i drogowskaz dla osób chcących napisać własną grę.
 
 \section{Motywacja}
@@ -50,9 +52,10 @@ Motywację stanowiły chęć zgłębienia technologii UE4, podjęcia techniczneg
 \chapter{Unreal Engine 4}
 \section{Czym jest silnik gry?}
 \label{czym-jest-silnik}
-Przez pojęcie ,,silnik gry`` rozumie się zbiór funkcji i narzędzi ({\em ang. framework}) wspierający tworzenie gier. Musi on oferować przede wszystkim renderowanie grafiki, dźwięku i obsługę sterowania. Współczesne silniki posiadają jednak znacznie więcej funkcji, a są to między innymi obsługa sieci, symulacja fizyki, edytory shaderów i efektów cząsteczkowych, produkcja przerywników filmowych oraz obsługa wielu platform na przykład komputerów, konsol czy urządzeń mobilnych takich jak smartfony. Większość silników dystrybuowana jest wraz z edytorem będacym graficznym interfejsem między programistą, a funkcjami silnika. Wykorzystanie jednego silnika do stworzenia wielu różnych gier znacząco skraca okres produkcji i stanowi powszechną w branży praktykę\cite{learning-unreal}\cite{wiki-game-engine}.
+Przez pojęcie ,,silnik gry`` rozumie się zbiór funkcji i narzędzi ({\em ang. framework}) wspierający tworzenie gier. Musi on oferować przede wszystkim renderowanie grafiki, dźwięku i obsługę sterowania. Współczesne silniki posiadają jednak znacznie więcej funkcji, a są to, między innymi, obsługa sieci, symulacja fizyki, edytory shaderów i efektów cząsteczkowych, produkcja przerywników filmowych oraz obsługa wielu platform na przykład komputerów, konsol czy urządzeń mobilnych takich jak smartfony. Większość silników dystrybuowana jest wraz z edytorem będacym graficznym interfejsem między programistą, a funkcjami silnika. Wykorzystanie jednego silnika do stworzenia wielu różnych gier znacząco skraca okres produkcji i stanowi powszechną w branży praktykę\cite{learning-unreal}\cite{wiki-game-engine}.
 \section{Język programowania}
-Jednym z problemów dziedziny tworzenia gier jest zebranie standardów technicznych,  które zostały by przyjęte przez całą branżę. Rozwój tej gałęzi informatyki jest napędzany przez duże firmy, które wprowadzają na rynek nowe technologie. Utrudnia to dobranie narzędzi, które można by wykorzystywać przez długi czas\cite{perelki}. Ogólnodostępne standardy są ważne, aby małe studia mogły obok dużych korporacji dokładać nowe rozwiązania. Z tych powodów do tworzenia w silniku UE4 wykorzystywany jest {\em C++}, który pod wieloma względami jest doskonałym narzędziem. Korzystanie z niego jest darmowe, przez co nawet małe studia mogą pozwolić sobie na jego użycie. Oprócz dostępności, narzędzia do tworzenia gier powinny łączyć w sobie wydajność oraz umożliwiać szybkie tworzenie projektów. Wszystkie te cechy łączy w sobie język {\em C++}\cite{szkolacpp}.
+Jednym z problemów dziedziny tworzenia gier jest zebranie standardów technicznych,  które zostałyby przyjęte przez całą branżę. Rozwój tej gałęzi informatyki jest napędzany przez duże firmy, które wprowadzają na rynek nowe technologie. Utrudnia to dobranie narzędzi, które można by wykorzystywać przez długi czas\cite{perelki}. Ogólnodostępne standardy są ważne, aby małe firmy i studia mogły, obok dużych korporacji, dokładać nowe rozwiązania. Z tych powodów do tworzenia w silniku UE4 wykorzystywany jest {\em C++}, który pod wieloma względami jest odpowiednim narzędziem. Korzystanie z niego nie wiąże się z dużymi kosztami (a wiele kompilatorów i bibliotek jest wręcz darmowych), przez co nawet małe studia mogą pozwolić sobie na jego użycie. Oprócz dostępności, narzędzia do tworzenia gier powinny łączyć w sobie wydajność oraz umożliwiać szybkie tworzenie projektów. Wszystkie te cechy ma właśnie język {\em C++}\cite{szkolacpp}, toteż często stosowany jest do tworzenia gier.
+Na jego wykorzystanie zdecydowaliśmy się również w naszym projekcie.
 
 
 \section{Funkcje silnika Unreal Engine 4}
@@ -64,7 +67,7 @@ UE4 swoją popularność zawdzięcza między innymi otwartemu źródłu, co w pe
 
 \begin{description}
 \item[Symulacja fizyki:]UE4 korzysta z silnika fizyki {\em PhysX 3.3} dzięki czemu wiarygodnie symuluje kolizje obiektów i inne oddziaływania fizyczne. Ponadto edytor umożliwia modyfikację panujących zasad, co pozwala na lepsze przedstawienie wizji autorów gry.
-\item[Edytor interfejsu użytkownika:] Interfejs stanowi istotny element w komunikacji między grą, a grającym. UE4 zapewnia rozbudowany edytor pozwalający na tworzenie między innymi takich elementów interfejsu jak {\em HUD (head-up display)} czy menu.
+\item[Edytor interfejsu użytkownika:] Interfejs stanowi istotny element w komunikacji między grą, a grającym. UE4 zapewnia rozbudowany edytor pozwalający na tworzenie, między innymi, takich elementów interfejsu, jak {\em HUD (head-up display)} czy menu.
 \item[Drzewa behawioralne:]Stanowią one podstawę sztucznej inteligencji w UE4 i pozwalają na zaprogramowanie zachowania postaci sterowanych przez komputer w zależności od odbieranych przez nie bodźców i stanu sceny.
 \item[Sequencer:]Jest to narzędzie służące do produkcji przerywników filmowych. Jego obsługa przypomina pracę z oprogramowaniem do montażu filmów i modelowania 3D. Edytor ten uwzględnia elementy takie jak oś czasu, ujęcia kamery, szkielety i animacje obiektów.
 \item[Networking:]UE4 powstał z myślą o rozgrywce sieciowej. Wobec tego dużo uwagi poświęcono utworzeniu odpowiedniej abstrakcji, ułatwiającej programowanie komunikacji sieciowej. Komunikacja ta wykorzystuje model klient-serwer, co oznacza, że istnieje jeden serwer z autorytatywną instancją świata oraz wielu klientów, których światy są aktualizowane na podstawie tego, co dzieje się na serwerze. Aktualizacje te mogą być zrealizowane dwojako: jako aktualizacje właściwości poszczególnych obiektów lub za pomocą wywołania zdalnej procedury {\em (ang. remote procedure calls -- RPC)}. W obu przypadkach wykorzystywany jest protokół {\em UDP}, który jest zawodny, ale generuje o wiele mniejszy narzut komunikacyjny, niż konkurujący z nim {\em TCP}. UE4 ma zaimplementowany własny system, zapewniający częściową niezawodność komunikacji \cite{unreal-wiki-replication}.
@@ -155,7 +158,11 @@ Inną możliwością jest opracowanie własnego silnika od podstaw. W takim przy
 \end{figure}
 \chapter{Opis implementacji gry ,,thesis\_1``}
 \label{implementacja}
-Opis dotyczy projektu dostępnego w publicznym repozytorium pod adresem \newline https://github.com/mszadko/thesis\_1.
+\section{System kontroli wersji}
+Podczas pracy nad projektem korzystano z systemu kontroli wersji {\em Git}. Oprogramowanie to wspiera pracę zespołową programistów między innymi poprzez ułatwione rozwiązywanie tak zwanych konfliktów czyli sytuacji, w których kilku programistów jednocześnie modyfikuje ten sam plik tekstowy. Ponadto {\em Git} umożliwia przechowywanie plików projektowych na wspólnym serwerze, do którego zespół ma dostęp, a także śledzenie historii zmian czy ,,rozgałęzianie`` (ang. {\em branch}) projektu na przykład w przypadku implementowania nowych funkcji, które mogłyby uszkodzić dotychczasową, działającą wersję projektu.
+\newline \indent Katalog zarządzany przez system {\em Git} nazywa się ,,rezpozytorium``, a jego wersje przechowywane są na wspólnym serwerze oraz lokalnie na komputerach programistów. Praca z {\em Gitem} polega głównie na pobieraniu (polecenie {\em pull}) zmian z serwera do lokalnego repozytorium, zatwierdzaniu (polecenie {\em commit}) swoich zmian oraz wysyłaniu (polecenie {\em push}) ich do repozytorium na serwerze.
+ Repozytorium niniejszego projektu dostępne jest pod adresem https://github.com/mszadko/thesis\_1.
+\newline \indent W rozdziale \ref{problemy} opisano, dlaczego {\em Git} nie jest idealnym narzędziem do pracy nad projektami UE4.
 
 \section{Uruchomienie gry i podstawowe funkcje}
 Wywołanie pliku wykonywalnego z grą ({\em thesis\_1.exe}) powoduje uruchomienie silnika, utworzenie obiektu klasy {\em GameInfoInstance} (opisanej w podrozdziale \ref{gameinfoinstance}), a następnie wczytanie początkowego poziomu {\em MainMenu}, który wywołuje funkcję {\em SaveGameCheck} z {\em GameInfoInstance} sprawdzającą czy istnieje plik z zapisem gry (system opisany w podrozdziale \ref{sejwy}) i wyświetlający interfejs użytkownika. Na tym etapie grający otrzymuję kontrolę nad dalszym przebiegiem programu. Sprowadza się ona do wywołań funkcji z {\em GameInfoInstance} poprzez interfejs.
@@ -222,7 +229,9 @@ W celu dodania możliwości uniku, polegającego na gwałtownym odskoku postaci 
 	\subsection{Wybór postaci i zdolności}
 		\label{wybor-postaci}
 	Grający ma możliwość wyboru postaci oraz zdolności w menu opcji, które pobiera informacje o klasach postaci i zdolnościach z {\em GameInfoInstance}. Aby zapobiec sytuacji, w której wybrana została zdolność przeznaczona dla innej postaci niż obecnie wybrana, interfejs aktualizuje listę dostępnych zdolności przy każdej zmianie klasy postaci. Po zaakceptowaniu zmian tablica zdolności trafia do {\em PlayerInfo} oraz pliku z zapisem gry. Przy dołączeniu do rozgrywki informacje te trafiają do {\em PlayerControllera} za pomocą funkcji {\em LoadPlayerInfo}, a stamtąd do {\em Charactera} poprzez funkcję {\em ABaseCharacter::LoadSkills()} przy każdym jego odrodzeniu.
-
+	\subsection{Elementy środowiska}
+W celu urozmaicenia rozgrywki opracowano kilka blueprintów. Oprócz dynamicznego oświetlenia czy tak zwanego {\em screenshake'a}, polegającego na drganiu kamery na przykład podczas wybuchów, dodano element, który miał na celu skupienie potyczki pomiędzy graczami w jednym miejscu. Tym elementem jest ognisko (rys. \ref{gameplay1}), przy którym gracze mogą uzupełnić swoje punkty zdrowia. Instancja ogniska znajdująca się na serwerze posiada sferę potrzebną do sprawdzania kolizji oraz listę postaci znajdujących się wewnątrz sfery. 
+Gdy odległość postaci od ogniska będzie mniejsza niż promien sfery postać zostanie dodana do listy leczonych postaci i liczba jej punktów zdrowia zacznie wzrastać.
 \section{Networking -- tworzenie oraz dołączanie do rozgrywki sieciowej}
 	\label{networking}
 ,,thesis\_1`` jest grą sieciową i do kompletnej rozgrywki wymaga przynajmniej dwóch komputerów, z których jeden pełni rolę serwera, a pozostałe są klientami. W UE4 serwer może działać w jednym z dwóch trybów sieci \cite{docs-network-modes}:
@@ -243,7 +252,7 @@ W ,,thesis\_1`` wykorzystano tryb {\em NM\_ListenServer} ze względu na zapewnia
 		\label{switch-has-authority}
 \end{figure}
 
-\section{Modele i Animacje }
+\section{Modele i Animacje}
 Wartym zaznaczenia jest fakt, że głównym celem tworzenia modeli i animacji było zapoznanie się z narzędziami oraz samym procesem tworzenia tej części gier komputerowych. Podczas pracy nad projektem skupiono uwagę na aspektach technicznych. Znaczną część elementów {\em levelu} udało się stworzyć za pomocą obracania i skalowania gotowych kształtów udostępnionych w UE4. Bardziej skomplikowane kształty wymagały wymodelowania w osobnym oprogramowaniu dedykowanym do tego celu. Do stworzenia modeli i animacji użytych w projekcie wykorzystano oprogramowanie Blender w wersji 2.79.
 
 	\subsection{Modelowanie}
@@ -301,14 +310,17 @@ Możliwe jest również wykorzystanie dostępnego w UE4 mechanizmu drzew behawio
 \end{itemize}
 
 \chapter{Napotkane problemy}
+\label{problemy}
 Niejednokrotnie trudności sprawiała niedokładna dokumentacja silnika lub nawet jej brak. W takich sytuacjach pomocne okazywały się rady społeczności skupionej wokół UE4 oraz otwarte źródło silnika.
 \newline \indent Problem stanowiło również korzystanie z systemu kontroli wersji Git, ponieważ nie jest on przystosowany do obsługi plików innych niż tekstowe. Skutkiem jest utrudnione rozwiązywanie ewentualnych konfliktów powstałych w plikach związanych na przykład z blueprintami czy modelami. Problem ten będzie dotkliwszy dla większych zespołów.
 
 \chapter{Podsumowanie i wnioski}
 Tworzenie gier nie należy do zadań łatwych oraz szybkich. Podczas pracy nad projektem pojawiło się wiele dodatkowych problemów, przez co lista założonych na początku opcji gry musiała zostać skrócona. Jednym z nich był wysoki próg wejścia UE4. Przed rozpoczęciem pracy nad docelowym projektem, stworzonych zostało kilka mniejszych gier wzorowanych na przykładowych projektach z dokumentacji\cite{docs-tutorials}, które miały na celu zaznajomienie autorów z konwencjami, możliwościami silnika oraz systemem sieciowym. Czas tworzenia wydłużało dodatkowo scalanie podsystemów utworzonych przez poszczególnych autorów gry. Gry wideo są skomplikowanymi programami komputerowymi z duża liczbą połączeń pomiędzy danymi elementami gry. System zapisu jest na przykład zależny od wybranych opcji w interfejsie użytkownika, który z koleji jest powiązany z klasą postaci. Ze względu na dużą liczbę powiązań pomiędzy różnymi elementami projektu, nawet najmniejsze zmiany mogły spowodować powstawanie różnorakich błędów, przez co dużą część czasu poświecono na proces testowania każdego nowo dodanego elementu.
-\newline \indent Silnik UE4 umożliwił stworzenie prostej sieciowej gry w stosunkowo niedługim czasie. Gra była zaprojektowana z myślą o jej dalszym rozwoju co wraz ze znajomością silnika UE4 pozwala na  sprawne dodawanie kolejnych elementów rozgrywki. Osiągniety efekt nie byłby możliwy bez wykorzystania profesjonalnych narzędzi takich jak UE4 czy Blender.
+\newline \indent Silnik UE4 umożliwił stworzenie prostej sieciowej gry w stosunkowo niedługim czasie. Gra była zaprojektowana z myślą o jej dalszym rozwoju, co wraz ze znajomością silnika UE4, pozwala na sprawne dodawanie kolejnych elementów rozgrywki. Osiągniety efekt nie byłby możliwy bez wykorzystania profesjonalnych narzędzi takich jak UE4 czy Blender.
  \chapter{Zawartość płyty}
-Na płycie w katalogu PROJEKT znajdują się pliki projektowe UE4, w tym między innymi modele, animacje, dźwięki, {\em level}, na którym toczy się rozgrywka oraz elementy odpowiedzialne za całą logikę gry czyli około 35 blueprintów oraz kod źródłowy ośmiu klas. Ponadto umieszczono tam gotową do uruchomienia wersję gry.
+Na płycie, w katalogu PROJEKT, znajdują się pliki projektowe UE4, w tym między innymi modele, animacje, dźwięki, {\em level}, na którym toczy się rozgrywka oraz elementy odpowiedzialne za całą logikę gry czyli około 35 blueprintów oraz kod źródłowy ośmiu klas. Ponadto umieszczono tam gotową do uruchomienia wersję gry.
+Warto podkreślić, iż owe blueprinty stanowią integralną część gry, będąc -- na równi z kodem C++ -- opisem niektórych procedur i funkcji, wykonywanych przez silnik UE4.
+Stanowią one, tym samym, integralną część tej pracy inżynierskiej.
 \newline \indent W katalogu DOKUMENTY umieszczono pracę dyplomową w formatach PDF i TEX oraz plik z tytułem, streszczeniem i słowami kluczowymi w formacie RTF. 
 
 \begin{thebibliography}{9}
