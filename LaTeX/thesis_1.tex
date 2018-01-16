@@ -30,7 +30,7 @@
 \abstractpage
 {Implementacja sieciowej gry wideo z wykorzystaniem silnika Unreal Engine 4}
 {Niniejsza praca jest opisem implementacji sieciowej gry wideo pod tytułem ,,thesis\_1``, wykorzystującej silnik Unreal Engine 4. Praca zawiera opis silnika, prezentuje architekturę gry oraz zastosowane narzędzia, napotkane problemy i ich rozwiązania.
-Integraną część pracy stanowią opracowane kody -- zarówno w języku {\em C++}, jak i w postaci tzw. {\em blueprintów}.}
+Integraną część pracy stanowią opracowane kody -- zarówno w języku {\em C++}, jak i w postaci tak zwanych {\em blueprintów}.}
 {Unreal Engine 4, tworzenie gier wideo, gra wideo}
 {Implementation of an online video game using Unreal Engine 4}
 {This thesis describes the implementation of an online video game ``thesis\_1``, based on Unreal Engine 4. It contains the description of this engine and presents the game's architecture and applied tools, encountered problems and their solutions.
@@ -230,7 +230,7 @@ W celu dodania możliwości uniku, polegającego na gwałtownym odskoku postaci 
 		\label{wybor-postaci}
 	Grający ma możliwość wyboru postaci oraz zdolności w menu opcji, które pobiera informacje o klasach postaci i zdolnościach z {\em GameInfoInstance}. Aby zapobiec sytuacji, w której wybrana została zdolność przeznaczona dla innej postaci niż obecnie wybrana, interfejs aktualizuje listę dostępnych zdolności przy każdej zmianie klasy postaci. Po zaakceptowaniu zmian tablica zdolności trafia do {\em PlayerInfo} oraz pliku z zapisem gry. Przy dołączeniu do rozgrywki informacje te trafiają do {\em PlayerControllera} za pomocą funkcji {\em LoadPlayerInfo}, a stamtąd do {\em Charactera} poprzez funkcję {\em ABaseCharacter::LoadSkills()} przy każdym jego odrodzeniu.
 	\subsection{Elementy środowiska}
-W celu urozmaicenia rozgrywki opracowano kilka blueprintów. Oprócz dynamicznego oświetlenia czy tak zwanego {\em screenshake'a}, polegającego na drganiu kamery na przykład podczas wybuchów, dodano element, który miał na celu skupienie potyczki pomiędzy graczami w jednym miejscu. Tym elementem jest ognisko (rys. \ref{gameplay1}), przy którym gracze mogą uzupełnić swoje punkty zdrowia. Instancja ogniska znajdująca się na serwerze posiada sferę potrzebną do sprawdzania kolizji oraz listę postaci znajdujących się wewnątrz sfery. 
+W celu urozmaicenia rozgrywki opracowano kilka blueprintów. Oprócz dynamicznego oświetlenia czy tak zwanego {\em screenshake-a}, polegającego na drganiu kamery na przykład podczas wybuchów, dodano element, który miał na celu skupienie potyczki pomiędzy graczami w jednym miejscu. Tym elementem jest ognisko (rys. \ref{gameplay1}), przy którym gracze mogą uzupełnić swoje punkty zdrowia. Instancja ogniska znajdująca się na serwerze posiada sferę potrzebną do sprawdzania kolizji oraz listę postaci znajdujących się wewnątrz sfery. 
 Gdy odległość postaci od ogniska będzie mniejsza niż promien sfery postać zostanie dodana do listy leczonych postaci i liczba jej punktów zdrowia zacznie wzrastać.
 \section{Networking -- tworzenie oraz dołączanie do rozgrywki sieciowej}
 	\label{networking}
