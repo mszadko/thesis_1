@@ -159,10 +159,14 @@ Inną możliwością jest opracowanie własnego silnika od podstaw. W takim przy
 \chapter{Opis implementacji gry ,,thesis\_1``}
 \label{implementacja}
 \section{System kontroli wersji}
-Podczas pracy nad projektem korzystano z systemu kontroli wersji {\em Git}. Oprogramowanie to wspiera pracę zespołową programistów między innymi poprzez ułatwione rozwiązywanie tak zwanych konfliktów czyli sytuacji, w których kilku programistów jednocześnie modyfikuje ten sam plik tekstowy. Ponadto {\em Git} umożliwia przechowywanie plików projektowych na wspólnym serwerze, do którego zespół ma dostęp, a także śledzenie historii zmian czy ,,rozgałęzianie`` (ang. {\em branch}) projektu na przykład w przypadku implementowania nowych funkcji, które mogłyby uszkodzić dotychczasową, działającą wersję projektu.
-\newline \indent Katalog zarządzany przez system {\em Git} nazywa się ,,rezpozytorium``, a jego wersje przechowywane są na wspólnym serwerze oraz lokalnie na komputerach programistów. Praca z {\em Gitem} polega głównie na pobieraniu (polecenie {\em pull}) zmian z serwera do lokalnego repozytorium, zatwierdzaniu (polecenie {\em commit}) swoich zmian oraz wysyłaniu (polecenie {\em push}) ich do repozytorium na serwerze.
- Repozytorium niniejszego projektu dostępne jest pod adresem https://github.com/mszadko/thesis\_1.
-\newline \indent W rozdziale \ref{problemy} opisano, dlaczego {\em Git} nie jest idealnym narzędziem do pracy nad projektami UE4.
+Podczas pracy nad projektem korzystano z systemu kontroli wersji {\em Git} \cite{git}. 
+Został on opracowany przez Linusa Torvaldsa, aby ułatwić zarządzanie rozwojem jądra systemu Linux.
+Strona manuala polecenia \verb+git+ nazywa ów system żartobliwie ,,głupim protokolantem treści''. Jest to aluzja do ,,filozofii'' tego systemu, odróżniającej go od innych narzędzi kontroli wersji, a zwłaszcza do prostoty użytych struktur danych.
+Nacisk położony został na rozproszony charakter, wydajność, skalowalność oraz możliwość pracy nad projektem przez wiele osób równocześnie.
+Oprogramowanie to wspiera zatem pracę zespołową programistów -- między innymi poprzez ułatwione rozwiązywanie tak zwanych konfliktów, czyli sytuacji, w których kilku programistów jednocześnie modyfikuje ten sam plik tekstowy. Ponadto {\em Git} umożliwia przechowywanie plików projektowych na wspólnym serwerze, do którego zespół ma dostęp, a także śledzenie historii zmian czy ,,rozgałęzianie`` (ang. {\em branching}) projektu, na przykład w przypadku implementowania nowych funkcji, które mogłyby uszkodzić dotychczasową, działającą wersję projektu lub gdy trzeba poprawić krytyczny błąd w starej wersji programu, nie włączając jednak funkcjonalności z nowej wersji..
+\newline \indent Katalog zarządzany przez system {\em Git} nazywa się ,,repozytorium``, a jego wersje przechowywane są na wspólnym serwerze oraz lokalnie na komputerach programistów. Praca z {\em Gitem} polega głównie na pobieraniu (polecenie {\em pull}) zmian z serwera do lokalnego repozytorium, zatwierdzaniu (polecenie {\em commit}) swoich zmian oraz wysyłaniu (polecenie {\em push}) ich do repozytorium na serwerze.
+Repozytorium niniejszego projektu dostępne jest pod adresem \url{https://github.com/mszadko/thesis\_1}.
+\newline \indent W rozdziale \ref{problemy} opisano problemy, na jakie natrafiliśmy, wykorzystując {\em Git} do pracy nad projektami UE4.
 
 \section{Uruchomienie gry i podstawowe funkcje}
 Wywołanie pliku wykonywalnego z grą ({\em thesis\_1.exe}) powoduje uruchomienie silnika, utworzenie obiektu klasy {\em GameInfoInstance} (opisanej w podrozdziale \ref{gameinfoinstance}), a następnie wczytanie początkowego poziomu {\em MainMenu}, który wywołuje funkcję {\em SaveGameCheck} z {\em GameInfoInstance} sprawdzającą czy istnieje plik z zapisem gry (system opisany w podrozdziale \ref{sejwy}) i wyświetlający interfejs użytkownika. Na tym etapie grający otrzymuję kontrolę nad dalszym przebiegiem programu. Sprowadza się ona do wywołań funkcji z {\em GameInfoInstance} poprzez interfejs.
@@ -232,6 +236,9 @@ W celu dodania możliwości uniku, polegającego na gwałtownym odskoku postaci 
 	\subsection{Elementy środowiska}
 W celu urozmaicenia rozgrywki opracowano kilka blueprintów. Oprócz dynamicznego oświetlenia czy tak zwanego {\em screenshake-a}, polegającego na drganiu kamery na przykład podczas wybuchów, dodano element, który miał na celu skupienie potyczki pomiędzy graczami w jednym miejscu. Tym elementem jest ognisko (rys. \ref{gameplay1}), przy którym gracze mogą uzupełnić swoje punkty zdrowia. Instancja ogniska, znajdująca się na serwerze, posiada sferę potrzebną do sprawdzania kolizji oraz listę postaci znajdujących się wewnątrz sfery. 
 Gdy odległość postaci od ogniska będzie mniejsza, niż promień sfery postać zostanie dodana do listy leczonych postaci i liczba jej punktów zdrowia zacznie wzrastać.
+Jeśli natomiast postać zanadto zbliży się do ogniska, dozna ,,oparzeń'', czyli zacznie tracić punkty zdrowia, zamiast je odzyskiwać.
+Oczywiście, zaimplementowane ognisko jest tylko przykładem. W analogiczny (i równie prosty) sposób można, za pomocą blueprintów,  dodać do gry inne elementy środowiska, wpływające w określony sposób na postacie, które w danym miejscu (i czasie) się znalazły.
+
 \section{Networking -- tworzenie oraz dołączanie do rozgrywki sieciowej}
 	\label{networking}
 ,,thesis\_1`` jest grą sieciową i do kompletnej rozgrywki wymaga przynajmniej dwóch komputerów, z których jeden pełni rolę serwera, a pozostałe są klientami. W UE4 serwer może działać w jednym z dwóch trybów sieci \cite{docs-network-modes}:
@@ -312,6 +319,7 @@ Możliwe jest również wykorzystanie dostępnego w UE4 mechanizmu drzew behawio
 \chapter{Napotkane problemy}
 \label{problemy}
 Niejednokrotnie trudności sprawiała niedokładna dokumentacja silnika lub nawet jej brak. W takich sytuacjach pomocne okazywały się rady społeczności skupionej wokół UE4 oraz otwarte źródło silnika.
+Społeczność ta dyskutuje głównie na oficjalnym forum\cite{ueforum} i w sekcji pytań\cite{ueanswerhub}.
 \newline \indent Problem stanowiło również korzystanie z systemu kontroli wersji Git, ponieważ nie jest on przystosowany do obsługi plików innych niż tekstowe. Skutkiem jest utrudnione rozwiązywanie ewentualnych konfliktów powstałych w plikach związanych na przykład z blueprintami czy modelami. Problem ten będzie dotkliwszy dla większych zespołów.
 
 \chapter{Podsumowanie i wnioski}
@@ -327,6 +335,10 @@ Stanowią one, tym samym, integralną część tej pracy inżynierskiej.
 
 \bibitem{learning-unreal}
 Joanna Lee, \textit{Learning Unreal Engine Game Development}, Packt Publishing, 2016
+
+\bibitem{git} \textit{Git. Strona domowa projektu}. \url{https://git-scm.com} (dostęp 15.12.2017)
+
+\bibitem{git-man} \textit{Strona manuala dla polecenia git}. \url{https://linux.die.net/man/1/git} (dostęp 15.12.2017)
 
 \bibitem{perelki}
 Mark DeLoura, \textit{Perełki Programowania Gier, Vademecum profesjonalisty, Tom I, }strony 17-21. Helion, 2002
@@ -384,6 +396,11 @@ Trevir Nath, \textit{Investing in Video Games: This Industry Pulls In More Reven
 Justin Slick, \textit{What is Rigging? Preparing a 3D Model For Animation }. \url{https://www.lifewire.com/what-is-rigging-2095}  (dostęp 3.01.2018)
 
 
+\bibitem{ueanswerhub}
+\textit{Unreal Engine AnswerHub }. \url{https://answers.unrealengine.com/index.html}  (dostęp 17.01.2018)
+
+\bibitem{ueforum}
+\textit{Unreal Engine Forum}. \url{https://forums.unrealengine.com/}  (dostęp 17.01.2018)
 
 
 
